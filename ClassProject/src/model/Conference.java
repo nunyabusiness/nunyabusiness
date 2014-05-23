@@ -10,14 +10,23 @@ import java.util.Observable;
 import org.joda.time.DateTime;
 
 public class Conference extends Observable {
-
-	private Map<Integer, Paper> papers;
-	private Map<Integer, Review> reviews;
-	private Map<Integer, User> users;
-	private Map<Reviewer, List<Integer>> reviewers_list;
-	private Map<Spc, Integer> spc_list;
-	private DateTime date;
-	private DateTime dueDate;
+	
+	private User programChair;
+	private List<User> subChairList;
+	private List<User> reviewerList;
+	private List<User> authorList;
+	
+	private List<Paper> submittedPapers;
+	private List<Paper> papersBeingReviewed;
+	private List<Paper> reviewedPapers;
+	
+//	private List<Paper> papers;
+//	private List<Review> reviews;
+//	private List<User> users;
+//	private List<Reviewer> reviewers_list;
+//	private List<Spc, Integer> spc_list;
+//	private DateTime date;
+//	private DateTime dueDate;
 
 	// we going to parse paperId from text file;
 	int lastPaperId = 0;

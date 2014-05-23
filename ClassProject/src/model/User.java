@@ -26,10 +26,10 @@ public class User {
 	 * The users email.
 	 */
 	private String myEmail;
-	/**
-	 * The conference the user is part of.
-	 */
-	private Conference myConference;
+//	/**
+//	 * The conference the user is part of.
+//	 */
+//	private Conference myConference;
 	/**
 	 * The papers that the user has authored and submitted to the conference.
 	 */
@@ -40,13 +40,19 @@ public class User {
 	private List<Paper> myAssignedPapers;
 	
 	
-	public User(int id, int role, String first, String last, String email, Conference conference) {
+	/** Creates a new user with the following fields.
+	 * @param id 
+	 * @param role
+	 * @param first
+	 * @param last
+	 * @param email
+	 */
+	public User(int id, int role, String first, String last, String email) {
 		myID = id;	
 		myFirstName = first;
 		myLastName = last;
 		myEmail = email;
 		myRole = role;
-		myConference = conference;
 	}
 	
 	public int getID() {
@@ -69,12 +75,12 @@ public class User {
 		return myEmail;
 	}
 	
-	public Conference getConference() {
-		return myConference;
-	}
+//	public Conference getConference() {
+//		return myConference;
+//	}
 	
 	public void submitPaper(Paper paper) {
-		myConference.addPaper(paper);
+//		myConference.addPaper(paper);
 		mySubmittedPapers.add(paper);
 	}
 	
