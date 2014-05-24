@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import view.ProjectJFrame;
 import model.Conference;
 import model.User;
 
@@ -25,7 +26,7 @@ public class MCP
 	 */
 	public void MCP() throws IOException
 	{
-		newCon = new Conference(null);
+		newCon = new Conference();
 		loadFiles();
 		loadGUI();
 	}
@@ -70,7 +71,12 @@ public class MCP
 	 */
 	public static void main(String[] args) 
 	{
-
+		java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ProjectJFrame(new Conference()).displayLogin();
+            }
+        });
+		
 	}
 
 }
