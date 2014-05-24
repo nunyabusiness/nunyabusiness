@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,10 +12,13 @@ import org.joda.time.DateTime;
 
 public class Conference extends Observable {
 	
-	private User programChair;
-	private List<User> subChairList;
-	private List<User> reviewerList;
-	private List<User> authorList;
+	public static final GregorianCalendar DEADLINE = new GregorianCalendar(2014, 5, 21);
+	
+	private User myCurrentUser;
+	private List<User> myUserList;
+//	private List<User> subChairList;
+//	private List<User> reviewerList;
+//	private List<User> authorList;
 	
 	private List<Paper> submittedPapers;
 	private List<Paper> papersBeingReviewed;
@@ -31,27 +35,19 @@ public class Conference extends Observable {
 	// we going to parse paperId from text file;
 	int lastPaperId = 0;
 	int lastReviewId = 0;
-	int lastUserId = 0;
 
-	public Conference(DateTime date) {
-		this.date = date;
-		setDueDate(date);
-
-		papers = new HashMap<Integer, Paper>();
-		reviews = new HashMap<Integer, Review>();
-		users = new HashMap<Integer, User>();
-		reviewers_list = new HashMap<Reviewer, List<Integer>>();
-		spc_list = new HashMap<Spc, Integer>();
+	public Conference() {
+		myCurrentUser = null;
+		myUserList = new ArrayList<User>();
 	}
 
 	public void addUser(User user) {
-		users.put(++lastUserId, user);
-		user.setKey(lastUserId);
+		myUserList.add(user);
 	}
 
 	//US01. As an Author, I want to submit a manuscript to a conference. 
 	public void addPaper(Paper paper) {
-		papers.put(++lastPaperId, paper);
+		submittedPapers.put(++lastPaperId, paper);
 		paper.setKey(lastPaperId);
 	}
 
@@ -128,17 +124,15 @@ public class Conference extends Observable {
 		return false;
 	}
 	// Set duedate 1 month before conference starts
-	private void setDueDate(DateTime date) {
-		int year = date.getYear();
-		int month = date.getMonthOfYear();
-		int day = date.getDayOfMonth();
-		int hour = date.getHourOfDay();
-		int minute = date.getMinuteOfHour();
-
-		if (month == 0) {
-			year--;
-			month = 12;
-		}
-		dueDate = new DateTime(year, month, day, hour, minute);
+	public int getDaysLeft() {
+		long todaysDate = new GregorianCalendar().getTimeInMillis();
+		
+		long daysLeft = (DEADLINE.getTimeInMillis() - todaysDate) / (1000 * 60 * 60 * 24);
+		
+		return (int) daysLeft;
+	}
+	
+	public GregorianCalendar getDeadline() {
+		return DEADLINE;
 	}
 }
