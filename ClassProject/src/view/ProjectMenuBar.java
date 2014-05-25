@@ -1,13 +1,18 @@
 package view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import model.Conference;
 
 /**
- * The JMenuBar class for the 
+ * The JMenuBar class for the project. 
  * 
  * @author Erik Tedder
  * @date 5/24/2014
@@ -22,11 +27,12 @@ public class ProjectMenuBar extends JMenuBar {
 	private JMenuItem myLogoutMenuItem;
 	
 	private Conference myConference;
+	private JFrame myFrame;
 	
 	/**
 	 * No-argument constructor of a new ProjectMenuBar.
 	 */
-	public ProjectMenuBar(final Conference theConference) {
+	public ProjectMenuBar(final JFrame theFrame, final Conference theConference) {
 		super();
 		
 		myFileMenu = new JMenu("File");
@@ -37,10 +43,12 @@ public class ProjectMenuBar extends JMenuBar {
 		
 		
 		myConference = theConference;
+		myFrame = theFrame;
 		
 		initMenus();
-	}
-	
+		createActions();
+	}	
+
 	/**
 	 * Method which creates the menus for the menu bar and initializes the menu items.
 	 */
@@ -53,6 +61,30 @@ public class ProjectMenuBar extends JMenuBar {
 		myFileMenu.add(myExitMenuItem);
 		
 		myHelpMenu.add(myHelpMenuItem);		
+	}	
+
+	/**
+	 * Method to create the actions for the various menu bar menu items.
+	 */
+	private void createActions() {
+		myExitMenuItem.addActionListener(new ActionListener() {			
+			public void actionPerformed(final ActionEvent e) {
+				myFrame.dispose();
+			}
+		});
+		
+		myLogoutMenuItem.addActionListener(new ActionListener() {			
+			public void actionPerformed(final ActionEvent e) {
+				myConference.logout();
+			}
+		});
+		
+		myHelpMenuItem.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(myFrame, "I don't have time for this, "
+						+ "be gone you pest!");
+			}
+		});
 	}
 
 }

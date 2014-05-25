@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
@@ -11,9 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -62,11 +58,13 @@ public class ProjectJFrame extends JFrame implements Observer {
     private Conference myConference;
     
     /**
-     * Creates new form NewJFrame
+     * 
+     * 
+     * @param theConference
      */
     public ProjectJFrame(final Conference theConference) {    	
     	myConference = theConference;
-    	myMenuBar = new ProjectMenuBar(myConference);
+    	myMenuBar = new ProjectMenuBar(this, myConference);
     	
         initComponents();
         this.setLocationRelativeTo(null);
@@ -439,8 +437,7 @@ public class ProjectJFrame extends JFrame implements Observer {
      * Still needing to get done to implement observer/observable. Need ENUM CLASS!
      */
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		//
 	}
 
     

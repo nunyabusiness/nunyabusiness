@@ -109,6 +109,41 @@ public class Conference extends Observable {
 		return new ArrayList<Paper>(papers.values());
 	}
 	
+	/**
+	 * Method which logs in a new user for the conference.
+	 * 
+	 * (Erik)
+	 * @param theUser The user to be logged in.
+	 */
+	public void login(final User theUser) {
+		myCurrentUser = theUser;
+		
+		setChanged();
+		notifyObservers();
+	}
+	
+	/**
+	 * Returns the current logged in user. May not be necessary for later iterations of 
+	 * program, but considering using now for the sake of testing ID levels, etc.
+	 * 
+	 * (Erik)	  
+	 * @return myCurrentUser.
+	 */
+	public User getCurrentUser() {
+		return myCurrentUser;
+	}
+	/**
+	 * Method which logs out the current user of the program.
+	 * 
+	 * (Erik)
+	 */
+	public void logout() {
+		myCurrentUser = null;
+		
+		setChanged();
+		notifyObservers();
+	}
+	
 	//US10. As a Program Chair, I want to make an acceptance decision (yes or no) on a submitted manuscript. 
 	public void submitDecision(int paperKey,int decision){
 		papers.get(paperKey).setDecision(decision);
