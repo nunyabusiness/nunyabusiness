@@ -2,7 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.Calendar;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,7 +31,6 @@ import model.Conference;
  */
 @SuppressWarnings("serial")
 public class ProjectJFrame extends JFrame implements Observer {
-
 	
 	private JPanel authorTab;
     private JLabel completedLabel;
@@ -39,12 +38,9 @@ public class ProjectJFrame extends JFrame implements Observer {
     private JLabel conferenceLabel;
     private JTextField emailField;
 
-    private JPanel homeTab;
     private JButton jButton1;
     private JButton jButton2;
-    private JLabel jLabel1;
     private JLabel jLabel2;
-    private JButton loginButton;
     private JFrame loginFrame;
     private JTabbedPane myTabbedPane;
     private JScrollPane pcTab;
@@ -54,42 +50,112 @@ public class ProjectJFrame extends JFrame implements Observer {
     private JTextField textField1;
     
     private ProjectMenuBar myMenuBar;
+    private HomeTab myHomeTab;
     
     private Conference myConference;
     
     /**
+     * Creation of a new JFrame for the team's project with a given conference to display the
+     * information for.
      * 
-     * 
-     * @param theConference
+     * @param theConference The conference in which to display information for.
      */
     public ProjectJFrame(final Conference theConference) {    	
     	myConference = theConference;
     	myMenuBar = new ProjectMenuBar(this, myConference);
+    	myHomeTab = new HomeTab(myConference);
     	
-        initComponents();
+    	initLoginFrame();
+        initComponents();        
         this.setLocationRelativeTo(null);
     }
     
+    /**
+     * Method which displays the login frame for the conference.
+     * 
+     * This method is used to start the GUI application from other sources.
+     */
     public final void displayLogin() {
         loginFrame.pack();
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setVisible(true);
     }
     
-    private void initComponents() {
-
-        loginFrame = new JFrame();
+    /**
+     * Method to initialize and create the login frame.
+     */
+    private void initLoginFrame() {
+    	//intiliaze initial values
+    	loginFrame = new JFrame();
         emailField = new JTextField();
         JLabel emailLabel = new JLabel();
         JLabel loginHeader = new JLabel();
-        loginButton = new JButton();
+        JButton loginButton = new JButton();
+        
+        emailLabel.setText("Email Address");
+
+        loginHeader.setFont(new java.awt.Font("Tahoma", 1, 14)); 
+        loginHeader.setText("Welcome to the MSEE conference login portal");
+        
+        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loginFrame.setTitle("MSEE Login");
+        loginFrame.setResizable(false);        
+
+        loginButton.setText("Login");
+        loginButton.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				hideLogin();				
+			}
+		});
+
+        //Creates the layout for the login frame.
+        GroupLayout loginFrameLayout = new GroupLayout(loginFrame.getContentPane());
+        loginFrame.getContentPane().setLayout(loginFrameLayout);
+        loginFrameLayout.setHorizontalGroup(
+            loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(loginFrameLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(loginHeader, GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(GroupLayout.Alignment.TRAILING, loginFrameLayout.createSequentialGroup()
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(GroupLayout.Alignment.TRAILING, 
+                    		loginFrameLayout.createSequentialGroup()
+                        .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 
+                        		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 189, 
+                        		GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))
+                    .addGroup(GroupLayout.Alignment.TRAILING, 
+                    		loginFrameLayout.createSequentialGroup()
+                        .addComponent(loginButton)
+                        .addGap(140, 140, 140))))
+        );
+        loginFrameLayout.setVerticalGroup(
+            loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(loginFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(loginHeader)
+                .addGap(39, 39, 39)
+                .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 
+                    		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 
+                    		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, 
+                		Short.MAX_VALUE)
+                .addComponent(loginButton)
+                .addContainerGap())
+        );
+    }
+    
+    /**
+     * Method which initializes the remaining components of the Frame.
+     */
+    private void initComponents() {        
         myTabbedPane = new JTabbedPane();
-        homeTab = new JPanel();
-        JLabel homeTabHeader = new JLabel();
-        JLabel confInfoLabel = new JLabel();
-        JLabel paperSubmitLabel = new JLabel();
-        JLabel daysLeftLabel = new JLabel();
-        jLabel1 = new JLabel();
         submitTab = new JPanel();
         JLabel submitLabel = new JLabel();
         JLabel titleLabel = new JLabel();
@@ -107,57 +173,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         JScrollPane pcScrollPane = new JScrollPane();
         completedTabel = new JTable();
         completedLabel = new JLabel();
-        conferenceLabel = new JLabel();
-
-        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        loginFrame.setTitle("MSEE Login");
-        loginFrame.setResizable(false);
-
-        emailLabel.setText("Email Address");
-
-        loginHeader.setFont(new java.awt.Font("Tahoma", 1, 14)); 
-        loginHeader.setText("Welcome to the MSEE conference login portal");
-
-        loginButton.setText("Login");
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                loginButtonActionPerformed(evt);
-            }
-        });
-
-        GroupLayout loginFrameLayout = new GroupLayout(loginFrame.getContentPane());
-        loginFrame.getContentPane().setLayout(loginFrameLayout);
-        loginFrameLayout.setHorizontalGroup(
-            loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(loginFrameLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(loginHeader, GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(GroupLayout.Alignment.TRAILING, loginFrameLayout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, loginFrameLayout.createSequentialGroup()
-                        .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
-                    .addGroup(GroupLayout.Alignment.TRAILING, loginFrameLayout.createSequentialGroup()
-                        .addComponent(loginButton)
-                        .addGap(140, 140, 140))))
-        );
-        loginFrameLayout.setVerticalGroup(
-            loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(loginFrameLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(loginHeader)
-                .addGap(39, 39, 39)
-                .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(loginButton)
-                .addContainerGap())
-        );
+        conferenceLabel = new JLabel();        
 
         abstractTextArea.setLineWrap(true);
         abstractTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -171,60 +187,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         myTabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         myTabbedPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        homeTab.setBackground(new java.awt.Color(255, 255, 255));
-
-        homeTabHeader.setFont(new java.awt.Font("Tahoma", 1, 18)); 
-        homeTabHeader.setText("Welcome Back [user first name] [user last name]!");
-
-        confInfoLabel.setFont(new java.awt.Font("Tahoma", 2, 14)); 
-        confInfoLabel.setText("Conference Information:");
-
-        paperSubmitLabel.setText("You currently have [paper number] submitted to the Conference.");
-
-        daysLeftLabel.setText("The Conference deadline is in " + myConference.getDaysLeft() 
-        		+ " day(s).");
-
-        jLabel1.setText("The Conference will be held on " 
-        		+ myConference.getDeadline().get(Calendar.MONTH) + "/" 
-        		+ myConference.getDeadline().get(Calendar.DAY_OF_MONTH) 
-        		+ "/" + myConference.getDeadline().get(Calendar.YEAR) + " .");
-
-        GroupLayout homeTabLayout = new GroupLayout(homeTab);
-        homeTab.setLayout(homeTabLayout);
-        homeTabLayout.setHorizontalGroup(
-            homeTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(homeTabLayout.createSequentialGroup()
-                .addGroup(homeTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(homeTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(homeTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(homeTabHeader)
-                            .addComponent(confInfoLabel)))
-                    .addGroup(homeTabLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(homeTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(paperSubmitLabel)
-                            .addComponent(daysLeftLabel)
-                            .addComponent(jLabel1))))
-                .addContainerGap(151, Short.MAX_VALUE))
-        );
-        homeTabLayout.setVerticalGroup(
-            homeTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(homeTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(homeTabHeader)
-                .addGap(52, 52, 52)
-                .addComponent(confInfoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paperSubmitLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(daysLeftLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addContainerGap(138, Short.MAX_VALUE))
-        );
-
-        myTabbedPane.addTab("Home", homeTab);
+        myTabbedPane.addTab("Home", myHomeTab);
 
         submitTab.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -397,7 +360,6 @@ public class ProjectJFrame extends JFrame implements Observer {
         conferenceLabel.setForeground(new java.awt.Color(255, 51, 51));
         conferenceLabel.setText("MSEE Conference Controls");
 
-
         setJMenuBar(myMenuBar);
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -425,16 +387,16 @@ public class ProjectJFrame extends JFrame implements Observer {
 
         pack();
     }
-
-    private void loginButtonActionPerformed(ActionEvent evt) {
-        if ("admin".equals(emailField.getText())) {
+    
+    private void hideLogin() {
+    	if ("admin".equals(emailField.getText())) {
             loginFrame.setVisible(false);
             this.setVisible(true);
         }
     }
 
     /**
-     * Still needing to get done to implement observer/observable. Need ENUM CLASS!
+     * Still needing to get done to implement observer/observable. 
      */
 	public void update(Observable o, Object arg) {
 		//
