@@ -3,7 +3,12 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -14,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Conference;
 
@@ -26,6 +32,8 @@ import model.Conference;
  */
 @SuppressWarnings("serial")
 public class SubmitTab extends JPanel {
+	
+	private static final String PATH = "/src/files/";
 	
 	/**
 	 * The current conference.
@@ -53,6 +61,11 @@ public class SubmitTab extends JPanel {
 	private JFileChooser myFileChooser;
 	
 	/**
+	 * The paper file a user uploads to the conference.
+	 */
+	private File myFile;
+	
+	/**
 	 * Constructor of a new submit tab.
 	 * 
 	 * @param theConference The current conference.
@@ -64,7 +77,11 @@ public class SubmitTab extends JPanel {
 		myPaperTitle = new JTextField();
 		myAbstractArea = new JTextArea();
 		myFileChooser = new JFileChooser(".");
-		
+		//the filters for what type of files are acceptable
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	        "txt, doc, docx files", "txt", "docx", "doc");
+	    myFileChooser.setFileFilter(filter);
+	    
 		initPanel();
 	}
 	
@@ -91,6 +108,22 @@ public class SubmitTab extends JPanel {
 			}
 		});
 		JButton submitButton = new JButton("Submit Paper");
+		//Sets action for the submit button. Calls the SubmitFileAction method to save the
+		//given file to a designated path.
+		submitButton.addActionListener(new ActionListener() {			
+			public void actionPerformed(final ActionEvent e) {
+				if (myFile != null &&myFile.exists()) {					
+					try {
+						submitFileAction();
+					} catch (final IOException error) {
+						JOptionPane.showMessageDialog(null, error.getMessage());
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid or no file selected. Please "
+							+ "try again.");
+				}
+			}
+		});
 		
 		setBackground(new java.awt.Color(255, 255, 255));
 
@@ -174,6 +207,32 @@ public class SubmitTab extends JPanel {
         //Check if image was selected
         if (result == JFileChooser.APPROVE_OPTION) { 
             myFileLabel.setText(myFileChooser.getSelectedFile().getName());
+            myFile = myFileChooser.getSelectedFile();
         }
+	}
+	
+	/**
+	 * Method which takes a given file and saves it to the conference's system files.
+	 * 
+	 * (Code originates from http://www.journaldev.com/861/4-ways-to-copy-file-in-java).
+	 * 
+	 * @throws IOException
+	 */
+	private void submitFileAction() throws IOException {
+		InputStream is = null;
+	    OutputStream os = null;
+	    try {
+	        is = new FileInputStream(myFile);
+	        os = new FileOutputStream(new File(PATH + myFile.getName()));
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+	    } finally {	        
+	    	is.close();
+	    	os.close();
+			
+	    }
 	}
 }
