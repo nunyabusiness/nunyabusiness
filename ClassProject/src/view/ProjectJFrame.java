@@ -303,6 +303,10 @@ public class ProjectJFrame extends JFrame implements Observer {
                 .addComponent(myTabbedPane, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+        
+        //disables all panels except for the home and submit paper tabs
+        for (int i = 2; i < myTabbedPane.getTabCount(); i++)
+        	myTabbedPane.setEnabledAt(i, false);
 
         pack();
     }
