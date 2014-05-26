@@ -24,39 +24,47 @@ public class MCP
 	 * @throws IOException 
 	 * 
 	 */
-	public void MCP() throws IOException
+	public MCP() throws IOException
 	{
 		newCon = new Conference();
 		loadFiles();
-		loadGUI();
+		
 	}
 	
-	private void loadFiles() throws FileNotFoundException
+	private void loadFiles() throws IOException
 	{
 		String UserFileName = "../files/usercsv.txt";
-		String PaperFileName = "../files/papercsv.txt";
-		BufferedReader fileIn;
+		//String PaperFileName = "../files/papercsv.txt";
+		BufferedReader fileIn = null;
+		char para = '"';
+		char blank = ' ';
 		
 		try 
 		{
 			fileIn = new BufferedReader(new FileReader(UserFileName));
-			
-			while (fileIn.ready())
-			{
-				String line = fileIn.readLine();
-				String[] portion = line.split(",");
-				
-				User person = new User(null);
-				person.setKey(0);
-			}
 		}
 		catch (FileNotFoundException e)
 		{
 			System.out.print(e);
 		}
-		catch (IOException e) 
+		
+		//0-"UserID",1-"FirstName",2-"LastName",3-"email",4-"ConferenceID",
+		//5-"ConferenceTitle",6-"ConferenceDescription",7-"RoleID",8-"Role"
+		while (fileIn.ready())
 		{
-			e.printStackTrace();
+			String line = fileIn.readLine();
+			String[] portion = line.split(",");
+			for (String hi: portion)
+			{
+				hi.replace(para, blank);
+			}
+			
+			int id = Integer.parseInt(portion[0]);
+			int role = Integer.parseInt(portion[7]);
+			
+			//int id, int role, String first, String last, String email
+			User person = new User(id, role, portion[1], portion[2], portion[3]);
+			newCon.addUser(person);
 		}
 		
 	}
