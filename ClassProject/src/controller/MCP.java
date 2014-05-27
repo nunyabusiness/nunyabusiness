@@ -66,8 +66,7 @@ public class MCP
 			//int id, int role, String first, String last, String email
 			User person = new User(id, role, portion[1], portion[2], portion[3]);
 			newCon.addUser(person);
-		}
-		
+		}		
 	}
 	
 	private void loadGUI()
@@ -82,6 +81,11 @@ public class MCP
 	{
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+            	try {
+            		new MCP();
+            	} catch (IOException e) {
+            		System.err.println(e.getMessage());
+            	}
                 new ProjectJFrame(new Conference()).displayLogin();
             }
         });
