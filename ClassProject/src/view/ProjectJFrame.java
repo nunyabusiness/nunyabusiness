@@ -2,6 +2,7 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 
 import model.Conference;
+import model.User;
 
 
 
@@ -308,7 +310,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         for (int i = 2; i < myTabbedPane.getTabCount(); i++)
         	myTabbedPane.setEnabledAt(i, false);
 
-        pack();
+        pack();        
     }
     
     /**

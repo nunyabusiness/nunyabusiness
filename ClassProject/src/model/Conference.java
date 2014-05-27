@@ -144,6 +144,10 @@ public class Conference extends Observable {
 		notifyObservers();
 	}
 	
+	public List<User> getUsers() {
+		return myUserList;
+	}
+	
 	//US10. As a Program Chair, I want to make an acceptance decision (yes or no) on a submitted manuscript. 
 	public void submitDecision(int paperKey,int decision){
 		papers.get(paperKey).setDecision(decision);

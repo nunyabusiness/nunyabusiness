@@ -33,8 +33,8 @@ public class MCP
 	
 	private void loadFiles() throws IOException
 	{
-		String UserFileName = "../files/usercsv.txt";
-		//String PaperFileName = "../files/papercsv.txt";
+		String UserFileName = "src/files/usercsv.txt";
+		//String PaperFileName = "src/files/papercsv.txt";
 		BufferedReader fileIn = null;
 		char para = '"';
 		char blank = ' ';
@@ -50,6 +50,7 @@ public class MCP
 		
 		//0-"UserID",1-"FirstName",2-"LastName",3-"email",4-"ConferenceID",
 		//5-"ConferenceTitle",6-"ConferenceDescription",7-"RoleID",8-"Role"
+		//TODO: fix above
 		while (fileIn.ready())
 		{
 			String line = fileIn.readLine();
@@ -60,7 +61,7 @@ public class MCP
 			}
 			
 			int id = Integer.parseInt(portion[0]);
-			int role = Integer.parseInt(portion[7]);
+			int role = Integer.parseInt(portion[4]);
 			
 			//int id, int role, String first, String last, String email
 			User person = new User(id, role, portion[1], portion[2], portion[3]);
