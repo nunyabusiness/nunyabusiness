@@ -66,7 +66,9 @@ public class MCP
 			//int id, int role, String first, String last, String email
 			User person = new User(id, role, portion[1], portion[2], portion[3]);
 			newCon.addUser(person);
-		}		
+		}
+		
+		fileIn.close();
 	}
 	
 	private void loadGUI()
