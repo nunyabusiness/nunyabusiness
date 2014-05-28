@@ -340,6 +340,8 @@ public class ProjectJFrame extends JFrame implements Observer {
 		//User has logged out
 		if (arg == ConfChangeType.LOGOUT) {
 			this.setVisible(false);
+			myTabbedPane.setSelectedIndex(0);
+			mySubmitTab.clearLabels();
 			userIDField.setText("");
 			loginFrame.setVisible(true);
 		}

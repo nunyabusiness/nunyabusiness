@@ -229,13 +229,22 @@ public class SubmitTab extends JPanel {
 	        while ((length = is.read(buffer)) > 0) {
 	            os.write(buffer, 0, length);
 	        }
+	        JOptionPane.showMessageDialog(this, "You have successfully uploaded paper " 
+	        				+ myPaperTitle.getText() + " and file " + myFile.getName());
+	        clearLabels();
 	    } finally {	        
 	    	is.close();
-	    	
-	    	if (os == null) {
-	    		System.err.println("uh oh");
-	    	}
 	    	os.close();			
 	    }
+	}
+	
+	/**
+	 * Method which clears the labels. Method is called when successfully submitting a paper 
+	 * and when a user logs out.
+	 */
+	public void clearLabels() {
+		myFileLabel.setText("");
+        myPaperTitle.setText("");
+		myAbstractArea.setText("");
 	}
 }
