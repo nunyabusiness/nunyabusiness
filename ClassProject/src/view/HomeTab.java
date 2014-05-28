@@ -61,7 +61,6 @@ public class HomeTab extends JPanel implements Observer {
 		myDaysLeftLabel = new JLabel();
 		
 		initPanel();
-		setLabelValues();
 	}
 
 	/**
@@ -120,13 +119,10 @@ public class HomeTab extends JPanel implements Observer {
 	 * Method which sets all the values of the Home Tab's labels based upon the current logged
 	 * in user and the current Conference.
 	 */
-	private void setLabelValues() {		
+	public void setLabelValues() {		
 		//Display the name of the current user.
-//		myHomeTabHeader.setText("Welcome Back " + myConference.getCurrentUser().getFirstName() 
-//				+ " " + myConference.getCurrentUser().getLastName() + "!");
-		
-		//TODO: remove once finished debugging and parsing is complete
-		myHomeTabHeader.setText("Welcome Back");
+		myHomeTabHeader.setText("Welcome Back " + myConference.getCurrentUser().getFirstName() 
+				+ " " + myConference.getCurrentUser().getLastName() + "!");
 		
 		//TODO: Allow for papers to be counted for the current user.
 		myPaperSubmitLabel.setText("You currently have # papers submitted to the Conference.");

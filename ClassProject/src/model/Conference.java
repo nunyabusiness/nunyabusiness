@@ -115,11 +115,22 @@ public class Conference extends Observable {
 	 * (Erik)
 	 * @param theUser The user to be logged in.
 	 */
-	public void login(final User theUser) {
-		myCurrentUser = theUser;
+	public void login(final int theUserID) {
+		boolean userFound = false;
 		
-		setChanged();
-		notifyObservers();
+		for (User u : myUserList) {
+			if (theUserID == u.getID()) {
+				userFound = true;
+				myCurrentUser = u;
+								
+				setChanged();
+				notifyObservers(ConfChangeType.LOGIN_SUCCESSFUL);
+			}
+		}
+		if (!userFound) {
+			setChanged();
+			notifyObservers(ConfChangeType.LOGIN_FAIL);
+		}
 	}
 	
 	/**

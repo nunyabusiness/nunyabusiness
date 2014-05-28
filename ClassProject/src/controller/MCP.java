@@ -24,9 +24,9 @@ public class MCP
 	 * @throws IOException 
 	 * 
 	 */
-	public MCP() throws IOException
+	public MCP(Conference theConference) throws IOException
 	{
-		newCon = new Conference();
+		newCon = theConference;
 		loadFiles();
 		
 	}
@@ -82,13 +82,15 @@ public class MCP
 	public static void main(String[] args) 
 	{
 		java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            Conference con = new Conference();
+			
+			public void run() {
             	try {
-            		new MCP();
+            		new MCP(con);
             	} catch (IOException e) {
             		System.err.println(e.getMessage());
             	}
-                new ProjectJFrame(new Conference()).displayLogin();
+                new ProjectJFrame(con).displayLogin();
             }
         });
 		

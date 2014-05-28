@@ -9,6 +9,7 @@ import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -16,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 
+import model.ConfChangeType;
 import model.Conference;
 import model.User;
 
@@ -35,7 +37,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     private JLabel completedLabel;
     private JTable completedTabel;
     private JLabel conferenceLabel;
-    private JTextField emailField;
+    private JTextField userIDField;
     
     private JFrame loginFrame;
     private JTabbedPane myTabbedPane;
@@ -57,6 +59,9 @@ public class ProjectJFrame extends JFrame implements Observer {
      */
     public ProjectJFrame(final Conference theConference) {    	
     	myConference = theConference;
+    	
+    	myConference.addObserver(this);
+    	
     	myMenuBar = new ProjectMenuBar(this, myConference);
     	myHomeTab = new HomeTab(myConference);
     	mySubmitTab = new SubmitTab(myConference);
@@ -83,12 +88,12 @@ public class ProjectJFrame extends JFrame implements Observer {
     private void initLoginFrame() {
     	//Initialize initial values
     	loginFrame = new JFrame();
-        emailField = new JTextField();
-        JLabel emailLabel = new JLabel();
+        userIDField = new JTextField();
+        JLabel userIDLabel = new JLabel();
         JLabel loginHeader = new JLabel();
         JButton loginButton = new JButton();
         
-        emailLabel.setText("Email Address");
+        userIDLabel.setText("User-ID");
 
         loginHeader.setFont(new java.awt.Font("Tahoma", 1, 14)); 
         loginHeader.setText("Welcome to the MSEE conference login portal");
@@ -100,7 +105,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         loginButton.setText("Login");
         loginButton.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				hideLogin();				
+				myConference.login(Integer.parseInt(userIDField.getText()));				
 			}
 		});
 
@@ -118,10 +123,10 @@ public class ProjectJFrame extends JFrame implements Observer {
                 .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(GroupLayout.Alignment.TRAILING, 
                     		loginFrameLayout.createSequentialGroup()
-                        .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 
+                        .addComponent(userIDLabel, GroupLayout.PREFERRED_SIZE, 
                         		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 189, 
+                        .addComponent(userIDField, GroupLayout.PREFERRED_SIZE, 189, 
                         		GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39))
                     .addGroup(GroupLayout.Alignment.TRAILING, 
@@ -136,9 +141,9 @@ public class ProjectJFrame extends JFrame implements Observer {
                 .addComponent(loginHeader)
                 .addGap(39, 39, 39)
                 .addGroup(loginFrameLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(emailLabel, GroupLayout.PREFERRED_SIZE, 
+                    .addComponent(userIDLabel, GroupLayout.PREFERRED_SIZE, 
                     		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailField, GroupLayout.PREFERRED_SIZE, 
+                    .addComponent(userIDField, GroupLayout.PREFERRED_SIZE, 
                     		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, 
                 		Short.MAX_VALUE)
@@ -312,24 +317,20 @@ public class ProjectJFrame extends JFrame implements Observer {
 
         pack();        
     }
-    
-    /**
-     * Method to hide login frame.
-     */
-    private void hideLogin() {
-    	//Check current entered credentials for debugging purposes.
-    	//TODO: remove and replace with conference user list check
-    	if ("admin".equals(emailField.getText())) {
-            loginFrame.setVisible(false);
-            this.setVisible(true);
-        }
-    }
 
     /**
      * Still needing to get done to implement observer/observable. 
      */
 	public void update(Observable o, Object arg) {
-		//
+		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
+			loginFrame.setVisible(false);
+            this.setVisible(true);
+            myHomeTab.setLabelValues();
+		}
+		
+		if (arg == ConfChangeType.LOGIN_FAIL) {
+			JOptionPane.showMessageDialog(this, "Invalid User-ID, Please try again");
+		}
 	}
 
     
