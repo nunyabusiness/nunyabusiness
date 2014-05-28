@@ -33,7 +33,7 @@ import model.Conference;
 @SuppressWarnings("serial")
 public class SubmitTab extends JPanel {
 	
-	private static final String PATH = "/src/files/";
+	private static final String PATH = "src/files/";
 	
 	/**
 	 * The current conference.
@@ -231,8 +231,11 @@ public class SubmitTab extends JPanel {
 	        }
 	    } finally {	        
 	    	is.close();
-	    	os.close();
-			
+	    	
+	    	if (os == null) {
+	    		System.err.println("uh oh");
+	    	}
+	    	os.close();			
 	    }
 	}
 }
