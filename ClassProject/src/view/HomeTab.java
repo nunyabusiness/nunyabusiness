@@ -133,7 +133,7 @@ public class HomeTab extends JPanel implements Observer {
 
         //Display the date of the conference
         myConferenceDateLabel.setText("The Conference will be held on " 
-        		+ myConference.getDeadline().get(Calendar.MONTH) + "/" 
+        		+ (myConference.getDeadline().get(Calendar.MONTH) + 1) + "/" 
         		+ myConference.getDeadline().get(Calendar.DAY_OF_MONTH) 
         		+ "/" + myConference.getDeadline().get(Calendar.YEAR) + " .");
 	}
