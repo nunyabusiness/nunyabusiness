@@ -152,7 +152,7 @@ public class Conference extends Observable {
 		myCurrentUser = null;
 		
 		setChanged();
-		notifyObservers();
+		notifyObservers(ConfChangeType.LOGOUT);
 	}
 	
 	public List<User> getUsers() {

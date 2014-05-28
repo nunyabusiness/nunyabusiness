@@ -322,14 +322,23 @@ public class ProjectJFrame extends JFrame implements Observer {
      * Still needing to get done to implement observer/observable. 
      */
 	public void update(Observable o, Object arg) {
+		//User has successfully logged in
 		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
 			loginFrame.setVisible(false);
             this.setVisible(true);
             myHomeTab.setLabelValues();
 		}
 		
+		//User log-in credentials are invalid
 		if (arg == ConfChangeType.LOGIN_FAIL) {
 			JOptionPane.showMessageDialog(this, "Invalid User-ID, Please try again");
+		}
+		
+		//User has logged out
+		if (arg == ConfChangeType.LOGOUT) {
+			this.setVisible(false);
+			userIDField.setText("");
+			loginFrame.setVisible(true);
 		}
 	}
 
