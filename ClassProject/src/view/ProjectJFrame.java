@@ -2,7 +2,6 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,10 +18,6 @@ import javax.swing.GroupLayout;
 
 import model.ConfChangeType;
 import model.Conference;
-import model.User;
-
-
-
 
 /**
  * Beginning class for the GUI of the 360 team project.
@@ -105,7 +100,13 @@ public class ProjectJFrame extends JFrame implements Observer {
         loginButton.setText("Login");
         loginButton.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				myConference.login(Integer.parseInt(userIDField.getText()));				
+				try {
+					int id = Integer.parseInt(userIDField.getText());
+					myConference.login(id);
+				} catch (NumberFormatException error) {
+					JOptionPane.showMessageDialog(null, "Invalid ID format. ID must be a "
+							+ "number");
+				} 									
 			}
 		});
 
