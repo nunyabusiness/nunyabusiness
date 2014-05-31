@@ -1,11 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Paper {
-	private int key;
+	private String myTitle;
+	private String myAbstract;
+	private String myFilePath;
+	private int myID;
+	private int myAuthorID;
+	private int mySubchair;
+	private List<Integer> myReviewers;
+	private List<Review> myReviews;
+	private Recommendation myRecommendation;
 	private Conference conference;
-	private Author author;
-	private Spc spc;
 	
 	// 0 - undecided, 1-accepted, 2-declined
 	// please see Recommendation class;
@@ -13,21 +22,42 @@ public class Paper {
 	// 0 - undecided, 1-yes, 2-no
 	private int decision = 0;
 	
-	public Paper(Conference conference,Author author){
+	public Paper(Conference conference, int authorID, int paperID, String title, String anAbstract, String filePath){
+		myID = paperID;
+		myAuthorID = authorID;
+		myTitle = title;
+		myAbstract = anAbstract;
+		myFilePath = filePath;
 		this.conference = conference;
-		this.author = author;
-		spc = null;
+		myReviewers = new ArrayList<Integer>();
+		myReviews = new ArrayList<Review>();
 		recommendation = new Recommendation();
 	}
-	public void setKey(int key){
-		this.key = key;
+
+	public void assignSpc(int id){
+		if (myAuthorID != id) {
+			mySubchair = id;
+		} 	
 	}
-	public void assignSpc(Spc spc){
-		this.spc = spc; 
+	
+	public void assignReviewer(int id) {
+		if (myAuthorID != id) {
+			myReviewers.add(id);
+		}
 	}
+	
 	public void setRecommendation(Recommendation r){
 		recommendation = r;
 	}
+	
+	public int getAuthorID() {
+		return myAuthorID;
+	}
+	
+	public int getSubchairID() {
+		return mySubchair;
+	}
+	
 	public int getStatus(){
 		return recommendation.state;
 	}
