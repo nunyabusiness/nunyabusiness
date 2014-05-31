@@ -13,7 +13,6 @@ public class Paper {
 	private int mySubchair;
 	private List<Integer> myReviewers;
 	private List<Review> myReviews;
-	private Recommendation myRecommendation;
 	private Conference conference;
 	
 	// 0 - undecided, 1-accepted, 2-declined
