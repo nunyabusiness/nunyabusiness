@@ -258,8 +258,11 @@ public class ProjectJFrame extends JFrame implements Observer {
         pcScrollPane.setViewportView(completedTabel);
 
         completedLabel.setText("Completed Reviews");
-        completedLabel.setToolTipText("From this table you will be able to look over any papers that have already completed their review process. ");
+        completedLabel.setToolTipText("From this table you will be able to look over any "
+        		+ "papers that have already completed their review process. ");
 
+        completedTabel.getModel().setValueAt(123, 0, 0);
+        
         GroupLayout pcPanelLayout = new GroupLayout(pcPanel);
         pcPanel.setLayout(pcPanelLayout);
         pcPanelLayout.setHorizontalGroup(
@@ -313,10 +316,6 @@ public class ProjectJFrame extends JFrame implements Observer {
                 .addComponent(myTabbedPane, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        
-        //disables all panels except for the home and submit paper tabs
-        for (int i = 2; i < myTabbedPane.getTabCount(); i++)
-        	myTabbedPane.setEnabledAt(i, false);
 
         pack();        
     }
@@ -330,6 +329,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 			loginFrame.setVisible(false);
             this.setVisible(true);
             myHomeTab.setLabelValues();
+            determinePermission();
 		}
 		
 		//User log-in credentials are invalid
@@ -347,6 +347,42 @@ public class ProjectJFrame extends JFrame implements Observer {
 		}
 	}    
 	
+	/**
+	 * Method which checks the current logged in user to determine which tabs they should have
+	 * access to view based on their role.
+	 */
+	private void determinePermission() {
+		int userRole = myConference.getCurrentUser().getRole();
+		
+		switch (userRole) {
+		case 0: //user is an Author
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, false);
+			break;
+		case 1: //user is a reviewer?
+			myTabbedPane.setEnabledAt(3, true);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, false);
+			break;
+		case 2: //no idea what this is, super admin?!
+			myTabbedPane.setEnabledAt(3, true);
+			myTabbedPane.setEnabledAt(4, true);
+			myTabbedPane.setEnabledAt(5, true);
+			break;
+		case 3: //subprogram chair
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, true);
+			myTabbedPane.setEnabledAt(5, false);
+			break;
+		case 4: //program chair
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, true);
+			break;
+		}
+	}
+
 	/**
 	 * Inner AbstractAction class to allow for the user to hit 'enter' to log in instead of 
 	 * always having to click on the login button.

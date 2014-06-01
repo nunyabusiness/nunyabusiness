@@ -96,12 +96,12 @@ public class MCP
 		            Paper current = new Paper(newCon, blank, blank, null, line, line);
 		            newCon.addPaper(current);
 		           
-		            current.addRec(recom[0]);
+		            //current.addRec(recom[0]);
 		           
 		            for (String that: review)
 		            {
 		                String[] rev = that.split(",");
-		                current.addRev(something, something, something);
+		                //current.addRev(something, something, something);
 		            }
 		}
 
@@ -125,9 +125,11 @@ public class MCP
 		for (User cur: users)
 		{
 			//int id, int role, String first, String last, String email
-			fileOut.write(cur.getID() + "," + cur.getRole() + "," + 
-					cur.getFirstName() + "," + cur.getLastName() + "," + cur.getEmail());
+			fileOut.write(cur.getID() + "," + cur.getEmail() + "," + 
+					cur.getFirstName() + "," + cur.getLastName() + "," + cur.getRole());
 		}
+		
+		fileOut.close();
 	}
 
 	/**
