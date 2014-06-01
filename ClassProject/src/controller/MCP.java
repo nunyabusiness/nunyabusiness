@@ -4,13 +4,17 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import view.ProjectJFrame;
 import model.Conference;
+import model.Paper;
 import model.User;
+import view.ProjectJFrame;
 
 /**
  * @author Christopher
@@ -34,7 +38,6 @@ public class MCP
 	private void loadFiles() throws IOException
 	{
 		String UserFileName = "src/files/usercsv.txt";
-		//String PaperFileName = "src/files/papercsv.txt";
 		BufferedReader fileIn = null;
 		char para = '"';
 		char blank = ' ';
@@ -69,11 +72,62 @@ public class MCP
 		}
 		
 		fileIn.close();
-	}
-	
-	private void loadGUI()
-	{
 		
+		String PaperFileName = "src/files/papercsv.txt";
+		
+		try 
+		{
+			fileIn = new BufferedReader(new FileReader(PaperFileName));
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.print(e);
+		}
+		
+		while (fileIn.ready())
+		{
+		            String line = fileIn.readLine();
+		            String[] item = line.split("~");
+		            String[] papers = item[0].split(",");
+		            String[] recom = item[1].split(",");
+		            String[] review = item[2].split("^");
+		           
+		            //int id, int role, String first, String last, String email
+		            Paper current = new Paper(newCon, blank, blank, null, line, line);
+		            newCon.addPaper(current);
+		           
+		            current.addRec(recom[0]);
+		           
+		            for (String that: review)
+		            {
+		                String[] rev = that.split(",");
+		                current.addRev(something, something, something);
+		            }
+		}
+
+		fileIn.close();
+	}
+
+	public void writeOut(ArrayList<User> users, ArrayList<Paper> papers) throws IOException
+	{
+		String UserFileName = "src/files/usercsv.txt";
+		BufferedWriter fileOut = null;
+		
+		try 
+		{
+			fileOut = new BufferedWriter(new FileWriter(UserFileName));
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.print(e);
+		}
+		
+		for (User cur: users)
+		{
+			//int id, int role, String first, String last, String email
+			fileOut.write(cur.getID() + "," + cur.getRole() + "," + 
+					cur.getFirstName() + "," + cur.getLastName() + "," + cur.getEmail());
+		}
 	}
 
 	/**
