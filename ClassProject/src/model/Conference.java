@@ -148,7 +148,7 @@ public class Conference extends Observable {
 	public void login(final int theUserID) {
 		boolean userFound = false;
 
-		//for (User u : myUserList) {
+		// for (User u : myUserList) {
 		for (User u : my_users.values()) {
 			if (theUserID == u.getID()) {
 				userFound = true;
@@ -164,9 +164,30 @@ public class Conference extends Observable {
 		}
 	}
 
-	// public List<User> getUsers() {
-	// return myUserList;
-	// }
+	public List<User> getUserByRole(int roleId){
+		List<User> users = new ArrayList<User>();
+		for(User u: my_users.values()){
+			if(u.getRole() == roleId)
+				users.add(u);
+		}
+		return users;
+	}
+	public List<Paper> getPapersByAuthor(int authorId){
+		List<Paper> papers = new ArrayList<Paper>();
+		for(Paper p: my_papers.values()){
+			if(p.getAuthorID() == authorId)
+				papers.add(p);
+		}
+		return papers;
+	}
+	public List<Paper> getPapersBySpc(int spcId){
+		List<Paper> papers = new ArrayList<Paper>();
+		for(Paper p: my_papers.values()){
+			if(p.getSubchairID() == spcId)
+				papers.add(p);
+		}
+		return papers;
+	}
 
 	// Set duedate 1 month before conference starts
 	public int getDaysLeft() {
