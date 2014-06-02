@@ -16,7 +16,6 @@ public class Conference extends Observable {
 			2014, 5, 21);
 
 	private User my_currentUser;
-	private int my_currentUserId;
 
 	// private List<User> myUserList;
 
@@ -154,7 +153,6 @@ public class Conference extends Observable {
 			if (theUserID == u.getID()) {
 				userFound = true;
 				my_currentUser = u;
-				my_currentUserId = u.myID;
 
 				setChanged();
 				notifyObservers(ConfChangeType.LOGIN_SUCCESSFUL);
