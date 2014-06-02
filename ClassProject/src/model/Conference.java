@@ -42,8 +42,8 @@ public class Conference extends Observable {
 
 	// US01. As an Author, I want to submit a manuscript to a conference.
 	public void addPaper(Paper the_paper) {
-		my_papers.put(the_paper.myID, the_paper);
-		my_currentUser.submitPaper(the_paper.myID);
+		my_papers.put(the_paper.getId(), the_paper);
+		my_currentUser.submitPaper(the_paper.getId());
 
 	}
 
@@ -82,7 +82,7 @@ public class Conference extends Observable {
 	// US07. As an Author, I want to make changes to my submission, including
 	// unsubmitting my manuscript.
 	public void makeChangesToManuscript(Paper p) {
-		my_papers.put(p.myID, p);
+		my_papers.put(p.getId(), p);
 	}
 
 	// US08. As a Subprogram Chair, I want to submit my recommendation for a

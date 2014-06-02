@@ -8,7 +8,7 @@ public class Paper {
 	private String myTitle;
 	private String myAbstract;
 	private String myFilePath;
-	public int myID;
+	private int myID;
 	private int myAuthorID;
 	private int mySubchair;
 	private List<Integer> myReviewers;
@@ -68,5 +68,8 @@ public class Paper {
 	}
 	public void submitReviewToPaper(Review r){
 		myReviews.add(r);
+	}
+	public int getId(){
+		return myID;
 	}
 }
