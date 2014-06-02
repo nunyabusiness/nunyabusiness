@@ -36,7 +36,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 	
 	private JPanel authorTab;
     private JLabel completedLabel;
-    private JTable completedTabel;
+    private JTable completedTable;
     private JLabel conferenceLabel;
     private JTextField userIDField;
     
@@ -166,7 +166,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         pcTab = new JScrollPane();
         JPanel pcPanel = new JPanel();
         JScrollPane pcScrollPane = new JScrollPane();
-        completedTabel = new JTable();
+        completedTable = new JTable();
         completedLabel = new JLabel();
         conferenceLabel = new JLabel();        
         
@@ -234,7 +234,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        completedTabel.setModel(new javax.swing.table.DefaultTableModel(
+        completedTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -253,13 +253,16 @@ public class ProjectJFrame extends JFrame implements Observer {
                 return canEdit [columnIndex];
             }
         });
-        completedTabel.setShowHorizontalLines(false);
-        completedTabel.setShowVerticalLines(false);
-        pcScrollPane.setViewportView(completedTabel);
+        completedTable.setShowHorizontalLines(false);
+        completedTable.setShowVerticalLines(false);
+        pcScrollPane.setViewportView(completedTable);
 
         completedLabel.setText("Completed Reviews");
-        completedLabel.setToolTipText("From this table you will be able to look over any papers that have already completed their review process. ");
+        completedLabel.setToolTipText("From this table you will be able to look over any "
+        		+ "papers that have already completed their review process. ");
 
+        completedTable.getModel().setValueAt(123, 0, 0);
+        
         GroupLayout pcPanelLayout = new GroupLayout(pcPanel);
         pcPanel.setLayout(pcPanelLayout);
         pcPanelLayout.setHorizontalGroup(
@@ -313,10 +316,6 @@ public class ProjectJFrame extends JFrame implements Observer {
                 .addComponent(myTabbedPane, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        
-        //disables all panels except for the home and submit paper tabs
-        for (int i = 2; i < myTabbedPane.getTabCount(); i++)
-        	myTabbedPane.setEnabledAt(i, false);
 
         pack();        
     }
@@ -330,6 +329,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 			loginFrame.setVisible(false);
             this.setVisible(true);
             myHomeTab.setLabelValues();
+            determinePermission();
 		}
 		
 		//User log-in credentials are invalid
@@ -347,6 +347,43 @@ public class ProjectJFrame extends JFrame implements Observer {
 		}
 	}    
 	
+	/**
+	 * Method which checks the current logged in user to determine which tabs they should have
+	 * access to view based on their role.
+	 */
+	private void determinePermission() {
+		int userRole = myConference.getCurrentUser().getRole();
+		
+		switch (userRole) {
+		case 0: //user is an Author
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, false);
+			break;
+		case 1: //Program Chair
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, true);
+			break;
+		case 2: //subprogram chair
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, true);
+			myTabbedPane.setEnabledAt(5, false);			
+			break;
+		case 3: //admin or debug (shouldn't be used within user file)
+			myTabbedPane.setEnabledAt(3, true);
+			myTabbedPane.setEnabledAt(4, true);
+			myTabbedPane.setEnabledAt(5, true);
+			break;
+		case 4: //Reviewer
+			myTabbedPane.setEnabledAt(3, true);
+			myTabbedPane.setEnabledAt(4, false);
+			myTabbedPane.setEnabledAt(5, false);
+			
+			break;
+		}
+	}
+
 	/**
 	 * Inner AbstractAction class to allow for the user to hit 'enter' to log in instead of 
 	 * always having to click on the login button.
