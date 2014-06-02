@@ -36,7 +36,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 	
 	private JPanel authorTab;
     private JLabel completedLabel;
-    private JTable completedTabel;
+    private JTable completedTable;
     private JLabel conferenceLabel;
     private JTextField userIDField;
     
@@ -166,7 +166,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         pcTab = new JScrollPane();
         JPanel pcPanel = new JPanel();
         JScrollPane pcScrollPane = new JScrollPane();
-        completedTabel = new JTable();
+        completedTable = new JTable();
         completedLabel = new JLabel();
         conferenceLabel = new JLabel();        
         
@@ -234,7 +234,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        completedTabel.setModel(new javax.swing.table.DefaultTableModel(
+        completedTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -253,15 +253,15 @@ public class ProjectJFrame extends JFrame implements Observer {
                 return canEdit [columnIndex];
             }
         });
-        completedTabel.setShowHorizontalLines(false);
-        completedTabel.setShowVerticalLines(false);
-        pcScrollPane.setViewportView(completedTabel);
+        completedTable.setShowHorizontalLines(false);
+        completedTable.setShowVerticalLines(false);
+        pcScrollPane.setViewportView(completedTable);
 
         completedLabel.setText("Completed Reviews");
         completedLabel.setToolTipText("From this table you will be able to look over any "
         		+ "papers that have already completed their review process. ");
 
-        completedTabel.getModel().setValueAt(123, 0, 0);
+        completedTable.getModel().setValueAt(123, 0, 0);
         
         GroupLayout pcPanelLayout = new GroupLayout(pcPanel);
         pcPanel.setLayout(pcPanelLayout);
@@ -360,25 +360,26 @@ public class ProjectJFrame extends JFrame implements Observer {
 			myTabbedPane.setEnabledAt(4, false);
 			myTabbedPane.setEnabledAt(5, false);
 			break;
-		case 1: //user is a reviewer?
-			myTabbedPane.setEnabledAt(3, true);
+		case 1: //Program Chair
+			myTabbedPane.setEnabledAt(3, false);
 			myTabbedPane.setEnabledAt(4, false);
-			myTabbedPane.setEnabledAt(5, false);
+			myTabbedPane.setEnabledAt(5, true);
 			break;
-		case 2: //no idea what this is, super admin?!
+		case 2: //subprogram chair
+			myTabbedPane.setEnabledAt(3, false);
+			myTabbedPane.setEnabledAt(4, true);
+			myTabbedPane.setEnabledAt(5, false);			
+			break;
+		case 3: //admin or debug (shouldn't be used within user file)
 			myTabbedPane.setEnabledAt(3, true);
 			myTabbedPane.setEnabledAt(4, true);
 			myTabbedPane.setEnabledAt(5, true);
 			break;
-		case 3: //subprogram chair
-			myTabbedPane.setEnabledAt(3, false);
-			myTabbedPane.setEnabledAt(4, true);
-			myTabbedPane.setEnabledAt(5, false);
-			break;
-		case 4: //program chair
-			myTabbedPane.setEnabledAt(3, false);
+		case 4: //Reviewer
+			myTabbedPane.setEnabledAt(3, true);
 			myTabbedPane.setEnabledAt(4, false);
-			myTabbedPane.setEnabledAt(5, true);
+			myTabbedPane.setEnabledAt(5, false);
+			
 			break;
 		}
 	}
