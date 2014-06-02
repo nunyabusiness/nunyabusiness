@@ -1,12 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
 	/**
 	 * The unigue ID for this user.
 	 */
-	private int myID;
+	public int myID;
 	/**
 	 * The role of this user.
 	 * PC = 1
@@ -33,12 +36,21 @@ public class User {
 	/**
 	 * The papers that the user has authored and submitted to the conference.
 	 */
-	private List<Paper> mySubmittedPapers;
+	
 	/**
 	 * The papers that the user is responsible for getting reviewed.
 	 */
-	private List<Paper> myAssignedPapers;
+	private Set<Integer> my_assignedPapers;
 	
+	
+	
+//	public Set<Integer> author_submittedPapers;
+//	public Set<Integer> pc_assignedSpc;
+//	
+//	public Set<Integer> spc_assignedPapers;
+//	public Set<Integer> spc_assignedReviewers;
+	
+	public int spc_pc;
 	
 	/** Creates a new user with the following fields.
 	 * @param id 
@@ -53,6 +65,14 @@ public class User {
 		myLastName = last;
 		myEmail = email;
 		myRole = role;
+		
+//		author_submittedPapers = new HashSet<Integer>();
+//		pc_assignedSpc = new HashSet<Integer>();
+//		
+//		
+//		spc_assignedPapers = new HashSet<Integer>();
+//		spc_assignedReviewers = new HashSet<Integer>();;
+//		spc_pc = 0; // nobody by default;
 	}
 	
 	public int getID() {
@@ -75,43 +95,22 @@ public class User {
 		return myEmail;
 	}
 	
-//	public Conference getConference() {
-//		return myConference;
-//	}
 	
-	public void submitPaper(Paper paper) {
-//		myConference.addPaper(paper);
-		mySubmittedPapers.add(paper);
+	public void submitPaper(int the_paperId) {
+		my_assignedPapers.add(the_paperId);
 	}
 	
-	
-//	int key;
-//	String login;
-//	String password;
-//	Role role;
-//	
-//	public User(Role role){
-//		this.role = role;
+//	public void assignSpc_to_PC(int the_spcId){
+//		pc_assignedSpc.add(the_spcId);
 //	}
-////	public void setLogin(String login){
-////		this.login = login;
-////	}
-////	public void setPassword(String password){
-////		this.password = password;
-////	}
-////	public boolean verifyCredentials(String login, String password){
-////		return this.login.equals(login) && this.password.equals(password);
-////	}
-//	public String getLogin(){
-//		return login;
+//	public void assignManuscript_to_SPC(int the_paperId){
+//		spc_assignedPapers.add(the_paperId);
 //	}
-//	public void setKey(int key){
-//		this.key = key;
+//	public void assignPC_to_SPC(int the_pcId){
+//		spc_pc = the_pcId;
 //	}
-//	public String toString(){
-//		return role.toString();
+//	public void assignReviewer_to_SPC(int the_reviewerId){
+//		spc_assignedReviewers.add(the_reviewerId);
 //	}
-//	public void addRole(Role role){
-//		// add some other roles.
-//	}
+
 }

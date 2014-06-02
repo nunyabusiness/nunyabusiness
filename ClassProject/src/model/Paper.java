@@ -8,7 +8,7 @@ public class Paper {
 	private String myTitle;
 	private String myAbstract;
 	private String myFilePath;
-	private int myID;
+	public int myID;
 	private int myAuthorID;
 	private int mySubchair;
 	private List<Integer> myReviewers;
@@ -56,11 +56,17 @@ public class Paper {
 	public int getSubchairID() {
 		return mySubchair;
 	}
+	public List<Integer> getReviewerList(){
+		return myReviewers;
+	}
 	
 	public int getStatus(){
 		return recommendation.state;
 	}
 	public void setDecision(int decision){
 		this.decision = decision;
+	}
+	public void submitReviewToPaper(Review r){
+		myReviews.add(r);
 	}
 }
