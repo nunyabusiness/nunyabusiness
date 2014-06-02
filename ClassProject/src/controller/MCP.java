@@ -1,5 +1,5 @@
 /**
- * 
+ * packages because thats where it exists.
  */
 package controller;
 
@@ -17,24 +17,33 @@ import model.User;
 import view.ProjectJFrame;
 
 /**
- * @author Christopher
- *
+ * Feel free to change move relocate. In reality its just a wrapper so just abuse
+ * @author Christopher Barrett
+ * MCP Class is a throw back to an old programming style used in the 80's for keeping users enthraled with different games.
  */
 public class MCP 
 {
+	/**
+	 * to access the conference or create the conference
+	 */
 	Conference newCon;
 	
 	/**
-	 * @throws IOException 
-	 * 
+	 * The MCP constructor because...
+	 * @throws IOException this program deals with IO and could throw an IO exception
+	 * @param theConference is the conference being referenced
 	 */
 	public MCP(Conference theConference) throws IOException
 	{
 		newCon = theConference;
 		loadFiles();
-		
 	}
 	
+	/**
+	 * Loads files from specific locations.
+	 * @throws IOException load in from files hence IO
+	 * no parameters cause not needed yet
+	 */
 	private void loadFiles() throws IOException
 	{
 		String UserFileName = "src/files/usercsv.txt";
@@ -42,6 +51,7 @@ public class MCP
 		char para = '"';
 		char blank = ' ';
 		
+		//try catch 
 		try 
 		{
 			fileIn = new BufferedReader(new FileReader(UserFileName));
@@ -51,9 +61,8 @@ public class MCP
 			System.out.print(e);
 		}
 		
-		//0-"UserID",1-"FirstName",2-"LastName",3-"email",4-"ConferenceID",
-		//5-"ConferenceTitle",6-"ConferenceDescription",7-"RoleID",8-"Role"
-		//TODO: fix above
+		//0-"UserID",1-"FirstName",2-"LastName",3-"email",4-"RoleID""
+		//fixed above
 		while (fileIn.ready())
 		{
 			String line = fileIn.readLine();
@@ -63,6 +72,7 @@ public class MCP
 				hi.replace(para, blank);
 			}
 			
+			//integers in from the file of strings
 			int id = Integer.parseInt(portion[0]);
 			int role = Integer.parseInt(portion[4]);
 			
@@ -73,8 +83,10 @@ public class MCP
 		
 		fileIn.close();
 		
+		//new file
 		String PaperFileName = "src/files/papercsv.txt";
 		
+		//try catch
 		try 
 		{
 			fileIn = new BufferedReader(new FileReader(PaperFileName));
@@ -84,10 +96,11 @@ public class MCP
 			System.out.print(e);
 		}
 		
+		//Adjustments will be made when the paper class is flushed out.
 		while (fileIn.ready())
 		{
 		            String line = fileIn.readLine();
-		            String[] item = line.split("~");
+		            String[] item = line.split("~"); //split parts of the paper/review/recom
 		            String[] papers = item[0].split(",");
 		            String[] recom = item[1].split(",");
 		            String[] review = item[2].split("^");
@@ -108,11 +121,18 @@ public class MCP
 		fileIn.close();
 	}
 
+	/**
+	 * write out to files
+	 * @param users list of users
+	 * @param papers list of papers
+	 * @throws IOException writing so IO
+	 */
 	public void writeOut(ArrayList<User> users, ArrayList<Paper> papers) throws IOException
 	{
 		String UserFileName = "src/files/usercsv.txt";
 		BufferedWriter fileOut = null;
 		
+		//try catch
 		try 
 		{
 			fileOut = new BufferedWriter(new FileWriter(UserFileName));
@@ -122,18 +142,22 @@ public class MCP
 			System.out.print(e);
 		}
 		
+		//for all users write to the file as follows without going to the end of the file first
 		for (User cur: users)
 		{
-			//int id, int role, String first, String last, String email
-			fileOut.write(cur.getID() + "," + cur.getEmail() + "," + 
-					cur.getFirstName() + "," + cur.getLastName() + "," + cur.getRole());
+			//int id, String first, String last, String email, int role
+			fileOut.write(cur.getID() + "," + cur.getFirstName() + "," + 
+					cur.getLastName() + "," + cur.getEmail() + "," + cur.getRole());
 		}
 		
 		fileOut.close();
+		
+		//will do the same for papers again when it gets flushed out.
 	}
 
 	/**
-	 * @param args
+	 * Main void 
+	 * @param args command line inputs if they exist
 	 */
 	public static void main(String[] args) 
 	{
