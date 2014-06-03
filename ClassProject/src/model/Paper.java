@@ -149,6 +149,9 @@ public class Paper {
 		myReviews.add(r);
 	}
 	
+	public String getTitle() {
+		return myTitle;
+	}	
 
 	public String toString() {
 		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair

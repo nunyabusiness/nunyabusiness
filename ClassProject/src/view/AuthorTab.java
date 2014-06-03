@@ -44,6 +44,8 @@ public class AuthorTab extends JPanel {
 		innerCenterPanel.setBackground(new java.awt.Color(255, 255, 255));
 		myCenterPanel = new JPanel();
 		myCenterPanel.setLayout(new BoxLayout(myCenterPanel, BoxLayout.Y_AXIS));
+		myCenterPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+		
 		myCenterPanel.setBackground(new java.awt.Color(255, 255, 255));
 		
 		innerCenterPanel.add(myCenterPanel);
@@ -63,7 +65,9 @@ public class AuthorTab extends JPanel {
 			ArrayList<Paper> papers = (ArrayList<Paper>) myConference.getPapersByAuthor(user.getID());
 			
 			for (Paper p : papers) {
-				myCenterPanel.add(new JButton(Integer.toString(p.getId())));
+				JButton button = new JButton(p.getTitle());
+				button.setAlignmentX(CENTER_ALIGNMENT);
+				myCenterPanel.add(button);
 				myCenterPanel.add(Box.createRigidArea(new Dimension(0,3)));
 			}
 			

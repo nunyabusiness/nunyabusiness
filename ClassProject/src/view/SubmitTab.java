@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Conference;
-import model.Paper;
 
 /**
  * The JPanel class which displays the information and fields necessary to submit a paper to
@@ -66,6 +65,12 @@ public class SubmitTab extends JPanel {
 	 */
 	private File myFile;
 	
+	/** 
+	 * String fields that will hold the text values of the paper text field and abstract text field 
+	 */
+	private String myPaperTitleText;
+	private String myAbstractText;
+	
 	/**
 	 * Constructor of a new submit tab.
 	 * 
@@ -74,7 +79,7 @@ public class SubmitTab extends JPanel {
 	public SubmitTab(final Conference theConference) {
 		myConference = theConference;
 		
-		myFileLabel = new JLabel();
+		myFileLabel = new JLabel("No File Selected");
 		myPaperTitle = new JTextField();
 		myAbstractArea = new JTextArea();
 		myFileChooser = new JFileChooser(".");
@@ -100,7 +105,7 @@ public class SubmitTab extends JPanel {
 		JButton selectButton = new JButton("Select Paper");
 		//Set action for select button
 		selectButton.addActionListener(new ActionListener() {			
-			public void actionPerformed(final ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {				
 				try {
 					fileSelectAction();
 				} catch (final IOException error) {
@@ -113,9 +118,13 @@ public class SubmitTab extends JPanel {
 		//given file to a designated path.
 		submitButton.addActionListener(new ActionListener() {			
 			public void actionPerformed(final ActionEvent e) {
+				myPaperTitleText = myPaperTitle.getText();
+				myAbstractText = myAbstractArea.getText();
 				if (myFile != null &&myFile.exists()) {					
 					try {
 						submitFileAction();
+						myConference.addPaper(myPaperTitleText, myAbstractText, 
+					    		myFile.getName());
 					} catch (final IOException error) {
 						JOptionPane.showMessageDialog(null, error.getMessage());
 					}
@@ -236,9 +245,7 @@ public class SubmitTab extends JPanel {
 	    } finally {	        
 	    	is.close();
 	    	os.close();			
-	    }
-	    myConference.addPaper(myPaperTitle.getText(), myAbstractArea.getText(), 
-	    		myFile.getName());
+	    }	    
 	}
 	
 	/**
@@ -246,7 +253,7 @@ public class SubmitTab extends JPanel {
 	 * and when a user logs out.
 	 */
 	public void clearLabels() {
-		myFileLabel.setText("");
+		myFileLabel.setText("No File Selected");
         myPaperTitle.setText("");
 		myAbstractArea.setText("");
 	}
