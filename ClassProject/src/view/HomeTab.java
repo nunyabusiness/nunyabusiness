@@ -19,7 +19,7 @@ import model.Conference;
  * @date 5/25/2014
  */
 @SuppressWarnings("serial")
-public class HomeTab extends JPanel implements Observer {
+public class HomeTab extends JPanel {
 
 	/**
 	 * The current conference.
@@ -137,19 +137,19 @@ public class HomeTab extends JPanel implements Observer {
         		+ myConference.getDeadline().get(Calendar.DAY_OF_MONTH) 
         		+ "/" + myConference.getDeadline().get(Calendar.YEAR) + " .");
 	}
-
-	/**
-	 * Observer update class which updates whenever the Conference class makes relevent 
-	 * changes.
-	 * 
-	 * @param o The observable object being observed.
-	 * @param arg The passed value (if applicable).
-	 */
-	public void update(Observable o, Object arg) {
-		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
-			setLabelValues();
-		}
-	}
+//
+//	/**
+//	 * Observer update class which updates whenever the Conference class makes relevent 
+//	 * changes.
+//	 * 
+//	 * @param o The observable object being observed.
+//	 * @param arg The passed value (if applicable).
+//	 */
+//	public void update(Observable o, Object arg) {
+//		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
+//			setLabelValues();
+//		}
+//	}
 	
 	
 

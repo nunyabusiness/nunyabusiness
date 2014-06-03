@@ -41,7 +41,6 @@ import model.User;
 @SuppressWarnings("serial")
 public class ProjectJFrame extends JFrame implements Observer {
 	
-	private JPanel authorTab;
     private JLabel completedLabel;
     private JTable completedTable;
     private JLabel conferenceLabel;
@@ -49,13 +48,14 @@ public class ProjectJFrame extends JFrame implements Observer {
     
     private JFrame loginFrame;
     private JTabbedPane myTabbedPane;
-    private JScrollPane pcTab;
-    private JPanel reviewTab;
     private JPanel spcTab;
     
     private ProjectMenuBar myMenuBar;
     private HomeTab myHomeTab;
     private SubmitTab mySubmitTab;
+    private AuthorTab myAuthorTab;
+    private ReviewTab myReviewTab;
+    private PCTab myPCTab;
     
     private Conference myConference;
     
@@ -68,11 +68,12 @@ public class ProjectJFrame extends JFrame implements Observer {
     public ProjectJFrame(final Conference theConference) {    	
     	myConference = theConference;
     	
-    	myConference.addObserver(this);
-    	
     	myMenuBar = new ProjectMenuBar(this, myConference);
     	myHomeTab = new HomeTab(myConference);
     	mySubmitTab = new SubmitTab(myConference);
+    	myAuthorTab = new AuthorTab(myConference);
+    	myReviewTab = new ReviewTab(myConference);
+    	myPCTab = new PCTab(myConference);
     	
     	initLoginFrame();
         initComponents();        
@@ -167,14 +168,7 @@ public class ProjectJFrame extends JFrame implements Observer {
      */
     private void initComponents() {        
         myTabbedPane = new JTabbedPane();
-        authorTab = new JPanel();
-        reviewTab = new JPanel();
         spcTab = new JPanel();
-        pcTab = new JScrollPane();
-        JPanel pcPanel = new JPanel();
-        JScrollPane pcScrollPane = new JScrollPane();
-        completedTable = new JTable();
-        completedLabel = new JLabel();
         conferenceLabel = new JLabel();        
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -187,112 +181,12 @@ public class ProjectJFrame extends JFrame implements Observer {
         myTabbedPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         myTabbedPane.addTab("Home", myHomeTab);
-
         myTabbedPane.addTab("Submit Paper", mySubmitTab);
-
-        authorTab.setBackground(new java.awt.Color(255, 255, 255));
-
-        GroupLayout authorTabLayout = new GroupLayout(authorTab);
-        authorTab.setLayout(authorTabLayout);
-        authorTabLayout.setHorizontalGroup(
-            authorTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        authorTabLayout.setVerticalGroup(
-            authorTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        myTabbedPane.addTab("Your Papers", authorTab);
-
-        reviewTab.setBackground(new java.awt.Color(255, 255, 255));
-        reviewTab.setEnabled(false);
-
-        GroupLayout reviewTabLayout = new GroupLayout(reviewTab);
-        reviewTab.setLayout(reviewTabLayout);
-        reviewTabLayout.setHorizontalGroup(
-            reviewTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        reviewTabLayout.setVerticalGroup(
-            reviewTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        myTabbedPane.addTab("Review", reviewTab);
-
-        spcTab.setBackground(new java.awt.Color(255, 255, 255));
-
-        GroupLayout spcTabLayout = new GroupLayout(spcTab);
-        spcTab.setLayout(spcTabLayout);
-        spcTabLayout.setHorizontalGroup(
-            spcTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        spcTabLayout.setVerticalGroup(
-            spcTabLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
+        myTabbedPane.addTab("Your Papers", myAuthorTab);
+        myTabbedPane.addTab("Review", myReviewTab);
         myTabbedPane.addTab("Subprogram Chair View", spcTab);
 
-        pcTab.setBackground(new java.awt.Color(255, 255, 255));
-        pcTab.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        pcPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        completedTable.setModel(new TableModel(myConference.getUserByRole(0)));
-        completedTable.setShowHorizontalLines(false);
-        completedTable.setShowVerticalLines(false);
-        pcScrollPane.setViewportView(completedTable);
-
-        completedLabel.setText("Completed Reviews");
-        completedLabel.setToolTipText("From this table you will be able to look over any "
-        		+ "papers that have already completed their review process. ");
-
-        //Testing display of tables.
-        final JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem deleteItem = new JMenuItem("View");
-        deleteItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                
-            	try {
-					JOptionPane.showMessageDialog(null, completedTable.getValueAt(completedTable.getSelectedRow(), 0) 
-							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 1) 
-							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 2) 
-							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 3));
-				} catch (ArrayIndexOutOfBoundsException e1) {
-					JOptionPane.showMessageDialog(null, "Please select a user first");
-				}
-            }
-        });
-        popupMenu.add(deleteItem);
-        completedTable.setComponentPopupMenu(popupMenu);
-        
-        GroupLayout pcPanelLayout = new GroupLayout(pcPanel);
-        pcPanel.setLayout(pcPanelLayout);
-        pcPanelLayout.setHorizontalGroup(
-            pcPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(pcPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pcPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(pcScrollPane, GroupLayout.PREFERRED_SIZE, 572, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(completedLabel))
-                .addContainerGap(49, Short.MAX_VALUE))
-        );
-        pcPanelLayout.setVerticalGroup(
-            pcPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(pcPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(completedLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pcScrollPane, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(307, Short.MAX_VALUE))
-        );
-
-        pcTab.setViewportView(pcPanel);
-
-        myTabbedPane.addTab("Program Chair View", pcTab);
+        myTabbedPane.addTab("Program Chair View", myPCTab);
 
         conferenceLabel.setFont(new java.awt.Font("Dialog", 1, 24)); 
         conferenceLabel.setForeground(new java.awt.Color(255, 51, 51));
@@ -335,6 +229,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 			loginFrame.setVisible(false);
             this.setVisible(true);
             myHomeTab.setLabelValues();
+            myAuthorTab.updateDisplay();
             determinePermission();
 		}
 		
@@ -350,6 +245,10 @@ public class ProjectJFrame extends JFrame implements Observer {
 			mySubmitTab.clearLabels();
 			userIDField.setText("");
 			loginFrame.setVisible(true);
+		}
+		
+		if (arg == ConfChangeType.PAPER_ADDED) {
+			myAuthorTab.updateDisplay();
 		}
 	}    
 	
@@ -421,50 +320,6 @@ public class ProjectJFrame extends JFrame implements Observer {
 						+ "number");
 			}
 	    }
-	}
-	
-	private class TableModel extends AbstractTableModel {
-		
-		private String[] columnNames = {"ID", "First Name", "Last Name", "Email"};
-		private ArrayList<User> myUserList;
-		
-		public TableModel(final List<User> theUsers) {
-			myUserList = (ArrayList<User>) theUsers;
-		}
-
-		public int getRowCount() {
-			return myUserList.size();
-		}
-
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-		
-		public String getColumnName(int column) {
-	        return columnNames[column];
-	    }
-
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			Object ret = null;
-			
-			switch (columnIndex) {
-				case 0:
-					ret = (Object) myUserList.get(rowIndex).getID();
-					break;
-				case 1:
-					ret = (Object) myUserList.get(rowIndex).getFirstName();
-					break;
-				case 2:
-					ret = (Object) myUserList.get(rowIndex).getLastName();
-					break;
-				case 3:
-					ret = (Object) myUserList.get(rowIndex).getEmail();
-					break;				
-			}
-			
-			return ret;
-		}
-		
 	}
 
 }
