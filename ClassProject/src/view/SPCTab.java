@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -15,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
 import model.Conference;
@@ -28,6 +26,7 @@ import model.User;
  * @author Erik Tedder
  * @date 6/2/2014
  */
+@SuppressWarnings("serial")
 public class SPCTab extends JScrollPane {
 	
 	private Conference myConference;
@@ -106,7 +105,6 @@ public class SPCTab extends JScrollPane {
 	 * @author Erik Tedder
 	 *
 	 */
-	@SuppressWarnings("serial")
 	private class TableModel extends AbstractTableModel {
 
 		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", "Reviewer 2", "Reviewer 3"};

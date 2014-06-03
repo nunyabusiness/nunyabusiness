@@ -1,14 +1,11 @@
 package view;
 
 import java.util.Calendar;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.ConfChangeType;
 import model.Conference;
 
 /**
