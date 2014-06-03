@@ -125,7 +125,9 @@ public class HomeTab extends JPanel {
 				+ " " + myConference.getCurrentUser().getLastName() + "!");
 		
 		//TODO: Allow for papers to be counted for the current user.
-		myPaperSubmitLabel.setText("You currently have # papers submitted to the Conference.");
+		myPaperSubmitLabel.setText("You currently have " 
+		+ myConference.getPapersByAuthor(myConference.getCurrentUser().getID()).size() 
+		+ " papers submitted to the Conference.");
 
 		//Display the days left til conference
         myDaysLeftLabel.setText("The Conference deadline is in " + myConference.getDaysLeft() 

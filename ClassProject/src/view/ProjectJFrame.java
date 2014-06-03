@@ -249,6 +249,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 		
 		if (arg == ConfChangeType.PAPER_ADDED) {
 			myAuthorTab.updateDisplay();
+			myHomeTab.setLabelValues();
 		}
 	}    
 	
