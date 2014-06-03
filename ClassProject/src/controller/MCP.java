@@ -104,6 +104,7 @@ public class MCP
             String line = fileIn.readLine();
             String[] item = line.split("~"); //split parts of the paper/review/recom
             String[] papers = item[0].split(",");
+            String[] recom = item[1].split(",");
             String[] review = item[2].split("^");
            
             //paper id, author id, title, abstract, filename,spcId~recommendation~ id,score, comments^ id,score, comments
@@ -115,10 +116,11 @@ public class MCP
             current.assignSpc(spcId);
             newCon.addPaper(current);
            
-            int reco = Integer.parseInt(item[1]);
+            int reco = Integer.parseInt(recom[0]);
             
             Recommendation rec = new Recommendation();
             rec.setState(reco);
+            rec.setRationale(recom[1]);
             current.setRecommendation(rec);
            
             for (String that: review)
@@ -163,6 +165,27 @@ public class MCP
 			//int id, String first, String last, String email, int role
 			fileOut.write(cur.getID() + "," + cur.getFirstName() + "," + 
 					cur.getLastName() + "," + cur.getEmail() + "," + cur.getRole());
+		}
+		
+		fileOut.close();
+		
+		String PaperFileName = "src/files/papercsv.txt";
+		
+		//try catch
+		try 
+		{
+			fileOut = new BufferedWriter(new FileWriter(PaperFileName));
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.print(e);
+		}
+		
+		//for all users write to the file as follows without going to the end of the file first
+		for (Paper cur: papers)
+		{
+			//int id, String first, String last, String email, int role
+			fileOut.write(cur.toString());
 		}
 		
 		fileOut.close();
