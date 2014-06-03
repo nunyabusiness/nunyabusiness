@@ -136,19 +136,6 @@ public class HomeTab extends JPanel {
         		+ myConference.getDeadline().get(Calendar.DAY_OF_MONTH) 
         		+ "/" + myConference.getDeadline().get(Calendar.YEAR) + " .");
 	}
-//
-//	/**
-//	 * Observer update class which updates whenever the Conference class makes relevent 
-//	 * changes.
-//	 * 
-//	 * @param o The observable object being observed.
-//	 * @param arg The passed value (if applicable).
-//	 */
-//	public void update(Observable o, Object arg) {
-//		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
-//			setLabelValues();
-//		}
-//	}
 	
 	
 

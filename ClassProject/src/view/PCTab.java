@@ -1,12 +1,17 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -14,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
 import model.Conference;
@@ -89,6 +95,15 @@ public class PCTab extends JScrollPane {
         
         innerPcPanel.add(completedLabel);
         innerPcPanel.add(pcScrollPane);
+        innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+        JButton assignSPC = new JButton("New Subprogram Chair");
+        assignSPC.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				new SPCDialog(myConference.getUserByRole(0));
+			}
+		});
+        assignSPC.setAlignmentX(CENTER_ALIGNMENT);
+        innerPcPanel.add(assignSPC);
 
         pcPanel.add(innerPcPanel);
         setViewportView(pcPanel);
@@ -96,6 +111,58 @@ public class PCTab extends JScrollPane {
 	
 	public void updateTables() {
 		myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
+	}
+	
+	private class SPCDialog extends JDialog {
+		
+		private ArrayList<User> myUsers;
+		
+		public SPCDialog(final List<User> theUsers) {
+			super();
+			setTitle("Assign a subprogram chair");
+			
+			myUsers = (ArrayList<User>) theUsers;
+			
+			initDialog();
+			
+			setLocationRelativeTo(null);
+			//setSize(new Dimension(175, 300));
+			pack();
+			setResizable(false);
+			setVisible(true);
+		}
+
+		private void initDialog() {
+			JPanel panel = new JPanel();
+			
+			final User[] nameArray = myUsers.toArray(new User[0]);
+			
+			final JComboBox<User> list = new JComboBox<User>(nameArray);
+			panel.add(list);
+			add(new JLabel("Select a user to be set to a subprogram chair:", SwingConstants.CENTER), BorderLayout.NORTH);
+			add(panel, BorderLayout.CENTER);
+			
+			JPanel buttonPanel = new JPanel();
+			JButton set = new JButton("Change Role");
+			set.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					nameArray[list.getSelectedIndex()].setRole(2);
+					dispose();
+				}
+			});
+			buttonPanel.add(set);
+			buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+			
+			JButton cancel = new JButton("Cancel");
+			cancel.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			buttonPanel.add(cancel);
+			
+			add(buttonPanel, BorderLayout.SOUTH);
+		}
 	}
 
 	/**
@@ -107,7 +174,8 @@ public class PCTab extends JScrollPane {
 	 */
 	private class TableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", "Reviewer 2", "Reviewer 3"};
+		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", 
+										"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
 		public TableModel(final ArrayList<Paper> arrayList) {

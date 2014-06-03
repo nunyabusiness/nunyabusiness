@@ -68,6 +68,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     	initLoginFrame();
         initComponents();        
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     /**

@@ -83,9 +83,18 @@ public class User {
 		return myEmail;
 	}
 	
+	public void setRole(int theRole) {
+		myRole = theRole;
+	}
+	
 	
 	public void submitPaper(int the_paperId) {
 		my_assignedPapers.add(the_paperId);
+	}
+	
+	@Override
+	public String toString() {
+		return myFirstName + " " + myLastName;
 	}
 	
 
