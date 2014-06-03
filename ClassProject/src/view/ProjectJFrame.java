@@ -1,10 +1,13 @@
 package view;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,17 +16,21 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.KeyStroke;
+import javax.swing.table.AbstractTableModel;
 
 import model.ConfChangeType;
 import model.Conference;
+import model.User;
 
 /**
  * Beginning class for the GUI of the 360 team project.
@@ -234,25 +241,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        completedTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Paper", "Author", "SPC Review", "Review 1", "Review 2", "Review 3"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        completedTable.setModel(new TableModel(myConference.getUserByRole(0)));
         completedTable.setShowHorizontalLines(false);
         completedTable.setShowVerticalLines(false);
         pcScrollPane.setViewportView(completedTable);
@@ -261,7 +250,24 @@ public class ProjectJFrame extends JFrame implements Observer {
         completedLabel.setToolTipText("From this table you will be able to look over any "
         		+ "papers that have already completed their review process. ");
 
-        completedTable.getModel().setValueAt(123, 0, 0);
+        //Testing display of tables.
+        final JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("View");
+        deleteItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            	try {
+					JOptionPane.showMessageDialog(null, completedTable.getValueAt(completedTable.getSelectedRow(), 0) 
+							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 1) 
+							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 2) 
+							+ " " + completedTable.getValueAt(completedTable.getSelectedRow(), 3));
+				} catch (ArrayIndexOutOfBoundsException e1) {
+					JOptionPane.showMessageDialog(null, "Please select a user first");
+				}
+            }
+        });
+        popupMenu.add(deleteItem);
+        completedTable.setComponentPopupMenu(popupMenu);
         
         GroupLayout pcPanelLayout = new GroupLayout(pcPanel);
         pcPanel.setLayout(pcPanelLayout);
@@ -415,6 +421,50 @@ public class ProjectJFrame extends JFrame implements Observer {
 						+ "number");
 			}
 	    }
+	}
+	
+	private class TableModel extends AbstractTableModel {
+		
+		private String[] columnNames = {"ID", "First Name", "Last Name", "Email"};
+		private ArrayList<User> myUserList;
+		
+		public TableModel(final List<User> theUsers) {
+			myUserList = (ArrayList<User>) theUsers;
+		}
+
+		public int getRowCount() {
+			return myUserList.size();
+		}
+
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+		
+		public String getColumnName(int column) {
+	        return columnNames[column];
+	    }
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Object ret = null;
+			
+			switch (columnIndex) {
+				case 0:
+					ret = (Object) myUserList.get(rowIndex).getID();
+					break;
+				case 1:
+					ret = (Object) myUserList.get(rowIndex).getFirstName();
+					break;
+				case 2:
+					ret = (Object) myUserList.get(rowIndex).getLastName();
+					break;
+				case 3:
+					ret = (Object) myUserList.get(rowIndex).getEmail();
+					break;				
+			}
+			
+			return ret;
+		}
+		
 	}
 
 }
