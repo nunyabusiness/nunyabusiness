@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import model.Conference;
 import model.Paper;
+import model.Review;
 import model.User;
 import view.ProjectJFrame;
 
@@ -99,23 +100,33 @@ public class MCP
 		//Adjustments will be made when the paper class is flushed out.
 		while (fileIn.ready())
 		{
-		            String line = fileIn.readLine();
-		            String[] item = line.split("~"); //split parts of the paper/review/recom
-		            String[] papers = item[0].split(",");
-		            String[] recom = item[1].split(",");
-		            String[] review = item[2].split("^");
-		           
-		            //int id, int role, String first, String last, String email
-		            Paper current = new Paper(blank, blank, null, line, line);
-		            newCon.addPaper(current);
-		           
-		            //current.addRec(recom[0]);
-		           
-		            for (String that: review)
-		            {
-		                String[] rev = that.split(",");
-		                //current.addRev(something, something, something);
-		            }
+            String line = fileIn.readLine();
+            String[] item = line.split("~"); //split parts of the paper/review/recom
+            String[] papers = item[0].split(",");
+            String[] recom = item[1].split(",");
+            String[] review = item[2].split("^");
+           
+            //paper id, author id, title, abstract, filename,spcId~recommendation~ id,score, comments^ id,score, comments
+            int paperId = Integer.parseInt(papers[0]);
+            int authorId = Integer.parseInt(papers[1]);
+            int spcId = Integer.parseInt(papers[5]);
+            //int paperID, int authorID, String title, String anAbstract, String file~
+            Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
+            current.assignSpc(spcId);
+            newCon.addPaper(current);
+           
+            //current.addRec(recom[0]);
+           
+            for (String that: review)
+            {
+            	String[] rev = that.split(",");
+            	
+            	int revId = Integer.parseInt(rev[0]);
+            	int avg = Integer.parseInt(rev[1]);
+                current.assignReviewer(revId);
+                Review view = new Review(avg, rev[2]);
+                current.submitReviewToPaper(view);
+            }
 		}
 
 		fileIn.close();
