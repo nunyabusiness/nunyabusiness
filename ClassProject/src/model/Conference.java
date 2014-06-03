@@ -50,6 +50,8 @@ public class Conference extends Observable {
 		my_papers.put(id , new Paper(id, my_currentUser.getID(), title, Abstract, filename));
 		my_currentUser.submitPaper(id);
 
+		setChanged();
+		notifyObservers(ConfChangeType.PAPER_ADDED);
 	}
 	
 	// US01. As an Author, I want to submit a manuscript to a conference.
