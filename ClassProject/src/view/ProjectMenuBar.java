@@ -69,6 +69,7 @@ public class ProjectMenuBar extends JMenuBar {
 	private void createActions() {
 		myExitMenuItem.addActionListener(new ActionListener() {			
 			public void actionPerformed(final ActionEvent e) {
+				myConference.saveConference();
 				myFrame.dispose();
 			}
 		});
@@ -81,8 +82,8 @@ public class ProjectMenuBar extends JMenuBar {
 		
 		myHelpMenuItem.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(myFrame, "I don't have time for this, "
-						+ "be gone you pest!");
+				JOptionPane.showMessageDialog(myFrame, "Pay no attention to that man "
+						+ "behind the curtain");
 			}
 		});
 	}

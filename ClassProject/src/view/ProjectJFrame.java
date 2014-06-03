@@ -1,15 +1,9 @@
 package view;
 
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,21 +12,15 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.KeyStroke;
-import javax.swing.table.AbstractTableModel;
 
 import model.ConfChangeType;
 import model.Conference;
-import model.User;
 
 /**
  * Beginning class for the GUI of the 360 team project.
@@ -43,8 +31,6 @@ import model.User;
 @SuppressWarnings("serial")
 public class ProjectJFrame extends JFrame implements Observer {
 	
-    private JLabel completedLabel;
-    private JTable completedTable;
     private JLabel conferenceLabel;
     private JTextField userIDField;
     

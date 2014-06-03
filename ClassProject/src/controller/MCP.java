@@ -174,7 +174,7 @@ public class MCP implements Observer
 		{
 			//int id, String first, String last, String email, int role
 			fileOut.write(cur.getID() + "," + cur.getFirstName() + "," + 
-					cur.getLastName() + "," + cur.getEmail() + "," + cur.getRole());
+					cur.getLastName() + "," + cur.getEmail() + "," + cur.getRole() + "\n");
 		}
 		
 		fileOut.close();
