@@ -106,7 +106,7 @@ public class MCP
 		            String[] review = item[2].split("^");
 		           
 		            //int id, int role, String first, String last, String email
-		            Paper current = new Paper(newCon, blank, blank, null, line, line);
+		            Paper current = new Paper(blank, blank, null, line, line);
 		            newCon.addPaper(current);
 		           
 		            //current.addRec(recom[0]);
