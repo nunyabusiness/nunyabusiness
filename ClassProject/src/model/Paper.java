@@ -75,4 +75,15 @@ public class Paper {
 	public int getId(){
 		return myID;
 	}
+	
+	public String toString() {
+		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair + "~" +
+				recommendation.toString() + "~";
+		
+		for (Review r : myReviews) {
+			output = output + r.toString();
+		}
+		
+		return output;
+	}
 }
