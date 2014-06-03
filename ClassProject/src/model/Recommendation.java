@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Anton Bardakhanov, Steven Bradley
+ *
+ */
 public class Recommendation {
 	// [5] strong accept [4] accept [3] neutral [2] reject [1] strong reject
 	int state;

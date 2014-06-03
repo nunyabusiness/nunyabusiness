@@ -10,6 +10,10 @@ import java.util.Observable;
 
 import org.joda.time.DateTime;
 
+/**
+ * @author Anton Bardakhanov, Steven Bradley
+ *
+ */
 public class Conference extends Observable {
 
 	public static final GregorianCalendar DEADLINE = new GregorianCalendar(

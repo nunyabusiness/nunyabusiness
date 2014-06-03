@@ -2,7 +2,7 @@ package model;
 
 /**
  * 
- * @author Christopher Barrett
+ * @author Christopher Barrett, Steven Bradley
  * I needed this for my part
  */
 public class Review 
