@@ -61,6 +61,13 @@ public class Conference extends Observable {
 		my_currentUser.submitPaper(id);
 
 	}
+	
+	public void removePaper(Paper that) {
+		my_papers.remove(that.getId());
+		
+		setChanged();
+		notifyObservers(ConfChangeType.PAPER_REMOVED);
+	}
 
 	// US02. As a Program Chair I want to designate a Subprogram Chair for a
 	// manuscript.

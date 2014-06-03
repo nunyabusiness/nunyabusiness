@@ -152,6 +152,14 @@ public class Paper {
 	public String getTitle() {
 		return myTitle;
 	}	
+	
+	public String getAbstract() {
+		return myAbstract;
+	}
+	
+	public String getFile() {
+		return myFile;
+	}
 
 	public String toString() {
 		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair

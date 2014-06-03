@@ -247,7 +247,8 @@ public class ProjectJFrame extends JFrame implements Observer {
 			loginFrame.setVisible(true);
 		}
 		
-		if (arg == ConfChangeType.PAPER_ADDED) {
+		//Paper added or removed, must refresh appropriate views.
+		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED) {
 			myAuthorTab.updateDisplay();
 			myHomeTab.setLabelValues();
 		}
