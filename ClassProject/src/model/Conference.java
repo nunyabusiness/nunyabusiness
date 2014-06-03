@@ -122,10 +122,14 @@ public class Conference extends Observable {
 	// US11. As a Program Chair, I want to see which papers are assigned to
 	// which Subprogram chairs.
 	// Please see US02
-	public List<Paper> getAllPapers() {
+	public ArrayList<Paper> getAllPapers() {
 		// return collection of papers
 		// status can be obtained by getStatus()
 		return new ArrayList<Paper>(my_papers.values());
+	}
+	
+	public ArrayList<User> getAllUsers() {
+		return new ArrayList<User>(my_users.values());
 	}
 
 	/**
@@ -223,5 +227,10 @@ public class Conference extends Observable {
 
 	public GregorianCalendar getDeadline() {
 		return DEADLINE;
+	}
+	
+	public void saveConference() {
+		setChanged();
+		notifyObservers(ConfChangeType.CONF_SAVED);
 	}
 }

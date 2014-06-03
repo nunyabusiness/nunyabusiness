@@ -23,6 +23,9 @@ public enum ConfChangeType {
 	/** Enum type for paper removed from conference. */
 	PAPER_REMOVED,
 	
+	/** Enum type for requiring the conference to be saved. */
+	CONF_SAVED
+	
 	//Other change types that may be necessary later on.
 
 }

@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -68,6 +70,8 @@ public class ProjectJFrame extends JFrame implements Observer {
     public ProjectJFrame(final Conference theConference) {    	
     	myConference = theConference;
     	
+    	addWindowListener(new MyWindowListener(myConference));
+    	
     	myMenuBar = new ProjectMenuBar(this, myConference);
     	myHomeTab = new HomeTab(myConference);
     	mySubmitTab = new SubmitTab(myConference);
@@ -77,7 +81,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     	
     	initLoginFrame();
         initComponents();        
-        this.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
     
     /**
@@ -171,7 +175,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         spcTab = new JPanel();
         conferenceLabel = new JLabel();        
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Conference Controls");
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(650, 416));
@@ -322,6 +326,21 @@ public class ProjectJFrame extends JFrame implements Observer {
 						+ "number");
 			}
 	    }
+	}
+	
+	private class MyWindowListener extends WindowAdapter {
+		
+		private Conference myConference;
+		
+		public MyWindowListener(final Conference theConference) {
+			super();
+			
+			myConference = theConference;
+		}
+		
+		public void windowClosing(WindowEvent e) {
+			myConference.saveConference();
+		}
 	}
 
 }

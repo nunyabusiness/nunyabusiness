@@ -10,7 +10,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.JOptionPane;
+
+import model.ConfChangeType;
 import model.Conference;
 import model.Paper;
 import model.Recommendation;
@@ -23,7 +28,7 @@ import view.ProjectJFrame;
  * @author Christopher Barrett, Erik Tedder
  * MCP Class is a throw back to an old programming style used in the 80's for keeping users enthraled with different games.
  */
-public class MCP 
+public class MCP implements Observer
 {
 	/**
 	 * to access the conference or create the conference
@@ -38,6 +43,7 @@ public class MCP
 	public MCP(Conference theConference) throws IOException
 	{
 		newCon = theConference;
+		newCon.addObserver(this);
 		loadFiles();
 	}
 	
@@ -218,6 +224,16 @@ public class MCP
             }
         });
 		
+	}
+
+	public void update(Observable o, Object arg) {
+		if (arg == ConfChangeType.CONF_SAVED) {
+			try {
+				writeOut(newCon.getAllUsers(), newCon.getAllPapers());
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Error writing out");
+			}
+		}
 	}
 
 }
