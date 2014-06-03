@@ -41,7 +41,7 @@ public class User {
 	/**
 	 * The papers that the user is responsible for getting reviewed.
 	 */
-	private Set<Integer> my_assignedPapers;
+	private List<Integer> my_assignedPapers;
 	
 	
 	
@@ -66,6 +66,8 @@ public class User {
 		myLastName = last;
 		myEmail = email;
 		myRole = role;
+		
+		my_assignedPapers = new ArrayList<Integer>();
 		
 //		author_submittedPapers = new HashSet<Integer>();
 //		pc_assignedSpc = new HashSet<Integer>();
