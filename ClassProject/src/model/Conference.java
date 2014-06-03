@@ -77,11 +77,17 @@ public class Conference extends Observable {
 	// manuscript.
 	public void assignSpc(int the_spcKey, int the_paperKey) {
 		my_papers.get(the_paperKey).assignSpc(the_spcKey);
+		
+		setChanged();
+		notifyObservers(ConfChangeType.SPC_ASSIGNED);
 	}
 
 	// US03. As a Subprogram Chair, I want to assign a paper to reviewers.
 	public void assignReviewerToPaper(int the_reviewerKey, int the_paperKey) {
 		my_papers.get(the_paperKey).assignReviewer(the_reviewerKey);
+		
+		setChanged();
+		notifyObservers(ConfChangeType.REVIEWER_ASSIGNED);
 	}
 
 	// US04. As a Reviewer, I want to view a list of manuscripts to which I have
@@ -102,7 +108,7 @@ public class Conference extends Observable {
 	public void submitReview(int paperId, Review review) {
 		my_papers.get(paperId).submitReviewToPaper(review);
 		setChanged();
-		notifyObservers(review);
+		notifyObservers(ConfChangeType.REVIEW_ADDED);
 	}
 
 	// US07. As an Author, I want to make changes to my submission, including
@@ -116,6 +122,9 @@ public class Conference extends Observable {
 	public void spcSubmitRecommendation(int paperKey, Recommendation r) {
 		if (my_papers.containsKey(paperKey)) {
 			my_papers.get(paperKey).setRecommendation(r);
+			
+			setChanged();
+			notifyObservers(ConfChangeType.REVIEW_ADDED);
 		} else {
 			throw new NullPointerException("No such paper");
 		}

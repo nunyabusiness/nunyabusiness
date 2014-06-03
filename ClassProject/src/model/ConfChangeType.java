@@ -23,6 +23,15 @@ public enum ConfChangeType {
 	/** Enum type for paper removed from conference. */
 	PAPER_REMOVED,
 	
+	/** Enum type for a paper being reviewed. */
+	REVIEW_ADDED,
+	
+	/** Enum type for a reviewer being assigned to a paper. */
+	REVIEWER_ASSIGNED,
+	
+	/** Enum type for a subprogram chair being assigned to a paper. */
+	SPC_ASSIGNED,
+	
 	/** Enum type for requiring the conference to be saved. */
 	CONF_SAVED
 	
