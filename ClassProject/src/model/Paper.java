@@ -77,8 +77,8 @@ public class Paper {
 	}
 	
 	public String toString() {
-		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair + "~" +
-				recommendation.toString() + "~";
+		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair
+				+ "~" + recommendation.toString() + "~";
 		
 		for (Review r : myReviews) {
 			output = output + r.toString() + "^";
