@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Conference;
+import model.Paper;
 
 /**
  * The JPanel class which displays the information and fields necessary to submit a paper to
@@ -236,6 +237,8 @@ public class SubmitTab extends JPanel {
 	    	is.close();
 	    	os.close();			
 	    }
+	    myConference.addPaper(myPaperTitle.getText(), myAbstractArea.getText(), 
+	    		myFile.getName());
 	}
 	
 	/**
