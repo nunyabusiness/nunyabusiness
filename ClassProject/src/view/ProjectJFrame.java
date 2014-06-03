@@ -222,6 +222,7 @@ public class ProjectJFrame extends JFrame implements Observer {
             myAuthorTab.updateDisplay();
             myReviewTab.updateDisplay();
             myPCTab.updateTables();
+            mySPCTab.updateTables();
             determinePermission();
 		}
 		
@@ -245,6 +246,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 			myHomeTab.setLabelValues();
 			myReviewTab.updateDisplay();
 			myPCTab.updateTables();
+			mySPCTab.updateTables();
 		}
 	}    
 	

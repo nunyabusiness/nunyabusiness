@@ -67,7 +67,7 @@ public class SPCTab extends JScrollPane {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
+//        myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));
         myCompleteTable.setShowHorizontalLines(false);
         myCompleteTable.setShowVerticalLines(false);
         pcScrollPane.setViewportView(myCompleteTable);
@@ -110,7 +110,9 @@ public class SPCTab extends JScrollPane {
 	}
 	
 	public void updateTables() {
-		myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
+		if (myConference.getCurrentUser().getID() == 2) {
+			myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));
+		}
 	}
 	
 	private class ReviewDialog extends JDialog {
@@ -184,7 +186,7 @@ public class SPCTab extends JScrollPane {
 										"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
-		public TableModel(final ArrayList<Paper> arrayList) {
+		public TableModel(final List<Paper> arrayList) {
 			myPaperList = (ArrayList<Paper>) arrayList;
 		}
 
