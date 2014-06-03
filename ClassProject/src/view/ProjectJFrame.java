@@ -220,6 +220,7 @@ public class ProjectJFrame extends JFrame implements Observer {
             this.setVisible(true);
             myHomeTab.setLabelValues();
             myAuthorTab.updateDisplay();
+            myReviewTab.updateDisplay();
             determinePermission();
 		}
 		
@@ -241,6 +242,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED) {
 			myAuthorTab.updateDisplay();
 			myHomeTab.setLabelValues();
+			myReviewTab.updateDisplay();
 		}
 	}    
 	
