@@ -81,8 +81,9 @@ public class Paper {
 				recommendation.toString() + "~";
 		
 		for (Review r : myReviews) {
-			output = output + r.toString();
+			output = output + r.toString() + "^";
 		}
+		output = output + "~";
 		
 		return output;
 	}
