@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * @author Steven Bradley
+ * @version june 2 2014
  *
  */
 public class Paper {
