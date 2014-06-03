@@ -43,14 +43,6 @@ public class User {
 	 */
 	private List<Integer> my_assignedPapers;
 	
-	
-	
-//	public Set<Integer> author_submittedPapers;
-//	public Set<Integer> pc_assignedSpc;
-//	
-//	public Set<Integer> spc_assignedPapers;
-//	public Set<Integer> spc_assignedReviewers;
-	
 	public int spc_pc;
 	
 	/** Creates a new user with the following fields.
@@ -69,13 +61,6 @@ public class User {
 		
 		my_assignedPapers = new ArrayList<Integer>();
 		
-//		author_submittedPapers = new HashSet<Integer>();
-//		pc_assignedSpc = new HashSet<Integer>();
-//		
-//		
-//		spc_assignedPapers = new HashSet<Integer>();
-//		spc_assignedReviewers = new HashSet<Integer>();;
-//		spc_pc = 0; // nobody by default;
 	}
 	
 	public int getID() {
@@ -103,17 +88,5 @@ public class User {
 		my_assignedPapers.add(the_paperId);
 	}
 	
-//	public void assignSpc_to_PC(int the_spcId){
-//		pc_assignedSpc.add(the_spcId);
-//	}
-//	public void assignManuscript_to_SPC(int the_paperId){
-//		spc_assignedPapers.add(the_paperId);
-//	}
-//	public void assignPC_to_SPC(int the_pcId){
-//		spc_pc = the_pcId;
-//	}
-//	public void assignReviewer_to_SPC(int the_reviewerId){
-//		spc_assignedReviewers.add(the_reviewerId);
-//	}
 
 }
