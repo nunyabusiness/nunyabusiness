@@ -18,7 +18,7 @@ import view.ProjectJFrame;
 
 /**
  * Feel free to change move relocate. In reality its just a wrapper so just abuse
- * @author Christopher Barrett
+ * @author Christopher Barrett, Erik Tedder
  * MCP Class is a throw back to an old programming style used in the 80's for keeping users enthraled with different games.
  */
 public class MCP 

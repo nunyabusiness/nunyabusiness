@@ -66,5 +66,4 @@ public class Review
 	{
 		return comments;
 	}
-	//how the f is this not been done yet?
 }
