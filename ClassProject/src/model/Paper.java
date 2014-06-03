@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @author Steven Bradley
+ *
+ */
 public class Paper {
 	private String myTitle;
 	private String myAbstract;
-	private String myFilePath;
+	private String myFile;
 	private int myID;
 	private int myAuthorID;
 	private int mySubchair;
 	private List<Integer> myReviewers;
 	private List<Review> myReviews;
-	private Conference conference;
 	
 	// 0 - undecided, 1-accepted, 2-declined
 	// please see Recommendation class;
@@ -21,13 +24,12 @@ public class Paper {
 	// 0 - undecided, 1-yes, 2-no
 	private int decision = 0;
 	
-	public Paper(Conference conference, int authorID, int paperID, String title, String anAbstract, String filePath){
+	public Paper(int paperID, int authorID, String title, String anAbstract, String file){
 		myID = paperID;
 		myAuthorID = authorID;
 		myTitle = title;
 		myAbstract = anAbstract;
-		myFilePath = filePath;
-		this.conference = conference;
+		myFile = file;
 		myReviewers = new ArrayList<Integer>();
 		myReviews = new ArrayList<Review>();
 		recommendation = new Recommendation();

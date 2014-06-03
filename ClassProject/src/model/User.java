@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Steven Bradley
+ *
+ */
 public class User {
 	/**
 	 * The unigue ID for this user.
@@ -29,10 +33,7 @@ public class User {
 	 * The users email.
 	 */
 	private String myEmail;
-//	/**
-//	 * The conference the user is part of.
-//	 */
-//	private Conference myConference;
+
 	/**
 	 * The papers that the user has authored and submitted to the conference.
 	 */
