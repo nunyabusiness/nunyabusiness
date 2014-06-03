@@ -41,9 +41,10 @@ public class Conference extends Observable {
 	}
 
 	// US01. As an Author, I want to submit a manuscript to a conference.
-	public void addPaper(Paper the_paper) {
-		my_papers.put(the_paper.getId(), the_paper);
-		my_currentUser.submitPaper(the_paper.getId());
+	public void addPaper(String title, String Abstract, String filename) {
+		int id = my_papers.size() + 1;
+		my_papers.put(id , new Paper(id, my_currentUser.getID(), title, Abstract, filename));
+		my_currentUser.submitPaper(id);
 
 	}
 
