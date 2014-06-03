@@ -124,10 +124,10 @@ public class PCTab extends JScrollPane {
 			myUsers = (ArrayList<User>) theUsers;
 			
 			initDialog();
-			
-			setLocationRelativeTo(null);
+						
 			//setSize(new Dimension(175, 300));
 			pack();
+			setLocationRelativeTo(null);
 			setResizable(false);
 			setVisible(true);
 		}
@@ -146,8 +146,14 @@ public class PCTab extends JScrollPane {
 			JButton set = new JButton("Change Role");
 			set.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
-					nameArray[list.getSelectedIndex()].setRole(2);
-					dispose();
+					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
+							+ "change " + nameArray[list.getSelectedIndex()] + "'s role to "
+									+ "subprogram chair?", "Change User's Role", 
+									JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION){
+						nameArray[list.getSelectedIndex()].setRole(2);
+						dispose();
+					}
 				}
 			});
 			buttonPanel.add(set);
