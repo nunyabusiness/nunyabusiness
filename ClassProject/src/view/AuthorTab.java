@@ -14,6 +14,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import model.Conference;
@@ -130,23 +132,29 @@ public class AuthorTab extends JPanel {
 			Component separator = Box.createRigidArea(new Dimension(0, 5));
 			
 			JLabel titleLabel = new JLabel();
-			titleLabel.setText("<HTML><U>Title:</U></HTML>");
+			titleLabel.setText("<HTML><U>Title:</U>  " + myPaper.getTitle());
 			titleLabel.setAlignmentX(CENTER_ALIGNMENT);
 			centerPanel.add(titleLabel);			
-			centerPanel.add(new JLabel(myPaper.getTitle()));
 			centerPanel.add(separator);
 			JLabel abstractLabel = new JLabel();
-			abstractLabel.setText("<HTML><U>Abstract:</U></HTML>");
+			abstractLabel.setText("<HTML><U>Abstract:</U>");
 			abstractLabel.setAlignmentX(CENTER_ALIGNMENT);
 			centerPanel.add(abstractLabel);
-			JLabel absLabel = new JLabel("<HTML><body style='width: 150px'>" + myPaper.getAbstract());
-			centerPanel.add(absLabel);
+			JTextArea absLabel = new JTextArea();
+			absLabel.setEditable(false);
+			absLabel.setLineWrap(true);
+			JScrollPane areaScrollPane = new JScrollPane(absLabel);
+			areaScrollPane.setVerticalScrollBarPolicy(
+			                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			areaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			areaScrollPane.setPreferredSize(new Dimension(250, 250));
+			absLabel.setText(myPaper.getAbstract());					
+			centerPanel.add(areaScrollPane);
 			centerPanel.add(separator);
 			JLabel fileLabel = new JLabel();
-			fileLabel.setText("<HTML><U>File Name:</U></HTML>");
+			fileLabel.setText("<HTML><U>File Name:</U>  " + myPaper.getFile());
 			fileLabel.setAlignmentX(CENTER_ALIGNMENT);
 			centerPanel.add(fileLabel);
-			centerPanel.add(new JLabel(myPaper.getFile()));
 			centerPanel.add(separator);
 			
 			panel.add(centerPanel, BorderLayout.CENTER);
