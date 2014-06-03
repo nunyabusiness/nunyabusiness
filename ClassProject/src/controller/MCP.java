@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import model.Conference;
 import model.Paper;
+import model.Recommendation;
 import model.Review;
 import model.User;
 import view.ProjectJFrame;
@@ -103,7 +104,6 @@ public class MCP
             String line = fileIn.readLine();
             String[] item = line.split("~"); //split parts of the paper/review/recom
             String[] papers = item[0].split(",");
-            String[] recom = item[1].split(",");
             String[] review = item[2].split("^");
            
             //paper id, author id, title, abstract, filename,spcId~recommendation~ id,score, comments^ id,score, comments
@@ -115,7 +115,11 @@ public class MCP
             current.assignSpc(spcId);
             newCon.addPaper(current);
            
-            //current.addRec(recom[0]);
+            int reco = Integer.parseInt(item[1]);
+            
+            Recommendation rec = new Recommendation();
+            rec.setState(reco);
+            current.setRecommendation(rec);
            
             for (String that: review)
             {
