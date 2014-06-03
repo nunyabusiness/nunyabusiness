@@ -101,6 +101,7 @@ public class MCP
 		//Adjustments will be made when the paper class is flushed out.
 		while (fileIn.ready())
 		{
+			//special character splits for splits sake
             String line = fileIn.readLine();
             String[] item = line.split("~"); //split parts of the paper/review/recom
             String[] papers = item[0].split(",");
@@ -111,18 +112,21 @@ public class MCP
             int paperId = Integer.parseInt(papers[0]);
             int authorId = Integer.parseInt(papers[1]);
             int spcId = Integer.parseInt(papers[5]);
+            
+            //paper stuff
             //int paperID, int authorID, String title, String anAbstract, String file~
             Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
             current.assignSpc(spcId);
             newCon.addPaper(current);
            
-            int reco = Integer.parseInt(recom[0]);
-            
+            //recomendation
+            int reco = Integer.parseInt(recom[0]); 
             Recommendation rec = new Recommendation();
             rec.setState(reco);
             rec.setRationale(recom[1]);
             current.setRecommendation(rec);
            
+            //Reviews
             for (String that: review)
             {
             	String[] rev = that.split(",");
@@ -185,7 +189,7 @@ public class MCP
 		for (Paper cur: papers)
 		{
 			//int id, String first, String last, String email, int role
-			fileOut.write(cur.toString());
+			fileOut.write(cur.toString() + "\n");
 		}
 		
 		fileOut.close();
