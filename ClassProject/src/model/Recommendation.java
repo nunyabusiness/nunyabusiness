@@ -1,8 +1,9 @@
 package model;
 
 public class Recommendation {
-	// 0-undecided, 1-accepted, 2-declined
+	// [5] strong accept [4] accept [3] neutral [2] reject [1] strong reject
 	int state;
+	String rationale;
 
 	public Recommendation() {
 		state = 0;
@@ -13,5 +14,13 @@ public class Recommendation {
 			return;
 		this.state = state;
 
+	}
+	
+	public void setRationale(String comments) {
+		rationale = comments;
+	}
+	
+	public String toString() {
+		return state + "," + rationale;
 	}
 }
