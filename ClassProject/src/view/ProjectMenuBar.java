@@ -70,7 +70,7 @@ public class ProjectMenuBar extends JMenuBar {
 		myExitMenuItem.addActionListener(new ActionListener() {			
 			public void actionPerformed(final ActionEvent e) {
 				myConference.saveConference();
-				myFrame.dispose();
+				System.exit(0);
 			}
 		});
 		
