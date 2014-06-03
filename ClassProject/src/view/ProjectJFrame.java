@@ -20,6 +20,7 @@ import javax.swing.KeyStroke;
 
 import model.ConfChangeType;
 import model.Conference;
+import model.Role;
 
 /**
  * Beginning class for the GUI of the 360 team project.
@@ -88,6 +89,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     private void initLoginFrame() {
     	//Initialize initial values
     	loginFrame = new JFrame();
+    	loginFrame.addWindowListener(new MyWindowListener(myConference));
         userIDField = new JTextField();
         JLabel userIDLabel = new JLabel();
         JLabel loginHeader = new JLabel();
@@ -332,6 +334,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 		
 		public void windowClosing(WindowEvent e) {
 			myConference.saveConference();
+			System.exit(0);
 		}
 	}
 

@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,24 +77,17 @@ public class PCTab extends JScrollPane {
 
         completedLabel.setToolTipText("From this table you will be able to look over any "
         		+ "papers that have already completed their review process. ");
-
-        //Testing display of tables.
-        final JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem deleteItem = new JMenuItem("View");
-        deleteItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	try {
+        
+        myCompleteTable.addMouseListener(new MouseAdapter() {			
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
 					JOptionPane.showMessageDialog(null, myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0) 
 							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 1) 
 							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 2) 
 							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 3));
-				} catch (ArrayIndexOutOfBoundsException e1) {
-					JOptionPane.showMessageDialog(null, "Please select a user first");
 				}
-            }
-        });
-        popupMenu.add(deleteItem);
-        myCompleteTable.setComponentPopupMenu(popupMenu);
+			}
+		});
         
         innerPcPanel.add(completedLabel);
         innerPcPanel.add(pcScrollPane);
