@@ -212,7 +212,9 @@ public class MCP
             	} catch (IOException e) {
             		System.err.println(e.getMessage());
             	}
-                new ProjectJFrame(con).displayLogin();
+            	ProjectJFrame gui = new ProjectJFrame(con);
+            	con.addObserver(gui);
+            	gui.displayLogin();
             }
         });
 		
