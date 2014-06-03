@@ -143,7 +143,7 @@ public class AuthorTab extends JPanel {
 			centerPanel.add(absLabel);
 			centerPanel.add(separator);
 			JLabel fileLabel = new JLabel();
-			fileLabel.setText("<HTML><U>Abstract:</U></HTML>");
+			fileLabel.setText("<HTML><U>File Name:</U></HTML>");
 			fileLabel.setAlignmentX(CENTER_ALIGNMENT);
 			centerPanel.add(fileLabel);
 			centerPanel.add(new JLabel(myPaper.getFile()));

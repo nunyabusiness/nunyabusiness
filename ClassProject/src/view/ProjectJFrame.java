@@ -36,7 +36,6 @@ public class ProjectJFrame extends JFrame implements Observer {
     
     private JFrame loginFrame;
     private JTabbedPane myTabbedPane;
-    private JPanel spcTab;
     
     private ProjectMenuBar myMenuBar;
     private HomeTab myHomeTab;
@@ -44,6 +43,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     private AuthorTab myAuthorTab;
     private ReviewTab myReviewTab;
     private PCTab myPCTab;
+    private SPCTab mySPCTab;
     
     private Conference myConference;
     
@@ -64,6 +64,7 @@ public class ProjectJFrame extends JFrame implements Observer {
     	myAuthorTab = new AuthorTab(myConference);
     	myReviewTab = new ReviewTab(myConference);
     	myPCTab = new PCTab(myConference);
+    	mySPCTab = new SPCTab(myConference);
     	
     	initLoginFrame();
         initComponents();        
@@ -158,7 +159,6 @@ public class ProjectJFrame extends JFrame implements Observer {
      */
     private void initComponents() {        
         myTabbedPane = new JTabbedPane();
-        spcTab = new JPanel();
         conferenceLabel = new JLabel();        
         
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -174,7 +174,7 @@ public class ProjectJFrame extends JFrame implements Observer {
         myTabbedPane.addTab("Submit Paper", mySubmitTab);
         myTabbedPane.addTab("Your Papers", myAuthorTab);
         myTabbedPane.addTab("Review", myReviewTab);
-        myTabbedPane.addTab("Subprogram Chair View", spcTab);
+        myTabbedPane.addTab("Subprogram Chair View", mySPCTab);
 
         myTabbedPane.addTab("Program Chair View", myPCTab);
 

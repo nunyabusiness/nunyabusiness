@@ -28,12 +28,12 @@ import model.User;
  * @author Erik Tedder
  * @date 6/2/2014
  */
-public class PCTab extends JScrollPane {
+public class SPCTab extends JScrollPane {
 	
 	private Conference myConference;
 	private JTable myCompleteTable;
 	
-	public PCTab(final Conference theConference) {
+	public SPCTab(final Conference theConference) {
 		super();
 		
 		myConference = theConference;
