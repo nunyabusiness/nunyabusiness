@@ -1,22 +1,28 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import model.Conference;
 import model.Paper;
+import model.Review;
 import model.User;
 
 /**
@@ -30,6 +36,8 @@ public class ReviewTab extends JPanel {
 	
 	private Conference myConference;
 	private JPanel myCenterPanel;
+	private ArrayList<JSlider> mySliders;
+	private JTextArea myTextArea;
 
 	/**
 	 * Constructor of the AuthorTab.
@@ -38,6 +46,10 @@ public class ReviewTab extends JPanel {
 	 */
 	public ReviewTab(final Conference theConference) {
 		super();
+		
+		mySliders = new ArrayList<JSlider>();
+		myTextArea = new JTextArea();
+		
 		setBackground(new java.awt.Color(255, 255, 255));
 		
 		myConference = theConference;
@@ -77,7 +89,7 @@ public class ReviewTab extends JPanel {
 				button.setAlignmentX(CENTER_ALIGNMENT);
 				button.addActionListener(new ActionListener() {					
 					public void actionPerformed(ActionEvent e) {
-						new PaperDialog(p);
+						new ReviewDialog(p);
 					}
 				});
 				myCenterPanel.add(button);
@@ -92,7 +104,7 @@ public class ReviewTab extends JPanel {
 	 * 
 	 * @author Erik Tedder	 *
 	 */
-	public class PaperDialog extends JDialog {
+	public class ReviewDialog extends JDialog {
 		
 		private Paper myPaper;
 		
@@ -101,16 +113,15 @@ public class ReviewTab extends JPanel {
 		 * 
 		 * @param thePaper The paper to have contents displayed.
 		 */
-		public PaperDialog(final Paper thePaper) {
+		public ReviewDialog(final Paper thePaper) {
 			super();
-			setTitle(thePaper.getTitle());
+			setTitle("Review Paper " + thePaper.getTitle());
 			
 			myPaper = thePaper;			
 			
 			initDialog();
-			setLocationRelativeTo(null);
 			pack();
-			setPreferredSize(new Dimension(175, 500));
+			setLocationRelativeTo(null);
 			setResizable(false);
 			setVisible(true);
 		}
@@ -121,33 +132,47 @@ public class ReviewTab extends JPanel {
 		private void initDialog() {
 			JPanel panel = new JPanel();
 			panel.setLayout(new BorderLayout());
+			
+			String[] reviewQs = {"<html>Can the content be directly applied by<br>classroom "
+					+ "instructors or curriculum designers?", "<html>Does the work appeal to a broad "
+							+ "readership <br>interested in engineering education or <br>is it "
+							+ "narrowly specialized?", "Does the work address a significant problem?", 
+							"<html>Does the author build upon relevant references and<br>bodies of knowledge?", 
+							"<html>If a teaching intervention is reported, is it<br> adequately evaluated "
+							+ "in terms of its impact<br>on learning in actual use?", 
+							"<html>Does the author use methods appropriate to the<br>goals, both for the "
+							+ "instructional intervention and the<br>evaluation of impact on learning?", 
+							"<html>Did the author provide sufficient detail to replicate<br>and evaluate?", 
+							"Is the paper clearly and carefully written?", 
+							"<html>Does the paper adhere to accepted standards of <br>style, usage, and composition?"};
+			
 			add(panel);
-			panel.add(new JLabel("Selected Paper Information:"), BorderLayout.NORTH);
+			panel.add(new JLabel("Reviewing Paper: " + myPaper.getTitle(), SwingConstants.CENTER), BorderLayout.NORTH);
 			
 			JPanel centerPanel = new JPanel();
 			centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 			
-			Component separator = Box.createRigidArea(new Dimension(0, 5));
+			Component separator = Box.createRigidArea(new Dimension(0, 10));		
 			
-			JLabel titleLabel = new JLabel();
-			titleLabel.setText("<HTML><U>Title:</U></HTML>");
-			titleLabel.setAlignmentX(CENTER_ALIGNMENT);
-			centerPanel.add(titleLabel);			
-			centerPanel.add(new JLabel(myPaper.getTitle()));
 			centerPanel.add(separator);
-			JLabel abstractLabel = new JLabel();
-			abstractLabel.setText("<HTML><U>Abstract:</U></HTML>");
-			abstractLabel.setAlignmentX(CENTER_ALIGNMENT);
-			centerPanel.add(abstractLabel);
-			JLabel absLabel = new JLabel("<HTML><body style='width: 150px'>" + myPaper.getAbstract());
-			centerPanel.add(absLabel);
+			
+			JPanel reviewPanel = new JPanel(new GridLayout(9,2));
+			
+			for (String s : reviewQs) {
+				reviewPanel.add(new JLabel(s, SwingConstants.CENTER));
+				reviewPanel.add(createSliders(s));
+			}
+			centerPanel.add(reviewPanel);
 			centerPanel.add(separator);
-			JLabel fileLabel = new JLabel();
-			fileLabel.setText("<HTML><U>Abstract:</U></HTML>");
-			fileLabel.setAlignmentX(CENTER_ALIGNMENT);
-			centerPanel.add(fileLabel);
-			centerPanel.add(new JLabel(myPaper.getFile()));
-			centerPanel.add(separator);
+			
+			JPanel comment = new JPanel();
+			comment.add(new JLabel("Paper Comments:"));
+			myTextArea.setLineWrap(true);
+	        myTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	        myTextArea.setPreferredSize(new Dimension(450, 125));
+			comment.add(myTextArea);
+			
+			centerPanel.add(comment);
 			
 			panel.add(centerPanel, BorderLayout.CENTER);
 			
@@ -157,13 +182,39 @@ public class ReviewTab extends JPanel {
 			JButton okButton = new JButton("OK");
 			okButton.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
-					dispose();
+					int avg = 0;
+					for (JSlider s : mySliders) {
+						avg += s.getValue();
+					}
+					avg = avg / mySliders.size();
+					
+					String comment = myTextArea.getText();
+					
+					Review rev = new Review(avg, comment);
+					myConference.submitReview(myPaper.getId(), rev);
 				}
 			});
 			
+			okButton.setAlignmentX(CENTER_ALIGNMENT);
+			
 			bottomPanel.add(okButton);
 			
-			panel.add(bottomPanel, BorderLayout.SOUTH);
+			centerPanel.add(bottomPanel);
+		}
+		
+		private JPanel createSliders(final String question) {
+			JPanel panel = new JPanel();
+			JSlider slider = new JSlider(1, 5, 3);
+			
+			
+			slider.setMajorTickSpacing(1);
+			slider.setPaintTicks(true);
+			slider.setPaintLabels(true);
+			
+			mySliders.add(slider);
+			panel.add(slider);
+			
+			return panel;
 		}
 	}
 }
