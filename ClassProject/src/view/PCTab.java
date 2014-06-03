@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import model.Conference;
+import model.Paper;
 import model.User;
 
 /**
@@ -36,6 +37,8 @@ public class PCTab extends JScrollPane {
 		myCompleteTable = new JTable();
 		
 		myCompleteTable.setDragEnabled(false);
+		myCompleteTable.getTableHeader().setReorderingAllowed(false);
+		myCompleteTable.getTableHeader().setResizingAllowed(false);
 		
 		initClass();
 	}
@@ -50,7 +53,7 @@ public class PCTab extends JScrollPane {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        myCompleteTable.setModel(new TableModel(myConference.getUserByRole(0)));
+        myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
         myCompleteTable.setShowHorizontalLines(false);
         myCompleteTable.setShowVerticalLines(false);
         pcScrollPane.setViewportView(myCompleteTable);
@@ -101,6 +104,10 @@ public class PCTab extends JScrollPane {
 
         setViewportView(pcPanel);
 	}
+	
+	public void updateTables() {
+		myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
+	}
 
 	/**
 	 * Inner-class for a new TableModel. Contains the information of the papers and displays
@@ -111,15 +118,15 @@ public class PCTab extends JScrollPane {
 	 */
 	private class TableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"ID", "First Name", "Last Name", "Email"};
-		private ArrayList<User> myUserList;
+		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", "Reviewer 2", "Reviewer 3"};
+		private ArrayList<Paper> myPaperList;
 
-		public TableModel(final List<User> theUsers) {
-			myUserList = (ArrayList<User>) theUsers;
+		public TableModel(final ArrayList<Paper> arrayList) {
+			myPaperList = (ArrayList<Paper>) arrayList;
 		}
 
 		public int getRowCount() {
-			return myUserList.size();
+			return myPaperList.size();
 		}
 
 		public int getColumnCount() {
@@ -132,20 +139,48 @@ public class PCTab extends JScrollPane {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object ret = null;
+			List<Integer> reviewers = myPaperList.get(rowIndex).getReviewerList();
 
 			switch (columnIndex) {
 			case 0:
-				ret = (Object) myUserList.get(rowIndex).getID();
+				ret = (Object) myPaperList.get(rowIndex).getTitle();
 				break;
 			case 1:
-				ret = (Object) myUserList.get(rowIndex).getFirstName();
+				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
+				ret = (Object) author.getFirstName() + " " + author.getLastName();
 				break;
-			case 2:
-				ret = (Object) myUserList.get(rowIndex).getLastName();
-				break;
+			case 2:				
+				if (myPaperList.get(rowIndex).getSubchairID() > 0) {
+					User spc = myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
+					ret = (Object) spc.getFirstName() + " " + spc.getLastName();
+				} else {
+					ret = (Object) "N/A";
+				}						
+				break;		
 			case 3:
-				ret = (Object) myUserList.get(rowIndex).getEmail();
-				break;				
+				if (reviewers.size() > 0) {
+					User rev1 = myConference.getUser(reviewers.get(0));
+					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
+				} else {
+					ret = (Object) "N/A";
+				}
+				break;
+			case 4:
+				if (reviewers.size() > 1) {
+					User rev2 = myConference.getUser(reviewers.get(1));
+					ret = (Object) rev2.getFirstName() + " " + rev2.getLastName();
+				} else {
+					ret = (Object) "N/A";
+				}
+				break;
+			case 5:
+				if (reviewers.size() > 2) {
+					User rev3 = myConference.getUser(reviewers.get(2));
+					ret = (Object) rev3.getFirstName() + " " + rev3.getLastName();
+				} else {
+					ret = (Object) "N/A";
+				}
+				break;
 			}
 
 			return ret;

@@ -37,6 +37,10 @@ public class Conference extends Observable {
 		my_users = new HashMap<Integer, User>();
 		my_papers = new HashMap<Integer, Paper>();
 	}
+	
+	public User getUser(int theID) {
+		return my_users.get(theID);
+	}
 
 	public void addUser(User the_user) {
 		my_users.put(the_user.myID, the_user);
