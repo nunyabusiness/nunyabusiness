@@ -95,7 +95,7 @@ public class SPCTab extends JScrollPane {
 		innerPcPanel.add(unassignedScrollPane);
 		innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		
-		JLabel assignedLabel = new JLabel("Papers Needing Reviewers");
+		JLabel assignedLabel = new JLabel("Papers In Review");
 		assignedLabel.setAlignmentX(CENTER_ALIGNMENT);
 		JScrollPane assignedScrollPane = new JScrollPane();
 		assignedScrollPane.setPreferredSize(new Dimension(600, 125));
