@@ -37,7 +37,6 @@ public class ReviewTab extends JPanel {
 	
 	private Conference myConference;
 	private JPanel myCenterPanel;
-	private ArrayList<JSlider> mySliders;
 	private JTextArea myTextArea;
 
 	/**
@@ -48,7 +47,6 @@ public class ReviewTab extends JPanel {
 	public ReviewTab(final Conference theConference) {
 		super();
 		
-		mySliders = new ArrayList<JSlider>();
 		myTextArea = new JTextArea();
 		
 		setBackground(new java.awt.Color(255, 255, 255));
@@ -109,6 +107,8 @@ public class ReviewTab extends JPanel {
 		
 		private Paper myPaper;
 		
+		private ArrayList<JSlider> mySliders;
+		
 		/**
 		 * Constructor of a new PaperDialog.
 		 * 
@@ -117,6 +117,8 @@ public class ReviewTab extends JPanel {
 		public ReviewDialog(final Paper thePaper) {
 			super();
 			setTitle("Review Paper " + thePaper.getTitle());
+			
+			mySliders = new ArrayList<JSlider>();
 			
 			myPaper = thePaper;			
 			
@@ -186,7 +188,6 @@ public class ReviewTab extends JPanel {
 					int avg = 0;
 					for (JSlider s : mySliders) {
 						avg += s.getValue();
-						s.setValue(3);
 					}
 					avg = avg / mySliders.size();
 					
