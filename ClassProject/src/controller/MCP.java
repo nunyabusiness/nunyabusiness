@@ -134,7 +134,7 @@ public class MCP implements Observer
             //int paperID, int authorID, String title, String anAbstract, String file~
             Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
             current.assignSpc(spcId);
-            newCon.addPaper(current); //String title, String Abstract, String filename
+           
            
             //recomendation
             int reco = Integer.parseInt(recom[0]); 
@@ -153,7 +153,9 @@ public class MCP implements Observer
                 current.assignReviewer(revId);
                 Review view = new Review(avg, rev[2]);
                 current.submitReviewToPaper(view);
-            }
+            } 
+            
+            newCon.addPaper(current); //String title, String Abstract, String filename
 		}
 
 		fileIn.close();
@@ -218,7 +220,7 @@ public class MCP implements Observer
 				List<Review> rev = cur.getRev();
 				List<Integer> revId = cur.getReviewerList();
 				
-				for (int i = 0; i < rev.size(); i++)
+				for (int i = 0; i < revId.size(); i++)
 				{
 					int id = revId.get(i);
 					Review current = rev.get(i);
