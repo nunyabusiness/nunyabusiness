@@ -63,11 +63,10 @@ public class Conference extends Observable {
 	}
 	
 	// US01. As an Author, I want to submit a manuscript to a conference.
-	public void addPaper(Paper that) {
-		int id = my_papers.size() + 1;
-		my_papers.put(id , that);
-		my_currentUser.submitPaper(id);
-
+	public void addPaper(int pid, int authID, String title, String Abstract, String filename) {
+		my_papers.put(pid , new Paper(pid, authID, title, Abstract, filename));
+		User cur = my_users.get(authID);
+		cur.submitPaper(pid);
 	}
 	
 	public void removePaper(Paper that) {

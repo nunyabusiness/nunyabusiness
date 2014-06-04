@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -112,7 +113,17 @@ public class MCP implements Observer
             String[] item = line.split("~"); //split parts of the paper/review/recom
             String[] papers = item[0].split(",");
             String[] recom = item[1].split(",");
-            String[] review = item[2].split("^");
+            String[] review;
+            if (item[2].contains("^"))
+            {
+            	review = item[2].split("^");
+            }
+            else 
+            {
+            	review = new String[1];
+            	review[0] = item[2];
+            }
+            
            
             //paper id, author id, title, abstract, filename,spcId~recommendation~ id,score, comments^ id,score, comments
             int paperId = Integer.parseInt(papers[0]);
@@ -123,7 +134,7 @@ public class MCP implements Observer
             //int paperID, int authorID, String title, String anAbstract, String file~
             Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
             current.assignSpc(spcId);
-            newCon.addPaper(current);
+            newCon.addPaper(paperId, authorId, papers[2], papers[3], papers[4]); //String title, String Abstract, String filename
            
             //recomendation
             int reco = Integer.parseInt(recom[0]); 
@@ -195,7 +206,31 @@ public class MCP implements Observer
 		for (Paper cur: papers)
 		{
 			//int id, String first, String last, String email, int role
-			fileOut.write(cur.toString() + "\n");
+			//fileOut.write(cur.toString() + "\n");
+			//myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair
+			//+ "~" + recommendation.toString() + "~";
+			Recommendation r = cur.getRec();
+			fileOut.write(cur.getId() + "," + cur.getAuthorID() + "," + cur.getTitle() + "," + cur.getAbstract() +
+					"," + cur.getFile() + "," + cur.getSubchairID() + "~" + r.toString() + "~");
+			
+			if (cur.hasRev())
+			{
+				List<Review> rev = cur.getRev();
+				List<Integer> revId = cur.getReviewerList();
+				
+				for (int i = 0; i < rev.size(); i++)
+				{
+					int id = revId.get(i);
+					Review current = rev.get(i);
+					fileOut.write(id + "," + current.getScore() + "," + current.getComment() + "^");
+				}
+			}
+			else
+			{
+				fileOut.write(0 + "," + 0 + ",null" );
+			}
+			
+			fileOut.write("\n");
 		}
 		
 		fileOut.close();

@@ -67,7 +67,7 @@ public class Review
 		return comments;
 	}
 	
-	public String toString() {
-		return score + "," + comments;
-	}
+//	public String toString() {
+//		return score + "," + comments;
+//	}
 }

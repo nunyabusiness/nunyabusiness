@@ -160,15 +160,30 @@ public class Paper {
 	public String getFile() {
 		return myFile;
 	}
-
-	public String toString() {
-		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair
-				+ "~" + recommendation.toString() + "~";
-		
-		for (Review r : myReviews) {
-			output = output + r.toString() + "^";
-		}
-		
-		return output;
+	
+	public Recommendation getRec()
+	{
+		return recommendation;
 	}
+	
+	public boolean hasRev()
+	{
+		return myReviews.size() != 0;
+	}
+	
+	public List<Review> getRev()
+	{
+		return myReviews;
+	}
+
+//	public String toString() {
+//		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair
+//				+ "~" + recommendation.toString() + "~";
+//		
+//		for (Review r : myReviews) {
+//			output = output + r.toString() + "^";
+//		}
+//		
+//		return output;
+//	}
 }
