@@ -33,7 +33,7 @@ import model.Conference;
 @SuppressWarnings("serial")
 public class SubmitTab extends JPanel {
 	
-	private static final String PATH = "src/files/";
+	private static final String PATH = "Papers/";
 	
 	/**
 	 * The current conference.
@@ -232,8 +232,13 @@ public class SubmitTab extends JPanel {
 		InputStream is = null;
 	    OutputStream os = null;
 	    try {
-	        is = new FileInputStream(myFile);
-	        os = new FileOutputStream(new File(PATH + myFile.getName()));
+	    	is = new FileInputStream(myFile);
+	    	String dir = PATH + myConference.getCurrentUser().getID() + "/" + myFile.getName();
+	    	File out = new File(dir);
+	    	if (!out.exists())
+	    		out.getParentFile().mkdirs();
+	    	out.createNewFile();
+	        os = new FileOutputStream(out);
 	        byte[] buffer = new byte[1024];
 	        int length;
 	        while ((length = is.read(buffer)) > 0) {

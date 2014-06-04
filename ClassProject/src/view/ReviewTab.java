@@ -186,10 +186,12 @@ public class ReviewTab extends JPanel {
 					int avg = 0;
 					for (JSlider s : mySliders) {
 						avg += s.getValue();
+						s.setValue(3);
 					}
 					avg = avg / mySliders.size();
 					
 					String comment = myTextArea.getText();
+					myTextArea.setText("");
 					
 					Review rev = new Review(avg, comment);
 					myConference.submitReview(myPaper.getId(), rev);

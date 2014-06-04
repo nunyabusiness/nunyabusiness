@@ -55,7 +55,7 @@ public class MCP implements Observer
 	 */
 	private void loadFiles() throws IOException
 	{
-		String UserFileName = "src/files/usercsv.txt";
+		String UserFileName = "Files/usercsv.txt";
 		BufferedReader fileIn = null;
 		char para = '"';
 		char blank = ' ';
@@ -93,7 +93,7 @@ public class MCP implements Observer
 		fileIn.close();
 		
 		//new file
-		String PaperFileName = "src/files/papercsv.txt";
+		String PaperFileName = "Files/papercsv.txt";
 		
 		//try catch
 		try 
@@ -169,7 +169,7 @@ public class MCP implements Observer
 	 */
 	public void writeOut(ArrayList<User> users, ArrayList<Paper> papers) throws IOException
 	{
-		String UserFileName = "src/files/usercsv.txt";
+		String UserFileName = "Files/usercsv.txt";
 		BufferedWriter fileOut = null;
 		
 		//try catch
@@ -192,7 +192,7 @@ public class MCP implements Observer
 		
 		fileOut.close();
 		
-		String PaperFileName = "src/files/papercsv.txt";
+		String PaperFileName = "Files/papercsv.txt";
 		
 		//try catch
 		try 
