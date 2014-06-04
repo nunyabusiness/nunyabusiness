@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -81,10 +78,9 @@ public class PCTab extends JScrollPane {
         myCompleteTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					JOptionPane.showMessageDialog(null, myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 1) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 2) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 3));
+					Integer paperID = (Integer) myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0);
+					
+					new AssignDialog(myConference.getUserByRole(2),	myConference.getPaper(paperID));
 				}
 			}
 		});
@@ -147,7 +143,67 @@ public class PCTab extends JScrollPane {
 									+ "subprogram chair?", "Change User's Role", 
 									JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION){
-						nameArray[list.getSelectedIndex()].setRole(2);
+						myConference.changeUserRole(nameArray[list.getSelectedIndex()].getID(), 2);
+						dispose();
+					}
+				}
+			});
+			buttonPanel.add(set);
+			buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+			
+			JButton cancel = new JButton("Cancel");
+			cancel.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			buttonPanel.add(cancel);
+			
+			add(buttonPanel, BorderLayout.SOUTH);
+		}
+	}
+	
+	private class AssignDialog extends JDialog {
+		
+		private ArrayList<User> myUsers;
+		
+		private Paper myPaper;
+		
+		public AssignDialog(final List<User> theUsers, final Paper thePaper) {
+			super();
+			setTitle("Assign a subprogram chair");
+			
+			myUsers = (ArrayList<User>) theUsers;
+			myPaper = thePaper;
+			
+			initDialog();
+						
+			//setSize(new Dimension(175, 300));
+			pack();
+			setLocationRelativeTo(null);
+			setResizable(false);
+			setVisible(true);
+		}
+
+		private void initDialog() {
+			JPanel panel = new JPanel();
+			
+			final User[] nameArray = myUsers.toArray(new User[0]);
+			
+			final JComboBox<User> list = new JComboBox<User>(nameArray);
+			panel.add(list);
+			add(new JLabel("Select a subprogram chair to be assigned:", SwingConstants.CENTER), BorderLayout.NORTH);
+			add(panel, BorderLayout.CENTER);
+			
+			JPanel buttonPanel = new JPanel();
+			JButton set = new JButton("Assign to Paper");
+			set.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
+							+ "assign " + nameArray[list.getSelectedIndex()] + " to Paper" + myPaper.getTitle(), "Assign To Paper", 
+									JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION){
+						myConference.assignSpc(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
 						dispose();
 					}
 				}
@@ -176,7 +232,7 @@ public class PCTab extends JScrollPane {
 	 */
 	private class TableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", 
+		private String[] columnNames = {"ID", "Title", "Author Name", "SPC", "Reviewer 1", 
 										"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
@@ -202,13 +258,16 @@ public class PCTab extends JScrollPane {
 
 			switch (columnIndex) {
 			case 0:
-				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				ret = (Object) myPaperList.get(rowIndex).getId();
 				break;
 			case 1:
+				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				break;
+			case 2:
 				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
 				ret = (Object) author.getFirstName() + " " + author.getLastName();
 				break;
-			case 2:				
+			case 3:				
 				if (myPaperList.get(rowIndex).getSubchairID() > 0) {
 					User spc = myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
 					ret = (Object) spc.getFirstName() + " " + spc.getLastName();
@@ -216,7 +275,7 @@ public class PCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}						
 				break;		
-			case 3:
+			case 4:
 				if (reviewers.size() > 0) {
 					User rev1 = myConference.getUser(reviewers.get(0));
 					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
@@ -224,7 +283,7 @@ public class PCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 4:
+			case 5:
 				if (reviewers.size() > 1) {
 					User rev2 = myConference.getUser(reviewers.get(1));
 					ret = (Object) rev2.getFirstName() + " " + rev2.getLastName();
@@ -232,7 +291,7 @@ public class PCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 5:
+			case 6:
 				if (reviewers.size() > 2) {
 					User rev3 = myConference.getUser(reviewers.get(2));
 					ret = (Object) rev3.getFirstName() + " " + rev3.getLastName();

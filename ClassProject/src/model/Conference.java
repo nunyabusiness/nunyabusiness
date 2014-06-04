@@ -41,6 +41,10 @@ public class Conference extends Observable {
 	public User getUser(int theID) {
 		return my_users.get(theID);
 	}
+	
+	public Paper getPaper(int theID) {
+		return my_papers.get(theID);
+	}
 
 	public void addUser(User the_user) {
 		my_users.put(the_user.myID, the_user);
@@ -174,6 +178,10 @@ public class Conference extends Observable {
 	// no) on a submitted manuscript.
 	public void submitDecision(int paperKey, int decision) {
 		my_papers.get(paperKey).setDecision(decision);
+	}
+	
+	public void changeUserRole(int theUserID, int theRole) {
+		my_users.get(theUserID).setRole(theRole);
 	}
 
 	/**

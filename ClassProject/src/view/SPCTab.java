@@ -15,10 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -36,92 +34,94 @@ import model.User;
  */
 @SuppressWarnings("serial")
 public class SPCTab extends JScrollPane {
-	
+
 	private Conference myConference;
 	private JTable myCompleteTable;
-	
+
 	public SPCTab(final Conference theConference) {
 		super();
-		
+
 		myConference = theConference;
 		myCompleteTable = new JTable();
-		
+
 		myCompleteTable.setDragEnabled(false);
 		myCompleteTable.getTableHeader().setReorderingAllowed(false);
 		myCompleteTable.getTableHeader().setResizingAllowed(false);
-		
+
 		initClass();
 	}
-	
+
 	private void initClass() {
 		JPanel pcPanel = new JPanel();
 		JPanel innerPcPanel = new JPanel();
 		innerPcPanel.setBackground(new java.awt.Color(255, 255, 255));
 		innerPcPanel.setLayout(new BoxLayout(innerPcPanel, BoxLayout.Y_AXIS));
-		
+
 		JLabel completedLabel = new JLabel("All Papers");
 		completedLabel.setAlignmentX(CENTER_ALIGNMENT);
 		JScrollPane pcScrollPane = new JScrollPane();
 		pcScrollPane.setPreferredSize(new Dimension(600, 125));
-		
+
 		setBackground(new java.awt.Color(255, 255, 255));
-        setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pcPanel.setBackground(new java.awt.Color(255, 255, 255));
+		pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-//        myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));
-        myCompleteTable.setShowHorizontalLines(false);
-        myCompleteTable.setShowVerticalLines(false);
-        pcScrollPane.setViewportView(myCompleteTable);
+		myCompleteTable.setShowHorizontalLines(false);
+		myCompleteTable.setShowVerticalLines(false);
+		pcScrollPane.setViewportView(myCompleteTable);
 
-        completedLabel.setToolTipText("From this table you will be able to look over any "
-        		+ "papers that have already completed their review process. ");
+		completedLabel.setToolTipText("From this table you will be able to look over any "
+				+ "papers that have already completed their review process. ");
 
-        myCompleteTable.addMouseListener(new MouseAdapter() {			
+		myCompleteTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					JOptionPane.showMessageDialog(null, myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 1) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 2) 
-							+ " " + myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 3));
+					Integer paperID = (Integer) myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0);
+					
+					new AssignDialog(myConference.getUserByRole(4),	myConference.getPaper(paperID));
 				}
 			}
 		});
-        
-        innerPcPanel.add(completedLabel);
-        innerPcPanel.add(pcScrollPane);
-        innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        JButton assignSPC = new JButton("New Reviewer");
-        assignSPC.addActionListener(new ActionListener() {			
+
+		innerPcPanel.add(completedLabel);
+		innerPcPanel.add(pcScrollPane);
+		innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		JButton assignSPC = new JButton("New Reviewer");
+		assignSPC.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
 				new ReviewDialog(myConference.getUserByRole(0));
 			}
 		});
-        assignSPC.setAlignmentX(CENTER_ALIGNMENT);
-        innerPcPanel.add(assignSPC);
+		assignSPC.setAlignmentX(CENTER_ALIGNMENT);
+		innerPcPanel.add(assignSPC);
 
-        pcPanel.add(innerPcPanel);
-        setViewportView(pcPanel);
+		pcPanel.add(innerPcPanel);
+		setViewportView(pcPanel);
 	}
-	
+
 	public void updateTables() {
 		if (myConference.getCurrentUser().getID() == 2) {
 			myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));
 		}
 	}
-	
-	private class ReviewDialog extends JDialog {
-		
+
+
+	private class AssignDialog extends JDialog {
+
 		private ArrayList<User> myUsers;
-		
-		public ReviewDialog(final List<User> theUsers) {
+
+		private Paper myPaper;
+
+		public AssignDialog(final List<User> theUsers, final Paper thePaper) {
 			super();
-			setTitle("Assign a Reviewer");
-			
+			setTitle("Assign a subprogram chair");
+
 			myUsers = (ArrayList<User>) theUsers;
-			
+			myPaper = thePaper;
+
 			initDialog();
-						
+
 			//setSize(new Dimension(175, 300));
 			pack();
 			setLocationRelativeTo(null);
@@ -131,31 +131,45 @@ public class SPCTab extends JScrollPane {
 
 		private void initDialog() {
 			JPanel panel = new JPanel();
-			
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
 			final User[] nameArray = myUsers.toArray(new User[0]);
-			
+
 			final JComboBox<User> list = new JComboBox<User>(nameArray);
+			final JComboBox<User> list2 = new JComboBox<User>(nameArray);
+			final JComboBox<User> list3 = new JComboBox<User>(nameArray);
 			panel.add(list);
-			add(new JLabel("Select a user to be set to a reviewer:", SwingConstants.CENTER), BorderLayout.NORTH);
+			panel.add(list2);
+			panel.add(list3);
+			add(new JLabel("Select a Reviewer to be assigned:", SwingConstants.CENTER), BorderLayout.NORTH);
 			add(panel, BorderLayout.CENTER);
-			
+
 			JPanel buttonPanel = new JPanel();
-			JButton set = new JButton("Change Role");
+			JButton set = new JButton("Assign to Paper");
 			set.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
 					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
-							+ "change " + nameArray[list.getSelectedIndex()] + "'s role to "
-									+ "reviwer?", "Change User's Role", 
-									JOptionPane.YES_NO_OPTION);
+							+ "assign reviewers:\n\n" + nameArray[list.getSelectedIndex()] 
+							+ "\n" + nameArray[list2.getSelectedIndex()] + "\n" 
+							+ nameArray[list3.getSelectedIndex()] + "\n\nto Paper" 
+							+ myPaper.getTitle(), "Assign To Paper", 
+							JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION){
-						nameArray[list.getSelectedIndex()].setRole(4);
-						dispose();
+						if (nameArray[list.getSelectedIndex()].getID() !=  nameArray[list2.getSelectedIndex()].getID() 
+								&& nameArray[list.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID() 
+								&& nameArray[list2.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID()) {
+							myConference.assignReviewerToPaper(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(null, "Cannot assign the same reviewer twice to a paper. Try again.");
+						}
+						
 					}
 				}
 			});
 			buttonPanel.add(set);
 			buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-			
+
 			JButton cancel = new JButton("Cancel");
 			cancel.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
@@ -163,7 +177,65 @@ public class SPCTab extends JScrollPane {
 				}
 			});
 			buttonPanel.add(cancel);
-			
+
+			add(buttonPanel, BorderLayout.SOUTH);
+		}
+	}
+
+	private class ReviewDialog extends JDialog {
+
+		private ArrayList<User> myUsers;
+
+		public ReviewDialog(final List<User> theUsers) {
+			super();
+			setTitle("Assign a Reviewer");
+
+			myUsers = (ArrayList<User>) theUsers;
+
+			initDialog();
+
+			//setSize(new Dimension(175, 300));
+			pack();
+			setLocationRelativeTo(null);
+			setResizable(false);
+			setVisible(true);
+		}
+
+		private void initDialog() {
+			JPanel panel = new JPanel();
+
+			final User[] nameArray = myUsers.toArray(new User[0]);
+
+			final JComboBox<User> list = new JComboBox<User>(nameArray);
+			panel.add(list);
+			add(new JLabel("Select a user to be set to a reviewer:", SwingConstants.CENTER), BorderLayout.NORTH);
+			add(panel, BorderLayout.CENTER);
+
+			JPanel buttonPanel = new JPanel();
+			JButton set = new JButton("Change Role");
+			set.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
+							+ "change " + nameArray[list.getSelectedIndex()] + "'s role to "
+							+ "reviwer?", "Change User's Role", 
+							JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION){
+						myConference.changeUserRole(nameArray[list.getSelectedIndex()].getID(), 4);
+						dispose();
+					}
+				}
+			});
+			buttonPanel.add(set);
+			buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+			JButton cancel = new JButton("Cancel");
+			cancel.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			buttonPanel.add(cancel);
+
 			add(buttonPanel, BorderLayout.SOUTH);
 		}
 	}
@@ -178,7 +250,7 @@ public class SPCTab extends JScrollPane {
 	private class TableModel extends AbstractTableModel {
 
 		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", 
-										"Reviewer 2", "Reviewer 3"};
+				"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
 		public TableModel(final List<Paper> arrayList) {
