@@ -24,6 +24,7 @@ import javax.swing.table.AbstractTableModel;
 
 import model.Conference;
 import model.Paper;
+import model.Review;
 import model.User;
 
 /**
@@ -36,17 +37,23 @@ import model.User;
 public class PCTab extends JScrollPane {
 	
 	private Conference myConference;
-	private JTable myCompleteTable;
+	private JTable assignmentTable;
+	private JTable processTable;
 	
 	public PCTab(final Conference theConference) {
 		super();
 		
 		myConference = theConference;
-		myCompleteTable = new JTable();
+		assignmentTable = new JTable();
+		processTable = new JTable();
 		
-		myCompleteTable.setDragEnabled(false);
-		myCompleteTable.getTableHeader().setReorderingAllowed(false);
-		myCompleteTable.getTableHeader().setResizingAllowed(false);
+		assignmentTable.setDragEnabled(false);
+		assignmentTable.getTableHeader().setReorderingAllowed(false);
+		assignmentTable.getTableHeader().setResizingAllowed(false);
+		
+		processTable.setDragEnabled(false);
+		processTable.getTableHeader().setReorderingAllowed(false);
+		processTable.getTableHeader().setResizingAllowed(false);
 		
 		initClass();
 	}
@@ -57,7 +64,7 @@ public class PCTab extends JScrollPane {
 		innerPcPanel.setBackground(new java.awt.Color(255, 255, 255));
 		innerPcPanel.setLayout(new BoxLayout(innerPcPanel, BoxLayout.Y_AXIS));
 		
-		JLabel completedLabel = new JLabel("All Papers");
+		JLabel completedLabel = new JLabel("Papers Needing Assignment");
 		completedLabel.setAlignmentX(CENTER_ALIGNMENT);
 		JScrollPane pcScrollPane = new JScrollPane();
 		pcScrollPane.setPreferredSize(new Dimension(600, 125));
@@ -67,26 +74,50 @@ public class PCTab extends JScrollPane {
 
         pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
-        myCompleteTable.setShowHorizontalLines(false);
-        myCompleteTable.setShowVerticalLines(false);
-        pcScrollPane.setViewportView(myCompleteTable);
+        assignmentTable.setModel(new UnassignedTableModel(myConference.getAllPapers()));
+        assignmentTable.setShowHorizontalLines(false);
+        assignmentTable.setShowVerticalLines(false);
+        pcScrollPane.setViewportView(assignmentTable);
 
         completedLabel.setToolTipText("From this table you will be able to look over any "
-        		+ "papers that have already completed their review process. ");
+        		+ "papers that need to be assigned to a subprogram chair.");
         
-        myCompleteTable.addMouseListener(new MouseAdapter() {			
+        assignmentTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					Integer paperID = (Integer) myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0);
+					Integer paperID = (Integer) assignmentTable.getValueAt(assignmentTable.getSelectedRow(), 0);
 					
 					new AssignDialog(myConference.getUserByRole(2),	myConference.getPaper(paperID));
 				}
 			}
 		});
         
+        JLabel assignedLabel = new JLabel("Papers In Review");
+        assignedLabel.setAlignmentX(CENTER_ALIGNMENT);
+		JScrollPane pcScrollPane1 = new JScrollPane();
+		pcScrollPane1.setPreferredSize(new Dimension(600, 125));
+		
+		processTable.setShowHorizontalLines(false);
+		processTable.setShowVerticalLines(false);
+        pcScrollPane1.setViewportView(processTable);
+
+        assignedLabel.setToolTipText("From this table you will be able to look over any "
+        		+ "papers in the review process.");
+        
+        processTable.addMouseListener(new MouseAdapter() {			
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					//do nothing for now
+				}
+			}
+		});
+        
         innerPcPanel.add(completedLabel);
         innerPcPanel.add(pcScrollPane);
+        innerPcPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        innerPcPanel.add(assignedLabel);
+        innerPcPanel.add(pcScrollPane1);
         innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         JButton assignSPC = new JButton("New Subprogram Chair");
         assignSPC.addActionListener(new ActionListener() {			
@@ -102,7 +133,21 @@ public class PCTab extends JScrollPane {
 	}
 	
 	public void updateTables() {
-		myCompleteTable.setModel(new TableModel(myConference.getAllPapers()));
+		ArrayList<Paper> allPapers = myConference.getAllPapers();
+		ArrayList<Paper> unassignedPapers = new ArrayList<Paper>();
+		ArrayList<Paper> assignedPapers = new ArrayList<Paper>();
+		
+		for (Paper p : allPapers) {
+			if (p.getSubchairID() != 0) {
+				assignedPapers.add(p);
+			} else {
+				unassignedPapers.add(p);
+			}
+		}
+		
+		
+		assignmentTable.setModel(new UnassignedTableModel(unassignedPapers));
+		processTable.setModel(new AssignedTableModel(assignedPapers));
 	}
 	
 	private class SPCDialog extends JDialog {
@@ -230,13 +275,12 @@ public class PCTab extends JScrollPane {
 	 * @author Erik Tedder
 	 *
 	 */
-	private class TableModel extends AbstractTableModel {
+	private class UnassignedTableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"ID", "Title", "Author Name", "SPC", "Reviewer 1", 
-										"Reviewer 2", "Reviewer 3"};
+		private String[] columnNames = {"ID", "Title", "Author Name", "SPC"};
 		private ArrayList<Paper> myPaperList;
 
-		public TableModel(final ArrayList<Paper> arrayList) {
+		public UnassignedTableModel(final ArrayList<Paper> arrayList) {
 			myPaperList = (ArrayList<Paper>) arrayList;
 		}
 
@@ -254,7 +298,6 @@ public class PCTab extends JScrollPane {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object ret = null;
-			List<Integer> reviewers = myPaperList.get(rowIndex).getReviewerList();
 
 			switch (columnIndex) {
 			case 0:
@@ -275,28 +318,84 @@ public class PCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}						
 				break;		
-			case 4:
-				if (reviewers.size() > 0 && reviewers.get(0) != 0) {
-					User rev1 = myConference.getUser(reviewers.get(0));
-					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
+			}
+
+			return ret;
+		}
+
+	}
+	
+	/**
+	 * Inner-class for a new TableModel. Contains the information of the papers and displays
+	 * it accordingly in the appropriate JTable.
+	 * 
+	 * @author Erik Tedder
+	 *
+	 */
+	private class AssignedTableModel extends AbstractTableModel {
+
+		private String[] columnNames = {"ID", "Title", "Author Name", "SPC", "Review 1", 
+										"Review 2", "Review 3"};
+		private ArrayList<Paper> myPaperList;
+
+		public AssignedTableModel(final ArrayList<Paper> arrayList) {
+			myPaperList = (ArrayList<Paper>) arrayList;
+		}
+
+		public int getRowCount() {
+			return myPaperList.size();
+		}
+
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+
+		public String getColumnName(int column) {
+			return columnNames[column];
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Object ret = null;
+			List<Review> reviews = myPaperList.get(rowIndex).getRev();
+
+			switch (columnIndex) {
+			case 0:
+				ret = (Object) myPaperList.get(rowIndex).getId();
+				break;
+			case 1:
+				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				break;
+			case 2:
+				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
+				ret = (Object) author.getFirstName() + " " + author.getLastName();
+				break;
+			case 3:				
+				if (myPaperList.get(rowIndex).getRec() != null 
+				&& myPaperList.get(rowIndex).getRec().getState() != 0) {
+					ret = (Object) myPaperList.get(rowIndex).getRec().getState();
 				} else {
-					ret = (Object) "N/A";
+					ret = (Object) myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
+				}						
+				break;		
+			case 4:
+				if (reviews.size() > 0 && reviews.get(0).getScore() != 0) {
+					ret = (Object) reviews.get(0).getScore();
+				} else {
+					ret = (Object) "None";
 				}
 				break;
 			case 5:
-				if (reviewers.size() > 1) {
-					User rev2 = myConference.getUser(reviewers.get(1));
-					ret = (Object) rev2.getFirstName() + " " + rev2.getLastName();
+				if (reviews.size() > 1 && reviews.get(1).getScore() != 0) {
+					ret = (Object) reviews.get(1).getScore();
 				} else {
-					ret = (Object) "N/A";
+					ret = (Object) "None";
 				}
 				break;
 			case 6:
-				if (reviewers.size() > 2) {
-					User rev3 = myConference.getUser(reviewers.get(2));
-					ret = (Object) rev3.getFirstName() + " " + rev3.getLastName();
+				if (reviews.size() > 2 && reviews.get(2).getScore() != 0) {
+					ret = (Object) reviews.get(2).getScore();
 				} else {
-					ret = (Object) "N/A";
+					ret = (Object) "None";
 				}
 				break;
 			}

@@ -24,6 +24,10 @@ public class Recommendation {
 		rationale = comments;
 	}
 	
+	public int getState() {
+		return state;
+	}
+	
 	public String toString() {
 		return state + "," + rationale;
 	}

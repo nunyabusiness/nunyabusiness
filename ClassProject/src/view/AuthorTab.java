@@ -110,8 +110,8 @@ public class AuthorTab extends JPanel {
 			myPaper = thePaper;			
 			
 			initDialog();
-			setLocationRelativeTo(null);
 			pack();
+			setLocationRelativeTo(null);
 			setPreferredSize(new Dimension(175, 500));
 			setResizable(false);
 			setVisible(true);

@@ -24,6 +24,7 @@ import javax.swing.table.AbstractTableModel;
 
 import model.Conference;
 import model.Paper;
+import model.Review;
 import model.User;
 
 /**
@@ -36,17 +37,23 @@ import model.User;
 public class SPCTab extends JScrollPane {
 
 	private Conference myConference;
-	private JTable myCompleteTable;
+	private JTable myUnassignedTable;
+	private JTable myAssignedTable;
 
 	public SPCTab(final Conference theConference) {
 		super();
 
 		myConference = theConference;
-		myCompleteTable = new JTable();
+		myUnassignedTable = new JTable();
+		myAssignedTable = new JTable();
 
-		myCompleteTable.setDragEnabled(false);
-		myCompleteTable.getTableHeader().setReorderingAllowed(false);
-		myCompleteTable.getTableHeader().setResizingAllowed(false);
+		myUnassignedTable.setDragEnabled(false);
+		myUnassignedTable.getTableHeader().setReorderingAllowed(false);
+		myUnassignedTable.getTableHeader().setResizingAllowed(false);
+		
+		myAssignedTable.setDragEnabled(false);
+		myAssignedTable.getTableHeader().setReorderingAllowed(false);
+		myAssignedTable.getTableHeader().setResizingAllowed(false);
 
 		initClass();
 	}
@@ -57,36 +64,61 @@ public class SPCTab extends JScrollPane {
 		innerPcPanel.setBackground(new java.awt.Color(255, 255, 255));
 		innerPcPanel.setLayout(new BoxLayout(innerPcPanel, BoxLayout.Y_AXIS));
 
-		JLabel completedLabel = new JLabel("All Papers");
-		completedLabel.setAlignmentX(CENTER_ALIGNMENT);
-		JScrollPane pcScrollPane = new JScrollPane();
-		pcScrollPane.setPreferredSize(new Dimension(600, 125));
+		JLabel unassignedLabel = new JLabel("Papers Needing Reviewers");
+		unassignedLabel.setAlignmentX(CENTER_ALIGNMENT);
+		JScrollPane unassignedScrollPane = new JScrollPane();
+		unassignedScrollPane.setPreferredSize(new Dimension(600, 125));
 
 		setBackground(new java.awt.Color(255, 255, 255));
 		setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		pcPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-		myCompleteTable.setShowHorizontalLines(false);
-		myCompleteTable.setShowVerticalLines(false);
-		pcScrollPane.setViewportView(myCompleteTable);
+		myUnassignedTable.setShowHorizontalLines(false);
+		myUnassignedTable.setShowVerticalLines(false);
+		unassignedScrollPane.setViewportView(myUnassignedTable);
 
-		completedLabel.setToolTipText("From this table you will be able to look over any "
+		unassignedLabel.setToolTipText("From this table you will be able to look over any "
 				+ "papers that have already completed their review process. ");
 
-		myCompleteTable.addMouseListener(new MouseAdapter() {			
+		myUnassignedTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					Integer paperID = (Integer) myCompleteTable.getValueAt(myCompleteTable.getSelectedRow(), 0);
+					Integer paperID = (Integer) myUnassignedTable.getValueAt(myUnassignedTable.getSelectedRow(), 0);
 					
 					new AssignDialog(myConference.getUserByRole(4),	myConference.getPaper(paperID));
 				}
 			}
 		});
 
-		innerPcPanel.add(completedLabel);
-		innerPcPanel.add(pcScrollPane);
+		innerPcPanel.add(unassignedLabel);
+		innerPcPanel.add(unassignedScrollPane);
 		innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		
+		JLabel assignedLabel = new JLabel("Papers Needing Reviewers");
+		assignedLabel.setAlignmentX(CENTER_ALIGNMENT);
+		JScrollPane assignedScrollPane = new JScrollPane();
+		assignedScrollPane.setPreferredSize(new Dimension(600, 125));
+
+		myAssignedTable.setShowHorizontalLines(false);
+		myAssignedTable.setShowVerticalLines(false);
+		assignedScrollPane.setViewportView(myAssignedTable);
+
+		assignedLabel.setToolTipText("From this table you will be able to look over any "
+				+ "papers that have already completed their review process. ");
+
+		myAssignedTable.addMouseListener(new MouseAdapter() {			
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					//do nothing
+				}
+			}
+		});
+
+		innerPcPanel.add(assignedLabel);
+		innerPcPanel.add(assignedScrollPane);
+		innerPcPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		
 		JButton assignSPC = new JButton("New Reviewer");
 		assignSPC.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +133,21 @@ public class SPCTab extends JScrollPane {
 	}
 
 	public void updateTables() {
-		myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));		
+		ArrayList<Paper> allPapers = (ArrayList<Paper>) myConference.getPapersBySpc(myConference.getCurrentUser().getID());
+		ArrayList<Paper> unassignedPapers = new ArrayList<Paper>();
+		ArrayList<Paper> assignedPapers = new ArrayList<Paper>();
+		
+		for (Paper p : allPapers) {
+			if (p.getReviewerList().size() != 3) {
+				unassignedPapers.add(p);
+			} else {
+				assignedPapers.add(p);
+			}
+		}
+		
+		
+		myUnassignedTable.setModel(new UnassignedTableModel(unassignedPapers));	
+		myAssignedTable.setModel(new AssignedTableModel(assignedPapers));
 	}
 
 
@@ -260,13 +306,13 @@ public class SPCTab extends JScrollPane {
 	 * @author Erik Tedder
 	 *
 	 */
-	private class TableModel extends AbstractTableModel {
+	private class UnassignedTableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"ID", "Title", "Author Name", "SPC", "Reviewer 1", 
+		private String[] columnNames = {"ID", "Title", "Author Name", "Reviewer 1", 
 										"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
-		public TableModel(final List<Paper> arrayList) {
+		public UnassignedTableModel(final List<Paper> arrayList) {
 			myPaperList = (ArrayList<Paper>) arrayList;
 		}
 
@@ -296,16 +342,8 @@ public class SPCTab extends JScrollPane {
 			case 2:
 				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
 				ret = (Object) author.getFirstName() + " " + author.getLastName();
-				break;
-			case 3:				
-				if (myPaperList.get(rowIndex).getSubchairID() > 0) {
-					User spc = myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
-					ret = (Object) spc.getFirstName() + " " + spc.getLastName();
-				} else {
-					ret = (Object) "N/A";
-				}						
-				break;		
-			case 4:
+				break;	
+			case 3:
 				if (reviewers.size() > 0 && reviewers.get(0) != 0) {
 					User rev1 = myConference.getUser(reviewers.get(0));
 					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
@@ -313,7 +351,7 @@ public class SPCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 5:
+			case 4:
 				if (reviewers.size() > 1) {
 					User rev2 = myConference.getUser(reviewers.get(1));
 					ret = (Object) rev2.getFirstName() + " " + rev2.getLastName();
@@ -321,7 +359,7 @@ public class SPCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 6:
+			case 5:
 				if (reviewers.size() > 2) {
 					User rev3 = myConference.getUser(reviewers.get(2));
 					ret = (Object) rev3.getFirstName() + " " + rev3.getLastName();
@@ -335,5 +373,82 @@ public class SPCTab extends JScrollPane {
 		}
 
 	}
+	
+	/**
+	 * Inner-class for a new TableModel. Contains the information of the papers and displays
+	 * it accordingly in the appropriate JTable.
+	 * 
+	 * @author Erik Tedder
+	 *
+	 */
+	private class AssignedTableModel extends AbstractTableModel {
+
+		private String[] columnNames = {"ID", "Title", "Author Name", "Review 1", 
+										"Review 2", "Review 3"};
+		private ArrayList<Paper> myPaperList;
+
+		public AssignedTableModel(final ArrayList<Paper> arrayList) {
+			myPaperList = (ArrayList<Paper>) arrayList;
+		}
+
+		public int getRowCount() {
+			return myPaperList.size();
+		}
+
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+
+		public String getColumnName(int column) {
+			return columnNames[column];
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Object ret = null;
+			List<Review> reviews = myPaperList.get(rowIndex).getRev();
+			List<Integer> reviewers = myPaperList.get(rowIndex).getReviewerList();
+
+			switch (columnIndex) {
+			case 0:
+				ret = (Object) myPaperList.get(rowIndex).getId();
+				break;
+			case 1:
+				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				break;
+			case 2:
+				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
+				ret = (Object) author.getFirstName() + " " + author.getLastName();
+				break;	
+			case 3:
+				if (reviews.size() > 0 && reviews.get(0).getScore() != 0) {
+					ret = (Object) reviews.get(0).getScore();
+				} else {
+					User rev = myConference.getUser(reviewers.get(0));
+					ret = (Object) rev.getFirstName() + " " + rev.getLastName();
+				}
+				break;
+			case 4:
+				if (reviews.size() > 1 && reviews.get(1).getScore() != 0) {
+					ret = (Object) reviews.get(1).getScore();
+				} else {
+					User rev = myConference.getUser(reviewers.get(1));
+					ret = (Object) rev.getFirstName() + " " + rev.getLastName();
+				}
+				break;
+			case 5:
+				if (reviews.size() > 2 && reviews.get(2).getScore() != 0) {
+					ret = (Object) reviews.get(2).getScore();
+				} else {
+					User rev = myConference.getUser(reviewers.get(2));
+					ret = (Object) rev.getFirstName() + " " + rev.getLastName();
+				}
+				break;
+			}
+
+			return ret;
+		}
+
+	}
+
 
 }
