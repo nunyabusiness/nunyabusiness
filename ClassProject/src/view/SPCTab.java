@@ -306,7 +306,7 @@ public class SPCTab extends JScrollPane {
 				}						
 				break;		
 			case 4:
-				if (reviewers.size() > 0) {
+				if (reviewers.size() > 0 && reviewers.get(0) != 0) {
 					User rev1 = myConference.getUser(reviewers.get(0));
 					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
 				} else {
