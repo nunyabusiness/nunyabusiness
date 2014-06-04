@@ -136,9 +136,22 @@ public class SPCTab extends JScrollPane {
 			final JComboBox<User> list = new JComboBox<User>(nameArray);
 			final JComboBox<User> list2 = new JComboBox<User>(nameArray);
 			final JComboBox<User> list3 = new JComboBox<User>(nameArray);
-			panel.add(list);
-			panel.add(list2);
-			panel.add(list3);
+			
+			JPanel rev1 = new JPanel();
+			rev1.add(new JLabel("Reviewer 1:"));
+			rev1.add(list);
+			panel.add(rev1);
+			
+			JPanel rev2 = new JPanel();
+			rev2.add(new JLabel("Reviewer 2:"));
+			rev2.add(list2);
+			panel.add(rev2);
+			
+			JPanel rev3 = new JPanel();
+			rev3.add(new JLabel("Reviewer 3:"));
+			rev3.add(list3);
+			panel.add(rev3);
+			
 			add(new JLabel("Select a Reviewer to be assigned:", SwingConstants.CENTER), BorderLayout.NORTH);
 			add(panel, BorderLayout.CENTER);
 
