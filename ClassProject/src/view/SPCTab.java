@@ -101,9 +101,7 @@ public class SPCTab extends JScrollPane {
 	}
 
 	public void updateTables() {
-		if (myConference.getCurrentUser().getID() == 2) {
-			myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));
-		}
+		myCompleteTable.setModel(new TableModel(myConference.getPapersBySpc(myConference.getCurrentUser().getID())));		
 	}
 
 
@@ -151,7 +149,7 @@ public class SPCTab extends JScrollPane {
 					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
 							+ "assign reviewers:\n\n" + nameArray[list.getSelectedIndex()] 
 							+ "\n" + nameArray[list2.getSelectedIndex()] + "\n" 
-							+ nameArray[list3.getSelectedIndex()] + "\n\nto Paper" 
+							+ nameArray[list3.getSelectedIndex()] + "\n\nto Paper " 
 							+ myPaper.getTitle(), "Assign To Paper", 
 							JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION){
@@ -159,6 +157,8 @@ public class SPCTab extends JScrollPane {
 								&& nameArray[list.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID() 
 								&& nameArray[list2.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID()) {
 							myConference.assignReviewerToPaper(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
+							myConference.assignReviewerToPaper(nameArray[list2.getSelectedIndex()].getID(), myPaper.getId());
+							myConference.assignReviewerToPaper(nameArray[list3.getSelectedIndex()].getID(), myPaper.getId());
 							dispose();
 						} else {
 							JOptionPane.showMessageDialog(null, "Cannot assign the same reviewer twice to a paper. Try again.");
@@ -249,8 +249,8 @@ public class SPCTab extends JScrollPane {
 	 */
 	private class TableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"Title", "Author Name", "SPC", "Reviewer 1", 
-				"Reviewer 2", "Reviewer 3"};
+		private String[] columnNames = {"ID", "Title", "Author Name", "SPC", "Reviewer 1", 
+										"Reviewer 2", "Reviewer 3"};
 		private ArrayList<Paper> myPaperList;
 
 		public TableModel(final List<Paper> arrayList) {
@@ -275,13 +275,16 @@ public class SPCTab extends JScrollPane {
 
 			switch (columnIndex) {
 			case 0:
-				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				ret = (Object) myPaperList.get(rowIndex).getId();
 				break;
 			case 1:
+				ret = (Object) myPaperList.get(rowIndex).getTitle();
+				break;
+			case 2:
 				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
 				ret = (Object) author.getFirstName() + " " + author.getLastName();
 				break;
-			case 2:				
+			case 3:				
 				if (myPaperList.get(rowIndex).getSubchairID() > 0) {
 					User spc = myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
 					ret = (Object) spc.getFirstName() + " " + spc.getLastName();
@@ -289,7 +292,7 @@ public class SPCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}						
 				break;		
-			case 3:
+			case 4:
 				if (reviewers.size() > 0) {
 					User rev1 = myConference.getUser(reviewers.get(0));
 					ret = (Object) rev1.getFirstName() + " " + rev1.getLastName();
@@ -297,7 +300,7 @@ public class SPCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 4:
+			case 5:
 				if (reviewers.size() > 1) {
 					User rev2 = myConference.getUser(reviewers.get(1));
 					ret = (Object) rev2.getFirstName() + " " + rev2.getLastName();
@@ -305,7 +308,7 @@ public class SPCTab extends JScrollPane {
 					ret = (Object) "N/A";
 				}
 				break;
-			case 5:
+			case 6:
 				if (reviewers.size() > 2) {
 					User rev3 = myConference.getUser(reviewers.get(2));
 					ret = (Object) rev3.getFirstName() + " " + rev3.getLastName();

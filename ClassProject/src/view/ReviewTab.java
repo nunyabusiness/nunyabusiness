@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -192,6 +193,8 @@ public class ReviewTab extends JPanel {
 					
 					Review rev = new Review(avg, comment);
 					myConference.submitReview(myPaper.getId(), rev);
+					JOptionPane.showMessageDialog(null, "Your review has been added.");
+					dispose();
 				}
 			});
 			

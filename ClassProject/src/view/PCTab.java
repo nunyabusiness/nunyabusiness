@@ -200,7 +200,7 @@ public class PCTab extends JScrollPane {
 			set.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
 					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to "
-							+ "assign " + nameArray[list.getSelectedIndex()] + " to Paper" + myPaper.getTitle(), "Assign To Paper", 
+							+ "assign " + nameArray[list.getSelectedIndex()] + " to Paper " + myPaper.getTitle(), "Assign To Paper", 
 									JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION){
 						myConference.assignSpc(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
