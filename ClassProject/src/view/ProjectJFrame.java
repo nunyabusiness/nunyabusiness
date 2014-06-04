@@ -20,7 +20,6 @@ import javax.swing.KeyStroke;
 
 import model.ConfChangeType;
 import model.Conference;
-import model.Role;
 
 /**
  * Beginning class for the GUI of the 360 team project.
