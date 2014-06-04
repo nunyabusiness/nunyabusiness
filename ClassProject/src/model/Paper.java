@@ -168,7 +168,7 @@ public class Paper {
 	
 	public boolean hasRev()
 	{
-		return myReviews.size() != 0;
+		return myReviewers.size() != 0;
 	}
 	
 	public List<Review> getRev()
