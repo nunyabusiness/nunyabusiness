@@ -134,7 +134,7 @@ public class MCP implements Observer
             //int paperID, int authorID, String title, String anAbstract, String file~
             Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
             current.assignSpc(spcId);
-            newCon.addPaper(paperId, authorId, papers[2], papers[3], papers[4]); //String title, String Abstract, String filename
+            newCon.addPaper(current); //String title, String Abstract, String filename
            
             //recomendation
             int reco = Integer.parseInt(recom[0]); 
