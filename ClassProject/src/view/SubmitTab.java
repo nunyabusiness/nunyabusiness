@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import model.BusinessRuleException;
 import model.Conference;
 
 /**
@@ -125,8 +126,12 @@ public class SubmitTab extends JPanel {
 						submitFileAction();
 						myConference.addPaper(myPaperTitleText, myAbstractText, 
 					    		myFile.getName());
+						JOptionPane.showMessageDialog(null, "You have successfully uploaded a "
+								+ "paper to this conference.");
 					} catch (final IOException error) {
 						JOptionPane.showMessageDialog(null, error.getMessage());
+					} catch (final BusinessRuleException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Invalid or no file selected. Please "
@@ -231,26 +236,31 @@ public class SubmitTab extends JPanel {
 	private void submitFileAction() throws IOException {
 		InputStream is = null;
 	    OutputStream os = null;
-	    try {
-	    	is = new FileInputStream(myFile);
-	    	String dir = PATH + myConference.getCurrentUser().getID() + "/" + myFile.getName();
-	    	File out = new File(dir);
-	    	if (!out.exists())
-	    		out.getParentFile().mkdirs();
-	    	out.createNewFile();
-	        os = new FileOutputStream(out);
-	        byte[] buffer = new byte[1024];
-	        int length;
-	        while ((length = is.read(buffer)) > 0) {
-	            os.write(buffer, 0, length);
-	        }
-	        JOptionPane.showMessageDialog(this, "You have successfully uploaded paper " 
-	        				+ myPaperTitle.getText() + " and file " + myFile.getName());
-	        clearLabels();
-	    } finally {	        
-	    	is.close();
-	    	os.close();			
-	    }	    
+	    
+	    String dir = PATH + myConference.getCurrentUser().getID() + "/" + myFile.getName();
+    	File out = new File(dir);
+    	
+    	//Check to ensure paper doesn't already exists, if does notify user of error
+    	if (!out.exists()) {	    
+    		try {
+    			is = new FileInputStream(myFile);
+    			out.getParentFile().mkdirs();
+
+    			out.createNewFile();
+    			os = new FileOutputStream(out);
+    			byte[] buffer = new byte[1024];
+    			int length;
+    			while ((length = is.read(buffer)) > 0) {
+    				os.write(buffer, 0, length);
+    			}
+    			clearLabels();
+    		} finally {	        
+    			is.close();
+    			os.close();			
+    		}	
+    	} else {
+    		throw new IOException("File with this name already exists.");
+    	}
 	}
 	
 	/**

@@ -16,6 +16,7 @@ import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
+import model.BusinessRuleException;
 import model.ConfChangeType;
 import model.Conference;
 import model.Paper;
@@ -133,7 +134,11 @@ public class MCP implements Observer
             //paper stuff
             //int paperID, int authorID, String title, String anAbstract, String file~
             Paper current = new Paper(paperId, authorId, papers[2], papers[3], papers[4]);
-            current.assignSpc(spcId);
+            try {
+				current.assignSpc(spcId);
+			} catch (BusinessRuleException e) {
+				e.printStackTrace();
+			}
            
            
             //recomendation
@@ -150,12 +155,20 @@ public class MCP implements Observer
             	
             	int revId = Integer.parseInt(rev[0]);
             	int avg = Integer.parseInt(rev[1]);
-                current.assignReviewer(revId);
+                try {
+					current.assignReviewer(revId);
+				} catch (BusinessRuleException e) {
+					e.printStackTrace();
+				}
                 Review view = new Review(avg, rev[2]);
                 current.submitReviewToPaper(view);
             } 
             
-            newCon.addPaper(current); //String title, String Abstract, String filename
+            try {
+				newCon.addPaper(current);
+			} catch (BusinessRuleException e) {
+				e.printStackTrace();
+			} //String title, String Abstract, String filename
 		}
 
 		fileIn.close();

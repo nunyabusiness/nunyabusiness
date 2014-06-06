@@ -3,12 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-
-import org.joda.time.DateTime;
 
 /**
  * @author Anton Bardakhanov, Steven Bradley
@@ -21,8 +18,6 @@ public class Conference extends Observable {
 
 	private User my_currentUser;
 
-	// private List<User> myUserList;
-
 	private Map<Integer, User> my_users;
 	private Map<Integer, Paper> my_papers;
 
@@ -32,7 +27,6 @@ public class Conference extends Observable {
 
 	public Conference() {
 		my_currentUser = null;
-		// myUserList = new ArrayList<User>();
 
 		my_users = new HashMap<Integer, User>();
 		my_papers = new HashMap<Integer, Paper>();
@@ -53,20 +47,20 @@ public class Conference extends Observable {
 	}
 
 	// US01. As an Author, I want to submit a manuscript to a conference.
-	public void addPaper(String title, String Abstract, String filename) {
-		int id = my_papers.size() + 1;
-		my_papers.put(id , new Paper(id, my_currentUser.getID(), title, Abstract, filename));
-		my_currentUser.submitPaper(id);
+	public void addPaper(String title, String Abstract, String filename) throws BusinessRuleException {
+		my_currentUser.submitPaper(my_papers.size() + 1);
+		my_papers.put(my_papers.size() + 1 , new Paper(my_papers.size() + 1, my_currentUser.getID(), title, Abstract, filename));			
+		
 
 		setChanged();
 		notifyObservers(ConfChangeType.PAPER_ADDED);
 	}
 	
 	// US01. As an Author, I want to submit a manuscript to a conference.
-	public void addPaper(Paper that) {
-		my_papers.put(that.getId(), that);
+	public void addPaper(Paper that) throws BusinessRuleException {
 		User cur = my_users.get(that.getAuthorID());
 		cur.submitPaper(that.getId());
+		my_papers.put(that.getId(), that);
 	}
 	
 	public void removePaper(Paper that) {
@@ -78,7 +72,7 @@ public class Conference extends Observable {
 
 	// US02. As a Program Chair I want to designate a Subprogram Chair for a
 	// manuscript.
-	public void assignSpc(int the_spcKey, int the_paperKey) {
+	public void assignSpc(int the_spcKey, int the_paperKey) throws BusinessRuleException {
 		my_papers.get(the_paperKey).assignSpc(the_spcKey);
 		
 		setChanged();
@@ -86,7 +80,7 @@ public class Conference extends Observable {
 	}
 
 	// US03. As a Subprogram Chair, I want to assign a paper to reviewers.
-	public void assignReviewerToPaper(int the_reviewerKey, int the_paperKey) {
+	public void assignReviewerToPaper(int the_reviewerKey, int the_paperKey) throws BusinessRuleException {
 		my_papers.get(the_paperKey).assignReviewer(the_reviewerKey);
 		
 		setChanged();

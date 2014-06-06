@@ -76,20 +76,27 @@ public class Paper {
 	/** Assigns the given subchair id to the paper.
 	 *  Checks to make sure the subchair is not the author of the paper.
 	 * @param id
+	 * @throws BusinessRuleException
 	 */
-	public void assignSpc(int id){
+	public void assignSpc(int id) throws BusinessRuleException {
 		if (myAuthorID != id) {
 			mySubchair = id;
-		} 	
+		} else {
+			throw new BusinessRuleException("User cannot be a subprogram chair "
+					+ "to their own paper.");
+		}
 	}
 	
 	/** Assigns the given reviewer ID to the paper.
 	 *  Checks to make sure the reviewer is not the author of the paper.
 	 * @param id
+	 * @throws BusinessRuleException 
 	 */
-	public void assignReviewer(int id) {
+	public void assignReviewer(int id) throws BusinessRuleException {
 		if (myAuthorID != id) {
 			myReviewers.add(id);
+		} else {
+			throw new BusinessRuleException("User cannot be a reviewer to their own paper.");
 		}
 	}
 	

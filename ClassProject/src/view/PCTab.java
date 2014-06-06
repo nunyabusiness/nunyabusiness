@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
+import model.BusinessRuleException;
 import model.Conference;
 import model.Paper;
 import model.Review;
@@ -122,7 +123,7 @@ public class PCTab extends JScrollPane {
         JButton assignSPC = new JButton("New Subprogram Chair");
         assignSPC.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
-				new SPCDialog(myConference.getUserByRole(0));
+				new SPCDialog(myConference.getUserByRole(4));
 			}
 		});
         assignSPC.setAlignmentX(CENTER_ALIGNMENT);
@@ -248,7 +249,11 @@ public class PCTab extends JScrollPane {
 							+ "assign " + nameArray[list.getSelectedIndex()] + " to Paper " + myPaper.getTitle(), "Assign To Paper", 
 									JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION){
-						myConference.assignSpc(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
+						try {
+							myConference.assignSpc(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
+						} catch (BusinessRuleException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						dispose();
 					}
 				}

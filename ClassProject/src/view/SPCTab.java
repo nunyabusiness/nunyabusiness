@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
+import model.BusinessRuleException;
 import model.Conference;
 import model.Paper;
 import model.Review;
@@ -215,10 +216,15 @@ public class SPCTab extends JScrollPane {
 						if (nameArray[list.getSelectedIndex()].getID() !=  nameArray[list2.getSelectedIndex()].getID() 
 								&& nameArray[list.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID() 
 								&& nameArray[list2.getSelectedIndex()].getID() !=  nameArray[list3.getSelectedIndex()].getID()) {
-							myConference.assignReviewerToPaper(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
-							myConference.assignReviewerToPaper(nameArray[list2.getSelectedIndex()].getID(), myPaper.getId());
-							myConference.assignReviewerToPaper(nameArray[list3.getSelectedIndex()].getID(), myPaper.getId());
-							dispose();
+							try {
+								myConference.assignReviewerToPaper(nameArray[list.getSelectedIndex()].getID(), myPaper.getId());
+								myConference.assignReviewerToPaper(nameArray[list2.getSelectedIndex()].getID(), myPaper.getId());
+								myConference.assignReviewerToPaper(nameArray[list3.getSelectedIndex()].getID(), myPaper.getId());
+							} catch (BusinessRuleException e1) {
+								JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							} finally {							
+								dispose();
+							}
 						} else {
 							JOptionPane.showMessageDialog(null, "Cannot assign the same reviewer twice to a paper. Try again.");
 						}

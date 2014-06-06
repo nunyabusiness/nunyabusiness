@@ -1,9 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Steven Bradley
@@ -39,9 +37,9 @@ public class User {
 	 */
 	
 	/**
-	 * The papers that the user is responsible for getting reviewed.
+	 * The papers that this user has submitted.
 	 */
-	private List<Integer> my_assignedPapers;
+	private List<Integer> mySubmittedPapers;
 	
 	public int spc_pc;
 	
@@ -59,7 +57,7 @@ public class User {
 		myEmail = email;
 		myRole = role;
 		
-		my_assignedPapers = new ArrayList<Integer>();
+		mySubmittedPapers = new ArrayList<Integer>();
 		
 	}
 	
@@ -88,8 +86,14 @@ public class User {
 	}
 	
 	
-	public void submitPaper(int the_paperId) {
-		my_assignedPapers.add(the_paperId);
+	public void submitPaper(int the_paperId) throws BusinessRuleException {
+		if (mySubmittedPapers.size() < 4) {
+			mySubmittedPapers.add(the_paperId);
+		} else {
+			throw new BusinessRuleException("You cannot have more than 4 papers submitted"
+					+ "to a given conference.");
+		}
+		
 	}
 	
 	@Override

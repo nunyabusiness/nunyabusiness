@@ -3,10 +3,13 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -87,7 +90,14 @@ public class ReviewTab extends JPanel {
 				JButton button = new JButton(p.getTitle());
 				button.setAlignmentX(CENTER_ALIGNMENT);
 				button.addActionListener(new ActionListener() {					
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
+						String fileName = "Papers/" + p.getAuthorID() + "/" + p.getFile();
+						//Attempts to load the file using the user's default program
+						try {
+							Desktop.getDesktop().open(new File(fileName));
+						} catch (final IOException e1) {
+							JOptionPane.showMessageDialog(null, "Error loading selected paper.");
+						}
 						new ReviewDialog(p);
 					}
 				});
