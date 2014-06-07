@@ -4,6 +4,7 @@
 package Tests;
 
 import static org.junit.Assert.*;
+import model.Conference;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,20 +13,25 @@ import org.junit.Test;
  * @author Christopher
  *
  */
-public class TestConference {
-
+public class TestConference 
+{
+	Conference that;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception
+	{
+		that = new Conference();
 	}
 
 	/**
 	 * Test method for {@link model.Conference#getUser(int)}.
 	 */
 	@Test
-	public void testGetUser() {
+	public void testGetUser()
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -33,7 +39,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getPaper(int)}.
 	 */
 	@Test
-	public void testGetPaper() {
+	public void testGetPaper() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -41,7 +48,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#addUser(model.User)}.
 	 */
 	@Test
-	public void testAddUser() {
+	public void testAddUser() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -49,7 +57,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#addPaper(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	public void testAddPaperStringStringString() {
+	public void testAddPaperStringStringString() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -57,7 +66,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#addPaper(model.Paper)}.
 	 */
 	@Test
-	public void testAddPaperPaper() {
+	public void testAddPaperPaper() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -65,7 +75,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#removePaper(model.Paper)}.
 	 */
 	@Test
-	public void testRemovePaper() {
+	public void testRemovePaper() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -73,7 +84,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#assignSpc(int, int)}.
 	 */
 	@Test
-	public void testAssignSpc() {
+	public void testAssignSpc() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -81,7 +93,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#assignReviewerToPaper(int, int)}.
 	 */
 	@Test
-	public void testAssignReviewerToPaper() {
+	public void testAssignReviewerToPaper() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -89,7 +102,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getReviewerList(int)}.
 	 */
 	@Test
-	public void testGetReviewerList() {
+	public void testGetReviewerList() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -97,7 +111,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#submitReview(int, model.Review)}.
 	 */
 	@Test
-	public void testSubmitReview() {
+	public void testSubmitReview() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -105,7 +120,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#makeChangesToManuscript(model.Paper)}.
 	 */
 	@Test
-	public void testMakeChangesToManuscript() {
+	public void testMakeChangesToManuscript() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -113,7 +129,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#spcSubmitRecommendation(int, model.Recommendation)}.
 	 */
 	@Test
-	public void testSpcSubmitRecommendation() {
+	public void testSpcSubmitRecommendation() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -121,7 +138,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getAllPapers()}.
 	 */
 	@Test
-	public void testGetAllPapers() {
+	public void testGetAllPapers() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -129,7 +147,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getAllUsers()}.
 	 */
 	@Test
-	public void testGetAllUsers() {
+	public void testGetAllUsers() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -137,7 +156,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getCurrentUser()}.
 	 */
 	@Test
-	public void testGetCurrentUser() {
+	public void testGetCurrentUser()
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -145,7 +165,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#submitDecision(int, int)}.
 	 */
 	@Test
-	public void testSubmitDecision() {
+	public void testSubmitDecision()
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -153,7 +174,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#changeUserRole(int, int)}.
 	 */
 	@Test
-	public void testChangeUserRole() {
+	public void testChangeUserRole() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -161,7 +183,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getUserByRole(int)}.
 	 */
 	@Test
-	public void testGetUserByRole() {
+	public void testGetUserByRole() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -169,7 +192,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getPapersByAuthor(int)}.
 	 */
 	@Test
-	public void testGetPapersByAuthor() {
+	public void testGetPapersByAuthor() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -177,7 +201,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getPapersBySpc(int)}.
 	 */
 	@Test
-	public void testGetPapersBySpc() {
+	public void testGetPapersBySpc() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -185,7 +210,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getDaysLeft()}.
 	 */
 	@Test
-	public void testGetDaysLeft() {
+	public void testGetDaysLeft() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -193,7 +219,8 @@ public class TestConference {
 	 * Test method for {@link model.Conference#getDeadline()}.
 	 */
 	@Test
-	public void testGetDeadline() {
+	public void testGetDeadline() 
+	{
 		fail("Not yet implemented"); // TODO
 	}
 
