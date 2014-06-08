@@ -17,12 +17,12 @@ public class TestRec
 {
 	private static final int STATE = 2;
 	private static final String COM = "sucks";
-	private Recommendation rec;
+	private static Recommendation rec;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
-	public void setUp() throws Exception 
+	public static void setUp() throws Exception 
 	{
 		rec = new Recommendation();
 	}

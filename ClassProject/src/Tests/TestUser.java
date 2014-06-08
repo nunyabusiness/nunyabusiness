@@ -22,13 +22,13 @@ public class TestUser
 	private static final String LAST = "Horner";
 	private static final String EMAIL = "CH@blah.edu";
 	
-	private User use;
+	private static User use;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
-	public void setUp() throws Exception 
+	public static void setUp() throws Exception 
 	{
 		use = new User(USERID, ROLE, FIRST, LAST, EMAIL);
 	}
