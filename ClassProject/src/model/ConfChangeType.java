@@ -32,8 +32,8 @@ public enum ConfChangeType {
 	/** Enum type for a subprogram chair being assigned to a paper. */
 	SPC_ASSIGNED,
 	
-	/** Enum type for requiring the conference to be saved. */
-	CONF_SAVED
+	/** Enum type for when a decision is made on a paper. */
+	DECISION_MADE
 	
 	//Other change types that may be necessary later on.
 

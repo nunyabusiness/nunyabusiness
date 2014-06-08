@@ -117,7 +117,21 @@ public class ReviewTab extends JPanel {
 				reviewButton.setAlignmentX(CENTER_ALIGNMENT);
 				reviewButton.addActionListener(new ActionListener() {					
 					public void actionPerformed(final ActionEvent e) {
-						new ReviewDialog(p);
+						ArrayList<Review> rev = (ArrayList<Review>) myConference.getReviewsForPaper(p.getId());
+						
+						for (Review r : rev) {
+							if (r.getReviewerID() == myConference.getCurrentUser().getID() && r.getScore() == 0) {
+								new ReviewDialog(p);
+							} else if (r.getReviewerID() == myConference.getCurrentUser().getID() && r.getScore() != 0){
+								String format = "<html><p style=\"width: 255px;\">";
+								String response = format + "You have already reviewed this "
+										+ "paper, giving it a score of " + r.getScore() 
+										+ "<br><br>Review Comment: " + r.getComment();
+								JOptionPane.showMessageDialog(null, response);
+							}
+						}
+						
+						
 					}
 				});
 				panel.add(reviewButton);

@@ -117,7 +117,9 @@ public class PCTab extends JScrollPane {
         processTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					//do nothing for now
+					Integer paperID = (Integer) processTable.getValueAt(processTable.getSelectedRow(), 0);
+					
+					new DecisionDialog(myConference, myConference.getPaper(paperID));
 				}
 			}
 		});

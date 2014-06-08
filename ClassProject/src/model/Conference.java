@@ -255,10 +255,13 @@ public class Conference extends Observable {
 		try {
 			Statement stmt = c.createStatement();
 			stmt.executeUpdate("UPDATE recommendation SET score = " + r.getState() 
-					+ ", comment = " + r.getRationale() + "WHERE userID = '" + currentUser.getID() 
+					+ ", comment = '" + r.getRationale() + "' WHERE userID = '" + currentUser.getID() 
 					+ "' AND paperID = '" + paperKey + "'");
 			
 			stmt.close();
+			
+			setChanged();
+			notifyObservers(ConfChangeType.REVIEW_ADDED);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 	
@@ -336,7 +339,9 @@ public class Conference extends Observable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 	
-		
+	
+		setChanged();
+		notifyObservers(ConfChangeType.DECISION_MADE);
 	}
 	
 	public void changeUserRole(int theUserID, int theRole) {
@@ -468,6 +473,29 @@ public class Conference extends Observable {
 		} 
 		
 		return r;
+		
+	}
+	
+	public String getPaperDecision(int paperId) {
+		String decisionStr = "Being Reviewed";
+		try {
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM paper WHERE paperID = '" + paperId + "'");
+			
+			int decision = rs.getInt("decision");
+			
+			if (decision == 1) {
+				decisionStr = "Accepted";
+			} if (decision == 2) {
+				decisionStr = "Rejected";
+			}
+			
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return decisionStr;
 		
 	}
 	

@@ -247,7 +247,8 @@ public class ProjectJFrame extends JFrame implements Observer {
 		}
 		
 		//Paper added or removed, must refresh appropriate views.
-		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED) {
+		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED 
+				|| arg == ConfChangeType.DECISION_MADE) {
 			myAuthorTab.updateDisplay();
 			myHomeTab.setLabelValues();
 			myReviewTab.updateDisplay();

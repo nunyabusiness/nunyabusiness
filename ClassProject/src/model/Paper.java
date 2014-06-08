@@ -51,7 +51,9 @@ public class Paper {
 	//private Recommendation recommendation;
 	// 0 - undecided, 1-yes, 2-no
 	/**
-	 * Whether or not the paper has been accepted or rejected.
+	 * Whether or not the paper has been accepted or rejected. A value of 0 denotes no decision,
+	 * a value of 1 indicates paper has been accepted, and a value of 2 denotes the paper has
+	 * been rejected from the Conference.
 	 */
 	//private int decision = 0;
 	

@@ -1,10 +1,14 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -18,8 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import view.ReviewTab.ReviewDialog;
 import model.Conference;
 import model.Paper;
+import model.Review;
 import model.User;
 
 /**
@@ -72,15 +78,41 @@ public class AuthorTab extends JPanel {
 			ArrayList<Paper> papers = (ArrayList<Paper>) myConference.getPapersByAuthor(user.getID());
 			
 			for (final Paper p : papers) {
-				JButton button = new JButton(p.getTitle());
-				button.setAlignmentX(CENTER_ALIGNMENT);
-				button.addActionListener(new ActionListener() {					
-					public void actionPerformed(ActionEvent e) {
-						new PaperDialog(p);
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(255, 255, 255));
+				
+				JLabel label = new JLabel(p.getTitle(), SwingConstants.CENTER);
+				label.setPreferredSize(new Dimension(200, 35));
+				
+				panel.add(label);
+				
+				JButton viewButton = new JButton("View Paper");
+				viewButton.setAlignmentX(CENTER_ALIGNMENT);
+				viewButton.addActionListener(new ActionListener() {					
+					public void actionPerformed(final ActionEvent e) {
+						String fileName = "Papers/" + p.getAuthorID() + "/" + p.getFile();
+						//Attempts to load the file using the user's default program
+						try {
+							Desktop.getDesktop().open(new File(fileName));
+						} catch (final IOException e1) {
+							JOptionPane.showMessageDialog(null, "Error loading selected paper.");
+						}
 					}
 				});
-				myCenterPanel.add(button);
-				myCenterPanel.add(Box.createRigidArea(new Dimension(0,3)));
+				panel.add(viewButton);
+				
+				JButton button = new JButton("Edit Paper");
+				button.setAlignmentX(CENTER_ALIGNMENT);
+				button.addActionListener(new ActionListener() {					
+					public void actionPerformed(final ActionEvent e) {
+						new PaperDialog(p);			
+					}
+				});
+				panel.add(button);
+				panel.add(new JLabel(myConference.getPaperDecision(p.getId())));
+				
+				myCenterPanel.add(panel);
+				myCenterPanel.add(Box.createRigidArea(new Dimension(0,5)));
 			}
 			
 			if (papers.size() == 0) {
@@ -147,7 +179,7 @@ public class AuthorTab extends JPanel {
 			areaScrollPane.setVerticalScrollBarPolicy(
 			                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			areaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			areaScrollPane.setPreferredSize(new Dimension(250, 250));
+			areaScrollPane.setPreferredSize(new Dimension(125, 250));
 			absLabel.setText(myPaper.getAbstract());					
 			centerPanel.add(areaScrollPane);
 			centerPanel.add(separator);
@@ -161,7 +193,6 @@ public class AuthorTab extends JPanel {
 			
 			//Button to just close the panel out
 			JPanel bottomPanel = new JPanel();
-			bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
 			JButton okButton = new JButton("OK");
 			okButton.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {

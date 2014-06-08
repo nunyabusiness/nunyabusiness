@@ -122,7 +122,9 @@ public class SPCTab extends JScrollPane {
 		myAssignedTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					//do nothing
+					Integer paperID = (Integer) myAssignedTable.getValueAt(myAssignedTable.getSelectedRow(), 0);
+					
+					new RecommendDialog(myConference, myConference.getPaper(paperID));
 				}
 			}
 		});
