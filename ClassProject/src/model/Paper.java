@@ -1,7 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 
 /**
@@ -53,7 +53,7 @@ public class Paper {
 	/**
 	 * Whether or not the paper has been accepted or rejected.
 	 */
-	private int decision = 0;
+	//private int decision = 0;
 	
 	/** Creates a new paper with the folling fields.
 	 * @param paperID
@@ -142,12 +142,12 @@ public class Paper {
 //		return recommendation.state;
 //	}
 	
-	/** Sets the decision for the paper. (Accept/Reject/Undecided)
-	 * @param decision
-	 */
-	public void setDecision(int decision){
-		this.decision = decision;
-	}
+//	/** Sets the decision for the paper. (Accept/Reject/Undecided)
+//	 * @param decision
+//	 */
+//	public void setDecision(int decision){
+//		this.decision = decision;
+//	}
 	
 	/** Adds the given review to the list of the papers reviews.
 	 * @param r the review to add to the paper.

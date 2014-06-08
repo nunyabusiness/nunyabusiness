@@ -15,18 +15,28 @@ import org.junit.Test;
  */
 public class TestReview 
 {
-	int SCORE = 4;
-	String COMMENT = "comments";
-	
-	Review rev;
-	
+	private static final int REVID = 21;
+	private static final int SCORE = 4;
+	private static final String COM = "comments";
+	private Review rev;
+	private Review rev2;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception 
 	{
-		rev = new Review(SCORE, COMMENT);
+		rev = new Review();
+		rev2 = new Review(REVID, SCORE, COM);
+	}
+
+	/**
+	 * Test method for {@link model.Review#getReviewerID()}.
+	 */
+	@Test
+	public void testGetReviewerID() 
+	{
+		assertEquals("The get id works", REVID, rev2.getReviewerID());
 	}
 
 	/**
@@ -35,9 +45,9 @@ public class TestReview
 	@Test
 	public void testSetScore() 
 	{
-		rev.setScore(2);
+		rev.setScore(SCORE);
 		
-		assertEquals(2, rev.getScore());
+		assertEquals("The set/get score works", SCORE, rev.getScore());
 	}
 
 	/**
@@ -46,29 +56,8 @@ public class TestReview
 	@Test
 	public void testSetComment() 
 	{
-		rev.setComment("awful");
+		rev.setComment(COM);
 		
-		assertEquals("awful", rev.getComment());
+		assertEquals("The set/get Comment works", COM, rev.getComment());
 	}
-
-	/**
-	 * Test method for {@link model.Review#getScore()}.
-	 */
-	@Test
-	public void testGetScore() 
-	{
-		assertEquals(SCORE, rev.getScore());
-	}
-
-	/**
-	 * Test method for {@link model.Review#getComment()}.
-	 */
-	@Test
-	public void testGetComment() 
-	{
-		assertEquals(COMMENT, rev.getComment());
-	}
-
-	
-
 }

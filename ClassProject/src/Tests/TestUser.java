@@ -4,10 +4,9 @@
 package Tests;
 
 import static org.junit.Assert.*;
-import model.BusinessRuleException;
 import model.User;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -16,19 +15,22 @@ import org.junit.Test;
  */
 public class TestUser 
 {
-	int ID = 4;
-	int ROLE = 2;
-	String FIRST = "Charlie";
-	String LAST = "Horner";
-	String EMAIL = "CH@clean.com";
-	User person;
+	private static final int USERID = 21;
+	private static final int ROLE = 4;
+	private static final int ROLE2 = 2;
+	private static final String FIRST = "Charlie";
+	private static final String LAST = "Horner";
+	private static final String EMAIL = "CH@blah.edu";
+	
+	private User use;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception 
 	{
-		person = new User(ID, ROLE, FIRST, LAST, EMAIL);
+		use = new User(USERID, ROLE, FIRST, LAST, EMAIL);
 	}
 
 	/**
@@ -36,17 +38,8 @@ public class TestUser
 	 */
 	@Test
 	public void testGetID() 
-	{	
-		assertEquals(ID, person.getID());
-	}
-
-	/**
-	 * Test method for {@link model.User#getRole()}.
-	 */
-	@Test
-	public void testGetRole() 
 	{
-		assertEquals(ID, person.getID());
+		assertEquals("The get id works", USERID, use.getID());
 	}
 
 	/**
@@ -55,16 +48,16 @@ public class TestUser
 	@Test
 	public void testGetFirstName() 
 	{
-		assertEquals(ID, person.getID());
+		assertEquals("The get first name works", FIRST, use.getFirstName());
 	}
 
 	/**
 	 * Test method for {@link model.User#getLastName()}.
 	 */
 	@Test
-	public void testGetLastName() 
+	public void testGetLastName()
 	{
-		assertEquals(ID, person.getID());
+		assertEquals("The get last name works", LAST, use.getLastName());
 	}
 
 	/**
@@ -73,7 +66,7 @@ public class TestUser
 	@Test
 	public void testGetEmail() 
 	{
-		assertEquals(ID, person.getID());
+		assertEquals("The get email works", EMAIL, use.getEmail());
 	}
 
 	/**
@@ -82,45 +75,18 @@ public class TestUser
 	@Test
 	public void testSetRole() 
 	{
-		person.setRole(1);
+		use.setRole(ROLE2);
 		
-		assertEquals(1, person.getRole());
+		assertEquals("The set/get role works", ROLE2, use.getRole());
 	}
 
-	/**
-	 * Test method for {@link model.User#submitPaper(int)}.
-	 * @throws BusinessRuleException 
-	 */
-	@Test
-	public void testSubmitPaper() throws BusinessRuleException 
-	{
-		person.submitPaper(1);
-		
-		fail("not sure how I am going to test this one.");
-	}
-
-	/**
-	 * Test method for {@link model.User#submitPaper(int)}.
-	 * @throws BusinessRuleException 
-	 */
-	@Test
-	public void testSubmitFivePapers() throws BusinessRuleException 
-	{
-		person.submitPaper(1);
-		person.submitPaper(2);
-		person.submitPaper(3);
-		person.submitPaper(4);
-		person.submitPaper(5);
-		fail("Throws exception");
-	}
-	
 	/**
 	 * Test method for {@link model.User#toString()}.
 	 */
 	@Test
-	public void testToString() 
+	public void testToString()
 	{
-		assertEquals("Charlie Horner", person.toString());
+		assertEquals("The toString works", "Charlie Horner", use.toString());
 	}
 
 }
