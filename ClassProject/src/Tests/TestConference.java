@@ -4,9 +4,11 @@
 package Tests;
 
 import static org.junit.Assert.*;
+
 import model.BusinessRuleException;
 import model.Conference;
 import model.Paper;
+import model.Recommendation;
 import model.Review;
 import model.User;
 
@@ -154,7 +156,7 @@ public class TestConference
 		
 		con.submitReview(PID, rev2);
 		
-		assertEquals("I hope that things work correctly sort of cheated", rev.toString(), con.getReviewsForPaper(PID).get(PID).toString());
+		assertEquals("I hope that things work correctly sort of cheated", rev.getComment(), con.getReviewsForPaper(PID).get(PID).getComment());
 	}
 
 	/**
@@ -163,7 +165,15 @@ public class TestConference
 	@Test
 	public void testSpcSubmitRecommendation() 
 	{
-		fail("Not yet implemented"); // TODO
+		con.login(SPCID);
+		
+		Recommendation rec = new Recommendation();
+		rec.setState(3);
+		rec.setRationale("success");
+		
+		con.spcSubmitRecommendation(PID, rec);
+		
+		assertEquals("should work right?", rec.toString(), con.getRecommendationForPaper(PID).toString());
 	}
 
 	/**
@@ -172,7 +182,7 @@ public class TestConference
 	@Test
 	public void testGetAllPapers() 
 	{
-		fail("Not yet implemented"); // TODO
+		assertEquals("", paper, con.getAllPapers().get(PID));
 	}
 
 	/**
@@ -181,7 +191,9 @@ public class TestConference
 	@Test
 	public void testGetCurrentUser() 
 	{
-		fail("Not yet implemented"); // TODO
+		con.login(PCID);
+		
+		assertEquals("Should be right",PCID, con.getCurrentUser().myID);
 	}
 
 	/**
@@ -190,7 +202,11 @@ public class TestConference
 	@Test
 	public void testSubmitDecision() 
 	{
-		fail("Not yet implemented"); // TODO
+		con.login(PCID);
+		
+		con.submitDecision(PID, 1);
+		
+		assertEquals("This is correct", 1, con.getPaperDecision(PID));
 	}
 
 	/**
@@ -221,15 +237,6 @@ public class TestConference
 	}
 
 	/**
-	 * Test method for {@link model.Conference#getRecommendationForPaper(int)}.
-	 */
-	@Test
-	public void testGetRecommendationForPaper() 
-	{
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link model.Conference#getPapersBySpc(int)}.
 	 */
 	@Test
@@ -244,7 +251,11 @@ public class TestConference
 	@Test
 	public void testRemovePaper() 
 	{
-		fail("Not yet implemented"); // TODO
+		con.login(AID);
+		
+		con.removePaper(paper);
+		
+		assertNull("I am not sure if it is null or DNE", con.getPaper(PID));
 	}
 
 	/**
@@ -253,6 +264,8 @@ public class TestConference
 	@Test
 	public void testGetDaysLeft()
 	{
+		
+		
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -264,5 +277,4 @@ public class TestConference
 	{
 		fail("Not yet implemented"); // TODO
 	}
-
 }
