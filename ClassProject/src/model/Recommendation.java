@@ -28,6 +28,10 @@ public class Recommendation {
 		return state;
 	}
 	
+	public String getRationale() {
+		return rationale;
+	}
+	
 	public String toString() {
 		return state + "," + rationale;
 	}

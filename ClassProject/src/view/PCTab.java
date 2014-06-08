@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 import model.BusinessRuleException;
 import model.Conference;
 import model.Paper;
+import model.Recommendation;
 import model.Review;
 import model.User;
 
@@ -37,10 +38,18 @@ import model.User;
 @SuppressWarnings("serial")
 public class PCTab extends JScrollPane {
 	
+	/** The current conference. */
 	private Conference myConference;
+	/** The table of papers that still need a subprogram chair. */
 	private JTable assignmentTable;
+	/** The table of papers currently undergoing a review. */
 	private JTable processTable;
 	
+	/**
+	 * Constructor of a new PCTab with the given conference.
+	 * 
+	 * @param theConference The current conference.
+	 */
 	public PCTab(final Conference theConference) {
 		super();
 		
@@ -133,13 +142,16 @@ public class PCTab extends JScrollPane {
         setViewportView(pcPanel);
 	}
 	
+	/**
+	 * Method which updates the current tables of the PC tab.
+	 */
 	public void updateTables() {
 		ArrayList<Paper> allPapers = myConference.getAllPapers();
 		ArrayList<Paper> unassignedPapers = new ArrayList<Paper>();
 		ArrayList<Paper> assignedPapers = new ArrayList<Paper>();
 		
 		for (Paper p : allPapers) {
-			if (p.getSubchairID() != 0) {
+			if (myConference.getSPCforPaper(p.getId()) != null) {
 				assignedPapers.add(p);
 			} else {
 				unassignedPapers.add(p);
@@ -151,10 +163,22 @@ public class PCTab extends JScrollPane {
 		processTable.setModel(new AssignedTableModel(assignedPapers));
 	}
 	
+	/**
+	 * Inner-class for a JDialog which displays the information for assigning a new 
+	 * subprogram chair.
+	 * 
+	 * @author Erik Tedder
+	 */
 	private class SPCDialog extends JDialog {
 		
+		/** The list of users who can be promoted to SPC. */
 		private ArrayList<User> myUsers;
 		
+		/**
+		 * Constructor of a new SPCDialog with the given list of users as a parameter.
+		 * 
+		 * @param theUsers The users who can be promoted to a subprogram chair.
+		 */
 		public SPCDialog(final List<User> theUsers) {
 			super();
 			setTitle("Assign a subprogram chair");
@@ -163,13 +187,15 @@ public class PCTab extends JScrollPane {
 			
 			initDialog();
 						
-			//setSize(new Dimension(175, 300));
 			pack();
 			setLocationRelativeTo(null);
 			setResizable(false);
 			setVisible(true);
 		}
 
+		/** 
+		 * Initializes and constructs the tab's display.
+		 */
 		private void initDialog() {
 			JPanel panel = new JPanel();
 			
@@ -209,12 +235,27 @@ public class PCTab extends JScrollPane {
 		}
 	}
 	
+	/**
+	 * Inner-class which created a JDialog that allows for assigning a subprogram chair to a 
+	 * paper.
+	 * 
+	 * @author Erik
+	 */
 	private class AssignDialog extends JDialog {
 		
+		/** The list of users able to be assigned. */
 		private ArrayList<User> myUsers;
 		
+		/** The paper needing assignment. */
 		private Paper myPaper;
 		
+		/**
+		 * Constructor of a new AssignDialog class with the given list of users and a given 
+		 * paper.
+		 * 
+		 * @param theUsers The users able to be assigned to the paper. 
+		 * @param thePaper The paper needing a subprogram chair.
+		 */
 		public AssignDialog(final List<User> theUsers, final Paper thePaper) {
 			super();
 			setTitle("Assign a subprogram chair");
@@ -224,13 +265,15 @@ public class PCTab extends JScrollPane {
 			
 			initDialog();
 						
-			//setSize(new Dimension(175, 300));
 			pack();
 			setLocationRelativeTo(null);
 			setResizable(false);
 			setVisible(true);
 		}
 
+		/**
+		 * Initializes and constructs the diplay for this class.
+		 */
 		private void initDialog() {
 			JPanel panel = new JPanel();
 			
@@ -316,12 +359,7 @@ public class PCTab extends JScrollPane {
 				ret = (Object) author.getFirstName() + " " + author.getLastName();
 				break;
 			case 3:				
-				if (myPaperList.get(rowIndex).getSubchairID() > 0) {
-					User spc = myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
-					ret = (Object) spc.getFirstName() + " " + spc.getLastName();
-				} else {
-					ret = (Object) "N/A";
-				}						
+				ret = (Object) "Not Assigned";						
 				break;		
 			}
 
@@ -361,7 +399,7 @@ public class PCTab extends JScrollPane {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object ret = null;
-			List<Review> reviews = myPaperList.get(rowIndex).getRev();
+			List<Review> reviews = myConference.getReviewsForPaper(myPaperList.get(rowIndex).getId());
 
 			switch (columnIndex) {
 			case 0:
@@ -372,32 +410,33 @@ public class PCTab extends JScrollPane {
 				break;
 			case 2:
 				User author = myConference.getUser(myPaperList.get(rowIndex).getAuthorID());
-				ret = (Object) author.getFirstName() + " " + author.getLastName();
+				ret = (Object) author;
 				break;
 			case 3:				
-				if (myPaperList.get(rowIndex).getRec() != null 
-				&& myPaperList.get(rowIndex).getRec().getState() != 0) {
-					ret = (Object) myPaperList.get(rowIndex).getRec().getState();
+				Recommendation r = myConference.getRecommendationForPaper(myPaperList.get(rowIndex).getId());
+				
+				if (r.getState() != 0) {
+					ret = (Object) r.getState();
 				} else {
-					ret = (Object) myConference.getUser(myPaperList.get(rowIndex).getSubchairID());
+					ret = (Object) myConference.getSPCforPaper((myPaperList.get(rowIndex).getId()));
 				}						
 				break;		
 			case 4:
-				if (reviews.size() > 0 && reviews.get(0).getScore() != 0) {
+				if (reviews.size() != 0 && reviews.get(0).getScore() != 0) {
 					ret = (Object) reviews.get(0).getScore();
 				} else {
 					ret = (Object) "None";
 				}
 				break;
 			case 5:
-				if (reviews.size() > 1 && reviews.get(1).getScore() != 0) {
+				if (reviews.size() != 0 && reviews.get(1).getScore() != 0) {
 					ret = (Object) reviews.get(1).getScore();
 				} else {
 					ret = (Object) "None";
 				}
 				break;
 			case 6:
-				if (reviews.size() > 2 && reviews.get(2).getScore() != 0) {
+				if (reviews.size() != 0 && reviews.get(2).getScore() != 0) {
 					ret = (Object) reviews.get(2).getScore();
 				} else {
 					ret = (Object) "None";

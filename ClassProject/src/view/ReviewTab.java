@@ -38,8 +38,11 @@ import model.User;
 @SuppressWarnings("serial")
 public class ReviewTab extends JPanel {
 	
+	/** The current conference. */
 	private Conference myConference;
+	/** The center panel for adding new items. */
 	private JPanel myCenterPanel;
+	/** The text area for adding a review. */
 	private JTextArea myTextArea;
 
 	/**
@@ -87,9 +90,17 @@ public class ReviewTab extends JPanel {
 			}
 			
 			for (final Paper p : papers) {
-				JButton button = new JButton(p.getTitle());
-				button.setAlignmentX(CENTER_ALIGNMENT);
-				button.addActionListener(new ActionListener() {					
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(255, 255, 255));
+				
+				JLabel label = new JLabel(p.getTitle());
+				label.setPreferredSize(new Dimension(200, 35));
+				
+				panel.add(label);
+				
+				JButton viewButton = new JButton("View Paper");
+				viewButton.setAlignmentX(CENTER_ALIGNMENT);
+				viewButton.addActionListener(new ActionListener() {					
 					public void actionPerformed(final ActionEvent e) {
 						String fileName = "Papers/" + p.getAuthorID() + "/" + p.getFile();
 						//Attempts to load the file using the user's default program
@@ -98,11 +109,21 @@ public class ReviewTab extends JPanel {
 						} catch (final IOException e1) {
 							JOptionPane.showMessageDialog(null, "Error loading selected paper.");
 						}
+					}
+				});
+				panel.add(viewButton);
+				
+				JButton reviewButton = new JButton("Review Paper");
+				reviewButton.setAlignmentX(CENTER_ALIGNMENT);
+				reviewButton.addActionListener(new ActionListener() {					
+					public void actionPerformed(final ActionEvent e) {
 						new ReviewDialog(p);
 					}
 				});
-				myCenterPanel.add(button);
-				myCenterPanel.add(Box.createRigidArea(new Dimension(0,3)));
+				panel.add(reviewButton);
+				
+				myCenterPanel.add(panel);
+				myCenterPanel.add(Box.createRigidArea(new Dimension(0,5)));
 			}		
 			
 		}
@@ -111,12 +132,14 @@ public class ReviewTab extends JPanel {
 	/**
 	 * Inner JDialog class that is responsible for showing the contents of a paper.
 	 * 
-	 * @author Erik Tedder	 *
+	 * @author Erik Tedder	
 	 */
 	public class ReviewDialog extends JDialog {
 		
+		/** The paper being reviewed. */
 		private Paper myPaper;
 		
+		/** A list of JSliders, for the ability to calculate the average. */
 		private ArrayList<JSlider> mySliders;
 		
 		/**
@@ -204,7 +227,7 @@ public class ReviewTab extends JPanel {
 					String comment = myTextArea.getText();
 					myTextArea.setText("");
 					
-					Review rev = new Review(avg, comment);
+					Review rev = new Review(myConference.getCurrentUser().getID(), avg, comment);
 					myConference.submitReview(myPaper.getId(), rev);
 					JOptionPane.showMessageDialog(null, "Your review has been added.");
 					dispose();
@@ -218,6 +241,12 @@ public class ReviewTab extends JPanel {
 			centerPanel.add(bottomPanel);
 		}
 		
+		/**
+		 * Method which creates a new JSlider.
+		 * 
+		 * @param question The question to be associated with this slider.
+		 * @return The constructed JSlider.
+		 */
 		private JPanel createSliders(final String question) {
 			JPanel panel = new JPanel();
 			JSlider slider = new JSlider(1, 5, 3);

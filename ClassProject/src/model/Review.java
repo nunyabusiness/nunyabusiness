@@ -7,6 +7,8 @@ package model;
  */
 public class Review 
 {
+	private int reviewerID;
+	
 	private int score;
 	
 	private String comments;
@@ -25,10 +27,15 @@ public class Review
 	 * @param avg inputed average
 	 * @param comment inputed comment
 	 */
-	public Review(int avg, String comment)
+	public Review(int userID, int avg, String comment)
 	{
+		reviewerID = userID;
 		score = avg;
 		comments = comment;
+	}
+	
+	public int getReviewerID() {
+		return reviewerID;
 	}
 	
 	/**

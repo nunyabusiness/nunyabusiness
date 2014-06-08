@@ -212,19 +212,24 @@ public class ProjectJFrame extends JFrame implements Observer {
     }
 
     /**
-     * Still needing to get done to implement observer/observable. 
+     * Updates the GUI in accordance with the observable oject passed.
      */
 	public void update(Observable o, Object arg) {
 		//User has successfully logged in
 		if (arg == ConfChangeType.LOGIN_SUCCESSFUL) {
 			loginFrame.setVisible(false);
-            this.setVisible(true);
+            this.setVisible(true);            
+            int role = determinePermission();            
             myHomeTab.setLabelValues();
             myAuthorTab.updateDisplay();
-            myReviewTab.updateDisplay();
-            myPCTab.updateTables();
-            mySPCTab.updateTables();
-            determinePermission();
+            
+            if (role == 4)
+            	myReviewTab.updateDisplay();
+            if (role == 1)
+            	myPCTab.updateTables();
+            if (role == 2)
+            	mySPCTab.updateTables();
+            
 		}
 		
 		//User log-in credentials are invalid
@@ -242,12 +247,16 @@ public class ProjectJFrame extends JFrame implements Observer {
 		}
 		
 		//Paper added or removed, must refresh appropriate views.
-		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED 
-				|| arg == ConfChangeType.REVIEW_ADDED || arg == ConfChangeType.REVIEWER_ASSIGNED 
-				|| arg == ConfChangeType.SPC_ASSIGNED) {
+		if (arg == ConfChangeType.PAPER_ADDED || arg == ConfChangeType.PAPER_REMOVED) {
 			myAuthorTab.updateDisplay();
 			myHomeTab.setLabelValues();
 			myReviewTab.updateDisplay();
+			myPCTab.updateTables();
+			mySPCTab.updateTables();
+		}
+		
+		if (arg == ConfChangeType.REVIEWER_ASSIGNED || arg == ConfChangeType.SPC_ASSIGNED 
+				|| arg == ConfChangeType.REVIEW_ADDED ) {
 			myPCTab.updateTables();
 			mySPCTab.updateTables();
 		}
@@ -257,7 +266,7 @@ public class ProjectJFrame extends JFrame implements Observer {
 	 * Method which checks the current logged in user to determine which tabs they should have
 	 * access to view based on their role.
 	 */
-	private void determinePermission() {
+	private int determinePermission() {
 		int userRole = myConference.getCurrentUser().getRole();
 		
 		switch (userRole) {
@@ -288,6 +297,8 @@ public class ProjectJFrame extends JFrame implements Observer {
 			
 			break;
 		}
+		
+		return userRole;
 	}
 
 	/**
@@ -323,16 +334,34 @@ public class ProjectJFrame extends JFrame implements Observer {
 	    }
 	}
 	
+	/**
+	 * Window Listener class which listens to check if program is ever closed. In event of
+	 * closing program, the current conference gets saved.
+	 * 
+	 * @author Erik
+	 * @date 6/7/2014
+	 */
 	private class MyWindowListener extends WindowAdapter {
 		
+		/** The current conference. */
 		private Conference myConference;
 		
+		/**
+		 * Constructor of a new MyWindowListener class with a given conference as a parameter.
+		 * 
+		 * @param theConference The current conference.
+		 */
 		public MyWindowListener(final Conference theConference) {
 			super();
 			
 			myConference = theConference;
 		}
 		
+		/**
+		 * Window Closing method that detects for when the window gets closed. Upon closing 
+		 * of the window, the current conference gets saved and the entire program is closed.
+		 */
+		@Override
 		public void windowClosing(WindowEvent e) {
 			myConference.saveConference();
 			System.exit(0);

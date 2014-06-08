@@ -33,22 +33,22 @@ public class Paper {
 	/**
 	 * The unique ID for the subchair assigned to the paper.
 	 */
-	private int mySubchair;
+	//private int mySubchair;
 	/**
 	 * The list of IDs for reviewers assigned to the paper.
 	 */
-	private List<Integer> myReviewers;
+	//private List<Integer> myReviewers;
 	/**
 	 * The list of reviews of the paper.
 	 */
-	private List<Review> myReviews;
+	//private List<Review> myReviews;
 	
 	// 0 - undecided, 1-accepted, 2-declined
 	// please see Recommendation class;
 	/**
 	 * The recommendation made after the paper is reviewed.
 	 */
-	private Recommendation recommendation;
+	//private Recommendation recommendation;
 	// 0 - undecided, 1-yes, 2-no
 	/**
 	 * Whether or not the paper has been accepted or rejected.
@@ -68,9 +68,9 @@ public class Paper {
 		myTitle = title;
 		myAbstract = anAbstract;
 		myFile = file;
-		myReviewers = new ArrayList<Integer>();
-		myReviews = new ArrayList<Review>();
-		recommendation = new Recommendation();
+//		myReviewers = new ArrayList<Integer>();
+//		myReviews = new ArrayList<Review>();
+//		recommendation = new Recommendation();
 	}
 
 	/** Assigns the given subchair id to the paper.
@@ -78,34 +78,34 @@ public class Paper {
 	 * @param id
 	 * @throws BusinessRuleException
 	 */
-	public void assignSpc(int id) throws BusinessRuleException {
-		if (myAuthorID != id) {
-			mySubchair = id;
-		} else {
-			throw new BusinessRuleException("User cannot be a subprogram chair "
-					+ "to their own paper.");
-		}
-	}
+//	public void assignSpc(int id) throws BusinessRuleException {
+//		if (myAuthorID != id) {
+//			mySubchair = id;
+//		} else {
+//			throw new BusinessRuleException("User cannot be a subprogram chair "
+//					+ "to their own paper.");
+//		}
+//	}
 	
 	/** Assigns the given reviewer ID to the paper.
 	 *  Checks to make sure the reviewer is not the author of the paper.
 	 * @param id
 	 * @throws BusinessRuleException 
 	 */
-	public void assignReviewer(int id) throws BusinessRuleException {
-		if (myAuthorID != id) {
-			myReviewers.add(id);
-		} else {
-			throw new BusinessRuleException("User cannot be a reviewer to their own paper.");
-		}
-	}
-	
+//	public void assignReviewer(int id) throws BusinessRuleException {
+//		if (myAuthorID != id) {
+//			myReviewers.add(id);
+//		} else {
+//			throw new BusinessRuleException("User cannot be a reviewer to their own paper.");
+//		}
+//	}
+//	
 	/** Sets the recommendation for the paper.
 	 * @param r
 	 */
-	public void setRecommendation(Recommendation r){
-		recommendation = r;
-	}
+//	public void setRecommendation(Recommendation r){
+//		recommendation = r;
+//	}
 	
 	/** Gets the unique ID for the paper.
 	 * @return the ID of the paper.
@@ -121,26 +121,26 @@ public class Paper {
 		return myAuthorID;
 	}
 	
-	/** Gets the unique ID of the subchair.
-	 * @return ID of the subchair.
-	 */
-	public int getSubchairID() {
-		return mySubchair;
-	}
+//	/** Gets the unique ID of the subchair.
+//	 * @return ID of the subchair.
+//	 */
+//	public int getSubchairID() {
+//		return mySubchair;
+//	}
 	
-	/** Gets the list of reviewer IDs for the paper.
-	 * @return List of reviewer IDs.
-	 */
-	public List<Integer> getReviewerList(){
-		return myReviewers;
-	}
-	
-	/** Gets the current status of the paper. (Accept/Reject/Undecided)
-	 * @return state of decision.
-	 */
-	public int getStatus(){
-		return recommendation.state;
-	}
+//	/** Gets the list of reviewer IDs for the paper.
+//	 * @return List of reviewer IDs.
+//	 */
+//	public List<Integer> getReviewerList(){
+//		return myReviewers;
+//	}
+//	
+//	/** Gets the current status of the paper. (Accept/Reject/Undecided)
+//	 * @return state of decision.
+//	 */
+//	public int getStatus(){
+//		return recommendation.state;
+//	}
 	
 	/** Sets the decision for the paper. (Accept/Reject/Undecided)
 	 * @param decision
@@ -152,9 +152,9 @@ public class Paper {
 	/** Adds the given review to the list of the papers reviews.
 	 * @param r the review to add to the paper.
 	 */
-	public void submitReviewToPaper(Review r){
-		myReviews.add(r);
-	}
+//	public void submitReviewToPaper(Review r){
+//		myReviews.add(r);
+//	}
 	
 	public String getTitle() {
 		return myTitle;
@@ -168,20 +168,20 @@ public class Paper {
 		return myFile;
 	}
 	
-	public Recommendation getRec()
-	{
-		return recommendation;
-	}
-	
-	public boolean hasRev()
-	{
-		return myReviewers.size() != 0;
-	}
-	
-	public List<Review> getRev()
-	{
-		return myReviews;
-	}
+//	public Recommendation getRec()
+//	{
+//		return recommendation;
+//	}
+//	
+//	public boolean hasRev()
+//	{
+//		return myReviewers.size() != 0;
+//	}
+//	
+//	public List<Review> getRev()
+//	{
+//		return myReviews;
+//	}
 
 //	public String toString() {
 //		String output =  myID + "," + myAuthorID + "," + myTitle + "," + myAbstract + "," + myFile + "," + mySubchair

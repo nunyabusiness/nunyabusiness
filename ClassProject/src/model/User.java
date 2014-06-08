@@ -86,15 +86,15 @@ public class User {
 	}
 	
 	
-	public void submitPaper(int the_paperId) throws BusinessRuleException {
-		if (mySubmittedPapers.size() < 4) {
-			mySubmittedPapers.add(the_paperId);
-		} else {
-			throw new BusinessRuleException("You cannot have more than 4 papers submitted"
-					+ "to a given conference.");
-		}
-		
-	}
+//	public void submitPaper(int the_paperId) throws BusinessRuleException {
+//		if (mySubmittedPapers.size() < 4) {
+//			mySubmittedPapers.add(the_paperId);
+//		} else {
+//			throw new BusinessRuleException("You cannot have more than 4 papers submitted"
+//					+ "to a given conference.");
+//		}
+//		
+//	}
 	
 	@Override
 	public String toString() {
