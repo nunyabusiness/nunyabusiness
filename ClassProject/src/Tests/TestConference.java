@@ -5,6 +5,8 @@ package Tests;
 
 import static org.junit.Assert.*;
 
+import java.util.GregorianCalendar;
+
 import model.BusinessRuleException;
 import model.Conference;
 import model.Paper;
@@ -53,7 +55,7 @@ public class TestConference
 	 * 
 	 */
 	@After
-	public static void breakDown()
+	public void breakDown()
 	{
 		con.logout();
 	}
@@ -64,6 +66,7 @@ public class TestConference
 	@AfterClass
 	public static void breakOut()
 	{
+		con.changeUserRole(AID, 0);
 		con.saveConference();
 	}
 
@@ -184,6 +187,15 @@ public class TestConference
 	{
 		assertEquals("", paper, con.getAllPapers().get(PID));
 	}
+	
+	/**
+	 * Test method for {@link model.Conference#getPapersByAuthor(int)}.
+	 */
+	@Test
+	public void testGetPapersByAuthor() 
+	{
+		assertEquals("one paper should exist from that author", 1,con.getPapersByAuthor(AID).size());
+	}
 
 	/**
 	 * Test method for {@link model.Conference#getCurrentUser()}.
@@ -210,30 +222,12 @@ public class TestConference
 	}
 
 	/**
-	 * Test method for {@link model.Conference#changeUserRole(int, int)}.
-	 */
-	@Test
-	public void testChangeUserRole() 
-	{
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link model.Conference#getUserByRole(int)}.
 	 */
 	@Test
 	public void testGetUserByRole() 
 	{
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link model.Conference#getPapersByAuthor(int)}.
-	 */
-	@Test
-	public void testGetPapersByAuthor() 
-	{
-		fail("Not yet implemented"); // TODO
+		assertEquals("If 4 PC's exist", 4,con.getUserByRole(1).size() );
 	}
 
 	/**
@@ -242,7 +236,7 @@ public class TestConference
 	@Test
 	public void testGetPapersBySpc()
 	{
-		fail("Not yet implemented"); // TODO
+		assertEquals("If 1 paper exists for this SPC",1,con.getPapersBySpc(SPCID));
 	}
 	
 	/**
@@ -264,17 +258,19 @@ public class TestConference
 	@Test
 	public void testGetDaysLeft()
 	{
+		long today = new GregorianCalendar().getTimeInMillis();
+		int daysLeft = (int) (con.getDeadline().getTimeInMillis() - today);
 		
-		
-		fail("Not yet implemented"); // TODO
+		assertEquals("If they equal then this should work", daysLeft,con.getDaysLeft());
 	}
-
+	
 	/**
-	 * Test method for {@link model.Conference#getDeadline()}.
+	 * Test method for {@link model.Conference#changeUserRole(int, int)}.
 	 */
 	@Test
-	public void testGetDeadline() 
+	public void testChangeUserRole() 
 	{
-		fail("Not yet implemented"); // TODO
+		con.changeUserRole(AID, 4);
+		assertEquals("If the change occured than this should be correct", 4, con.getUser(AID).getRole());
 	}
 }
