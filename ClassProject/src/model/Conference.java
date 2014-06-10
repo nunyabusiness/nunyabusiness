@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -36,6 +37,7 @@ public class Conference extends Observable {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:db/nunya.sqlite");
+			c.setAutoCommit(true);
 		} catch ( Exception e ) {
 			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 			System.exit(0);
@@ -43,6 +45,25 @@ public class Conference extends Observable {
 		
 		//my_users = new HashMap<Integer, User>();
 		//my_papers = new HashMap<Integer, Paper>();
+	}
+	
+	public void startTest() {
+		try {
+			c.setAutoCommit(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void endTest() {
+		try {
+			Statement stmt = c.createStatement();
+			stmt.executeUpdate("rollback");
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public User getUser(int theID) {
