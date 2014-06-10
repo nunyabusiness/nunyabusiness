@@ -47,7 +47,7 @@ public class TestConference
 	public static void setUp() throws Exception 
 	{
 		con = new Conference();
-		
+		con.startTest();
 		paper = new Paper(PID, AID, TITLE, ABST, FILE);
 	}
 	
@@ -66,7 +66,8 @@ public class TestConference
 	@AfterClass
 	public static void breakOut()
 	{
-		con.changeUserRole(AID, 0);
+		//con.changeUserRole(AID, 0);
+		con.endTest();
 		con.saveConference();
 	}
 
@@ -92,7 +93,7 @@ public class TestConference
 		
 		con.addPaper(TITLE, ABST, FILE);
 		
-		assertEquals("if the papers are equal",paper, con.getPaper(PID));
+		assertEquals("if the papers are equal", paper, con.getPaper(PID));
 	}
 
 	/**
@@ -259,7 +260,7 @@ public class TestConference
 	public void testGetDaysLeft()
 	{
 		long today = new GregorianCalendar().getTimeInMillis();
-		int daysLeft = (int) (con.getDeadline().getTimeInMillis() - today);
+		int daysLeft = (int) (con.getDeadline().getTimeInMillis() - today) / (1000 * 60 * 60 * 24);
 		
 		assertEquals("If they equal then this should work", daysLeft,con.getDaysLeft());
 	}
