@@ -70,7 +70,8 @@ public class Conference extends Observable {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM paper WHERE paperID = '" + theID + "'");
 			
-			p = new Paper(rs.getInt("paperID"), rs.getInt("userID"), rs.getString("title"),
+			if (rs.next())
+				p = new Paper(rs.getInt("paperID"), rs.getInt("userID"), rs.getString("title"),
 					rs.getString("abstract"), rs.getString("fileName"));
 			
 			stmt.close();
@@ -463,10 +464,13 @@ public class Conference extends Observable {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM recommendation WHERE paperID = '" + paperId + "'");
 			
-			r = new Recommendation();
-			r.setState(rs.getInt("score"));
-			r.setRationale(rs.getString("comment"));
+			if (rs.next()) {
+				r = new Recommendation();
+				r.setState(rs.getInt("score"));
+				r.setRationale(rs.getString("comment"));
+			}
 			
+			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -482,14 +486,17 @@ public class Conference extends Observable {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM paper WHERE paperID = '" + paperId + "'");
 			
-			int decision = rs.getInt("decision");
-			
-			if (decision == 1) {
-				decisionStr = "Accepted";
-			} if (decision == 2) {
-				decisionStr = "Rejected";
+			if (rs.next()) {
+				int decision = rs.getInt("decision");
+
+				if (decision == 1) {
+					decisionStr = "Accepted";
+				} if (decision == 2) {
+					decisionStr = "Rejected";
+				}
 			}
 			
+			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
