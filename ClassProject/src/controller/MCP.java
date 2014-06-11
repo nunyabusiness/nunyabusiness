@@ -3,7 +3,6 @@
  */
 package controller;
 
-import java.io.IOException;
 import model.Conference;
 import view.ProjectJFrame;
 
@@ -16,23 +15,6 @@ import view.ProjectJFrame;
  */
 public class MCP 
 {
-	/**
-	 * to access the conference or create the conference
-	 */
-	Conference newCon;
-	
-	/**
-	 * The MCP constructor because...
-	 * @throws IOException this program deals with IO and could throw an IO exception
-	 * @param theConference is the conference being referenced
-	 */
-	public MCP(Conference theConference) throws IOException
-	{
-		//newCon = theConference;
-		//newCon.addObserver(this);			
-		
-	}
-	
 
 	/**
 	 * Main void 
