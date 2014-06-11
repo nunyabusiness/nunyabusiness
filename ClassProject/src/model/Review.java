@@ -5,6 +5,10 @@ package model;
  * @author Christopher Barrett, Steven Bradley
  * I needed this for my part
  */
+/**
+ * @author solid_000
+ *
+ */
 public class Review 
 {
 	private int reviewerID;
@@ -74,6 +78,9 @@ public class Review
 		return comments;
 	}
 	
+	/**
+	 * @author STeven bradley
+	 */
 //	public String toString() {
 //		return score + "," + comments;
 //	}

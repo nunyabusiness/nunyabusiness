@@ -56,6 +56,9 @@ public class Conference extends Observable {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void endTest() {
 		try {
 			Statement stmt = c.createStatement();
@@ -66,6 +69,10 @@ public class Conference extends Observable {
 		}
 	}
 	
+	/**
+	 * @param theID
+	 * @return
+	 */
 	public User getUser(int theID) {
 		User u = null;
 		try {
@@ -85,6 +92,11 @@ public class Conference extends Observable {
 		return u;
 	}
 	
+	/**
+	 * @author Steven Bradley
+	 * @param theID
+	 * @return
+	 */
 	public Paper getPaper(int theID) {
 		Paper p = null;
 		try {
@@ -111,6 +123,13 @@ public class Conference extends Observable {
 //	}
 
 	// US01. As an Author, I want to submit a manuscript to a conference.
+	/**
+	 * @author Steven Bradley
+	 * @param title
+	 * @param theAbstract
+	 * @param filename
+	 * @throws BusinessRuleException
+	 */
 	public void addPaper(String title, String theAbstract, String filename) throws BusinessRuleException {
 //		my_currentUser.submitPaper(my_papers.size() + 1);
 //		my_papers.put(my_papers.size() + 1 , new Paper(my_papers.size() + 1, my_currentUser.getID(), title, Abstract, filename));			
@@ -140,6 +159,7 @@ public class Conference extends Observable {
 //	}
 	
 	/**
+	 * @author Steven Bradley
 	 * Method which updates the database to delete a paper and any parallel reviews or 
 	 * recommendations.
 	 * 
@@ -295,6 +315,10 @@ public class Conference extends Observable {
 	// US11. As a Program Chair, I want to see which papers are assigned to
 	// which Subprogram chairs.
 	// Please see US02
+	/**
+	 * @author Steven Bradley
+	 * @return the list of all papers in the conference.
+	 */
 	public ArrayList<Paper> getAllPapers() {
 		// return collection of papers
 		// status can be obtained by getStatus()
@@ -455,6 +479,11 @@ public class Conference extends Observable {
 		return users;
 	}
 	
+	/**
+	 * @author Steven Bradley
+	 * @param authorId
+	 * @return the list of papers by the given author.
+	 */
 	public List<Paper> getPapersByAuthor(int authorId){
 		List<Paper> papers = new ArrayList<Paper>();
 //		for(Paper p: my_papers.values()){
@@ -479,6 +508,10 @@ public class Conference extends Observable {
 		return papers;
 	}
 	
+	/**
+	 * @param paperId
+	 * @return
+	 */
 	public Recommendation getRecommendationForPaper(int paperId) {
 		Recommendation r = null;
 		try {
@@ -501,6 +534,10 @@ public class Conference extends Observable {
 		
 	}
 	
+	/**
+	 * @param paperId
+	 * @return
+	 */
 	public String getPaperDecision(int paperId) {
 		String decisionStr = "Being Reviewed";
 		try {
@@ -527,6 +564,10 @@ public class Conference extends Observable {
 		
 	}
 	
+	/**
+	 * @param paperId
+	 * @return
+	 */
 	public User getSPCforPaper(int paperId) {
 		User spc = null;
 		
@@ -551,6 +592,10 @@ public class Conference extends Observable {
 		return spc;
 	}
 	
+	/**
+	 * @param paperId
+	 * @return
+	 */
 	public List<Review> getReviewsForPaper(int paperId) {
 		ArrayList<Review> list = new ArrayList<Review>();
 		
@@ -571,6 +616,10 @@ public class Conference extends Observable {
 		return list;
 	}
 	
+	/**
+	 * @param spcId
+	 * @return
+	 */
 	public List<Paper> getPapersBySpc(int spcId){
 		List<Paper> papers = new ArrayList<Paper>();
 //		for(Paper p: my_papers.values()){
@@ -595,6 +644,9 @@ public class Conference extends Observable {
 	}
 
 	// Set duedate 1 month before conference starts
+	/**
+	 * @return
+	 */
 	public int getDaysLeft() {
 		long todaysDate = new GregorianCalendar().getTimeInMillis();
 
@@ -604,10 +656,16 @@ public class Conference extends Observable {
 		return (int) daysLeft;
 	}
 
+	/**
+	 * @return
+	 */
 	public GregorianCalendar getDeadline() {
 		return DEADLINE;
 	}
 	
+	/**
+	 * 
+	 */
 	public void saveConference() {
 		try {
 			c.close();
