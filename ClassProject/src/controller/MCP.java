@@ -3,32 +3,15 @@
  */
 package controller;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.JOptionPane;
-
-import model.BusinessRuleException;
-import model.ConfChangeType;
 import model.Conference;
-import model.Paper;
-import model.Recommendation;
-import model.Review;
-import model.User;
 import view.ProjectJFrame;
 
 /**
  * Feel free to change move relocate. In reality its just a wrapper so just abuse
- * @author Christopher Barrett, Erik Tedder
+ * 
+ * @author Christopher Barrett
+ * 
  * MCP Class is a throw back to an old programming style used in the 80's for keeping users enthraled with different games.
  */
 public class MCP 
@@ -38,8 +21,6 @@ public class MCP
 	 */
 	Conference newCon;
 	
-	private Connection c;
-	
 	/**
 	 * The MCP constructor because...
 	 * @throws IOException this program deals with IO and could throw an IO exception
@@ -47,47 +28,38 @@ public class MCP
 	 */
 	public MCP(Conference theConference) throws IOException
 	{
-		newCon = theConference;
-		//newCon.addObserver(this);		
-		try {
-			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:nunya.sqlite");
-			loadFiles();
-			c.close();
-		} catch ( Exception e ) {
-			System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-			System.exit(0);
-		} finally {
-			System.out.println("Opened database successfully");			
-		}
+		//newCon = theConference;
+		//newCon.addObserver(this);			
 		
-	  }
+	}
 	
-	
+
 	/**
-	 * Loads files from specific locations.
-	 * @throws IOException load in from files hence IO
-	 * no parameters cause not needed yet
+	 * Main void 
+	 * @param args command line inputs if they exist
 	 */
-	private void loadFiles() throws IOException
+	public static void main(String[] args) 
 	{
-		
-		try {
-			Statement stmt = null;
-			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery( "SELECT * FROM user;" );
+		java.awt.EventQueue.invokeLater(new Runnable() {
+            Conference con = new Conference();
 			
-			while ( rs.next() ) {
-				User u = new User(rs.getInt("userID"), rs.getInt("roleID"), 
-						rs.getString("firstName"), rs.getString("lastName"), 
-						rs.getString("email"));
-				//newCon.addUser(u);
-			}
-			stmt.close();
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			public void run() {
+            	ProjectJFrame gui = new ProjectJFrame(con);
+            	con.addObserver(gui);
+            	gui.displayLogin();
+            }
+        });
+		
+	}
+	
+	//DEPRECATED - previously used to read-in files from csv files.
+//	/**
+//	 * Loads files from specific locations.
+//	 * @throws IOException load in from files hence IO
+//	 * no parameters cause not needed yet
+//	 */
+//	private void loadFiles() throws IOException
+//	{
 //		String UserFileName = "Files/usercsv.txt";
 //		BufferedReader fileIn = null;
 //		char para = '"';
@@ -204,14 +176,17 @@ public class MCP
 //		}
 //
 //		fileIn.close();
-	}
+//	}
 
-	/**
-	 * write out to files
-	 * @param users list of users
-	 * @param papers list of papers
-	 * @throws IOException writing so IO
-	 */
+	//DEPRECATED - previously used to write-out current collections within the Conference.
+//	/**
+//	 * 
+//	 *  
+//	 * write out to files
+//	 * @param users list of users
+//	 * @param papers list of papers
+//	 * @throws IOException writing so IO
+//	 */
 //	public void writeOut(ArrayList<User> users, ArrayList<Paper> papers) throws IOException
 //	{
 //		String UserFileName = "Files/usercsv.txt";
@@ -285,24 +260,8 @@ public class MCP
 //		//will do the same for papers again when it gets flushed out.
 //	}
 
-	/**
-	 * Main void 
-	 * @param args command line inputs if they exist
-	 */
-	public static void main(String[] args) 
-	{
-		java.awt.EventQueue.invokeLater(new Runnable() {
-            Conference con = new Conference();
-			
-			public void run() {
-            	ProjectJFrame gui = new ProjectJFrame(con);
-            	con.addObserver(gui);
-            	gui.displayLogin();
-            }
-        });
-		
-	}
 
+	//DEPRECATED - previously used to trigger the write-out method
 //	public void update(Observable o, Object arg) {
 //		if (arg == ConfChangeType.CONF_SAVED) {
 //			try {
