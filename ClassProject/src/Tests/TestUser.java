@@ -15,6 +15,9 @@ import org.junit.Test;
  */
 public class TestUser 
 {
+	/**
+	 * Constants
+	 */
 	private static final int USERID = 21;
 	private static final int ROLE = 4;
 	private static final int ROLE2 = 2;
@@ -22,6 +25,9 @@ public class TestUser
 	private static final String LAST = "Horner";
 	private static final String EMAIL = "CH@blah.edu";
 	
+	/**
+	 * Object
+	 */
 	private static User use;
 	
 	/**

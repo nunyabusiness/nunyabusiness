@@ -15,9 +15,15 @@ import org.junit.Test;
  */
 public class TestRec 
 {
+	/**
+	 * Constants
+	 */
 	private static final int STATE = 2;
 	private static final String COM = "sucks";
 	
+	/**
+	 * Object
+	 */
 	private static Recommendation rec;
 	
 	/**

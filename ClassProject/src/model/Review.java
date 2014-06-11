@@ -18,6 +18,7 @@ public class Review
 	private String comments;
 	
 	/**
+	 * Chris Barrett
 	 * Constructor
 	 */
 	public Review()
@@ -27,6 +28,7 @@ public class Review
 	}
 	
 	/**
+	 * Chris Barrett
 	 * overloaded constructor
 	 * @param avg inputed average
 	 * @param comment inputed comment
@@ -38,11 +40,17 @@ public class Review
 		comments = comment;
 	}
 	
+	/**
+	 * not Chris Barrett
+	 * Getter
+	 * @return Reviewers ID
+	 */
 	public int getReviewerID() {
 		return reviewerID;
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Setter
 	 * @param avg score from reviewer
 	 */
@@ -52,6 +60,7 @@ public class Review
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Setter
 	 * @param comment comments from reviewer
 	 */
@@ -61,6 +70,7 @@ public class Review
 	}
 	
 	/**
+	 * Chris Barrett
 	 * getter
 	 * @return average
 	 */
@@ -70,6 +80,7 @@ public class Review
 	}
 	
 	/**
+	 * Chris Barrett
 	 * getter
 	 * @return comments
 	 */

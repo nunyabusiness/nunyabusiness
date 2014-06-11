@@ -25,6 +25,9 @@ import org.junit.Test;
  */
 public class TestConference 
 {
+	/**
+	 * Static Constants for Use
+	 */
 	private static final int PID = 1;
 	private static final int AID = 123;
 	private static final String FILE = "howaboutit.txt";
@@ -36,6 +39,9 @@ public class TestConference
 	private static final int REVID2 = 21;
 	private static final int REVID3 = 29;
 	
+	/**
+	 * objects
+	 */
 	private static Conference con;
 	private static Paper paper;
 	

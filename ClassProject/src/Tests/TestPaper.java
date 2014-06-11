@@ -1,5 +1,5 @@
 /**
- * For Stuff
+ * From Tests
  */
 package Tests;
 
@@ -15,12 +15,18 @@ import org.junit.Test;
  */
 public class TestPaper 
 {
+	/**
+	 * Constants
+	 */
 	private static final int PID = 21;
 	private static final int AID = 4;
 	private static final String FILE = "Charlie";
 	private static final String ABST = "Horner";
 	private static final String TITLE = "CH@blah.edu";
 	
+	/**
+	 * object
+	 */
 	private Paper paper;
 	
 	/**

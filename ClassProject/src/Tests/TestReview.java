@@ -1,5 +1,5 @@
 /**
- * 
+ * From Tests
  */
 package Tests;
 
@@ -15,10 +15,16 @@ import org.junit.Test;
  */
 public class TestReview 
 {
+	/**
+	 * Constants
+	 */
 	private static final int REVID = 21;
 	private static final int SCORE = 4;
 	private static final String COM = "comments";
 	
+	/**
+	 * Objects
+	 */
 	private Review rev;
 	private Review rev2;
 	
