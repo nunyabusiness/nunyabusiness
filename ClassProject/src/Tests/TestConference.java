@@ -26,7 +26,7 @@ import org.junit.Test;
 public class TestConference 
 {
 	private static final int PID = 1;
-	private static final int AID = 56;
+	private static final int AID = 123;
 	private static final String FILE = "howaboutit.txt";
 	private static final String ABST = "its a thing";
 	private static final String TITLE = "Thing";
