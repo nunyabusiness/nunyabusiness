@@ -10,17 +10,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Christopher
- *
+ * @author Christopher Barrett
+ * Tests the Review methods
  */
 public class TestReview 
 {
 	private static final int REVID = 21;
 	private static final int SCORE = 4;
 	private static final String COM = "comments";
+	
 	private Review rev;
 	private Review rev2;
+	
 	/**
+	 * Chris Barrett
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -31,6 +34,7 @@ public class TestReview
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Review#getReviewerID()}.
 	 */
 	@Test
@@ -40,6 +44,7 @@ public class TestReview
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Review#setScore(int)}.
 	 */
 	@Test
@@ -51,6 +56,7 @@ public class TestReview
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Review#setComment(java.lang.String)}.
 	 */
 	@Test

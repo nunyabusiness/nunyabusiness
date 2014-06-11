@@ -10,8 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author Christopher
- *
+ * @author Christopher Barrett
+ * Tests the User Methods
  */
 public class TestUser 
 {
@@ -25,6 +25,7 @@ public class TestUser
 	private static User use;
 	
 	/**
+	 * Chris Barrett
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
@@ -34,6 +35,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#getID()}.
 	 */
 	@Test
@@ -43,6 +45,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#getFirstName()}.
 	 */
 	@Test
@@ -52,6 +55,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#getLastName()}.
 	 */
 	@Test
@@ -61,6 +65,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#getEmail()}.
 	 */
 	@Test
@@ -70,6 +75,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#setRole(int)}.
 	 */
 	@Test
@@ -81,6 +87,7 @@ public class TestUser
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.User#toString()}.
 	 */
 	@Test

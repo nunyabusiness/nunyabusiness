@@ -1,5 +1,5 @@
 /**
- * 
+ * Tests
  */
 package Tests;
 
@@ -10,15 +10,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author Christopher
- *
+ * @author Christopher Barrett
+ * Tests the Recommendation methods
  */
 public class TestRec 
 {
 	private static final int STATE = 2;
 	private static final String COM = "sucks";
+	
 	private static Recommendation rec;
+	
 	/**
+	 * Chris Barrett
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
@@ -28,6 +31,7 @@ public class TestRec
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Recommendation#setState(int)}.
 	 */
 	@Test
@@ -39,6 +43,7 @@ public class TestRec
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Recommendation#setRationale(java.lang.String)}.
 	 */
 	@Test
@@ -50,12 +55,13 @@ public class TestRec
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Recommendation#toString()}.
 	 */
 	@Test
 	public void testToString() 
 	{
-		assertEquals("The toString() works", "2,sucks", rec.toString());
+		assertEquals("The toString() works", ",sucks", rec.toString());
 	}
 
 }

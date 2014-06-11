@@ -1,5 +1,5 @@
 /**
- * 
+ * For Stuff
  */
 package Tests;
 
@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Christopher
- *
+ * @author Christopher Barrett
+ * Tests the paper methods
  */
 public class TestPaper 
 {
@@ -24,6 +24,7 @@ public class TestPaper
 	private Paper paper;
 	
 	/**
+	 * Chris Barrett
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -33,6 +34,7 @@ public class TestPaper
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Paper#getId()}.
 	 */
 	@Test
@@ -42,6 +44,7 @@ public class TestPaper
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Paper#getAuthorID()}.
 	 */
 	@Test
@@ -51,6 +54,7 @@ public class TestPaper
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Paper#getTitle()}.
 	 */
 	@Test
@@ -60,6 +64,7 @@ public class TestPaper
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Paper#getAbstract()}.
 	 */
 	@Test
@@ -69,6 +74,7 @@ public class TestPaper
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Paper#getFile()}.
 	 */
 	@Test

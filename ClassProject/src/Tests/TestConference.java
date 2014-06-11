@@ -20,8 +20,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author Christopher
- *
+ * @author Christopher Barrett
+ * Tests the conference methods
  */
 public class TestConference 
 {
@@ -41,6 +41,7 @@ public class TestConference
 	
 	
 	/**
+	 * Chris Barrett
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
@@ -52,7 +53,8 @@ public class TestConference
 	}
 	
 	/**
-	 * 
+	 * Chris Barrett
+	 * after each class do the following
 	 */
 	@After
 	public void breakDown()
@@ -61,7 +63,8 @@ public class TestConference
 	}
 	
 	/**
-	 * 
+	 * Chris Barrett
+	 * after the tests are done do the following
 	 */
 	@AfterClass
 	public static void breakOut()
@@ -69,9 +72,11 @@ public class TestConference
 		//con.changeUserRole(AID, 0);
 		con.endTest();
 		con.saveConference();
+		
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getUser(int)}.
 	 */
 	@Test
@@ -83,6 +88,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#addPaper(java.lang.String, java.lang.String, java.lang.String)}.
 	 * @throws BusinessRuleException 
 	 */
@@ -97,6 +103,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#assignSpc(int, int)}.
 	 * @throws BusinessRuleException 
 	 */
@@ -111,6 +118,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#assignReviewerToPaper(int, int)}.
 	 * @throws BusinessRuleException 
 	 */
@@ -127,6 +135,7 @@ public class TestConference
 		}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#submitReview(int, model.Review)}.
 	 */
 	@Test
@@ -164,6 +173,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#spcSubmitRecommendation(int, model.Recommendation)}.
 	 */
 	@Test
@@ -181,6 +191,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getAllPapers()}.
 	 */
 	@Test
@@ -190,6 +201,7 @@ public class TestConference
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getPapersByAuthor(int)}.
 	 */
 	@Test
@@ -199,6 +211,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getCurrentUser()}.
 	 */
 	@Test
@@ -210,6 +223,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#submitDecision(int, int)}.
 	 */
 	@Test
@@ -223,6 +237,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getUserByRole(int)}.
 	 */
 	@Test
@@ -232,6 +247,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getPapersBySpc(int)}.
 	 */
 	@Test
@@ -241,6 +257,7 @@ public class TestConference
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#removePaper(model.Paper)}.
 	 */
 	@Test
@@ -254,6 +271,7 @@ public class TestConference
 	}
 
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#getDaysLeft()}.
 	 */
 	@Test
@@ -266,6 +284,7 @@ public class TestConference
 	}
 	
 	/**
+	 * Chris Barrett
 	 * Test method for {@link model.Conference#changeUserRole(int, int)}.
 	 */
 	@Test
