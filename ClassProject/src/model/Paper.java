@@ -170,6 +170,29 @@ public class Paper {
 		return myFile;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @author Erik Tedder
+	 */
+	@Override
+	public boolean equals(final Object other) {
+		if (other == null) {
+			return false;
+		}
+		
+		if (other instanceof Paper) {
+			Paper otherPaper = (Paper) other;
+			
+			if (otherPaper.myID == myID && otherPaper.myAbstract.equals(myAbstract) 
+					&& otherPaper.myFile.equals(myFile) && otherPaper.myAuthorID == myAuthorID 
+					&& otherPaper.myTitle.equals(myTitle))
+				return true;
+		}
+		
+		return false;
+	}
+	
 //	public Recommendation getRec()
 //	{
 //		return recommendation;

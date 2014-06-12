@@ -75,7 +75,6 @@ public class TestConference
 	@AfterClass
 	public static void breakOut()
 	{
-		//con.changeUserRole(AID, 0);
 		con.endTest();
 		con.saveConference();
 		
@@ -94,7 +93,8 @@ public class TestConference
 	}
 
 	/**
-	 * Chris Barrett
+	 * @author Chris Barrett
+	 * @edited Erik Tedder
 	 * Test method for {@link model.Conference#addPaper(java.lang.String, java.lang.String, java.lang.String)}.
 	 * @throws BusinessRuleException 
 	 */
@@ -105,7 +105,27 @@ public class TestConference
 		
 		con.addPaper(TITLE, ABST, FILE);
 		
-		assertEquals("if the papers are equal", paper, con.getPaper(PID));
+		//Erik Tedder - revised assertion to check assertTrue instead of assertEqual
+		assertTrue("if the papers are equal", con.getPaper(PID).equals(paper));
+	}
+	
+	/**
+	 * Method to ensure BusinessRuleException is properly thrown.
+	 * 
+	 * @author Erik Tedder
+	 * Test method for {@link model.Conference#addPaper(java.lang.String, java.lang.String, java.lang.String)}.
+	 * @throws BusinessRuleException 
+	 */
+	@Test(expected = BusinessRuleException.class) 
+	public void testAddPaperTooManySubmissions() throws BusinessRuleException 
+	{
+		con.login(AID);
+		
+		con.addPaper(TITLE, ABST, FILE);
+		con.addPaper("title 1", "some abstract", "text1.txt");
+		con.addPaper("title 2", "some abstract", "text2.txt");
+		con.addPaper("title 3", "some abstract", "text3.txt");
+		con.addPaper("title 4", "some abstract", "text4.txt");
 	}
 
 	/**
@@ -124,7 +144,8 @@ public class TestConference
 	}
 
 	/**
-	 * Chris Barrett
+	 * @author Chris Barrett
+	 * @edited Erik Tedder
 	 * Test method for {@link model.Conference#assignReviewerToPaper(int, int)}.
 	 * @throws BusinessRuleException 
 	 */
@@ -137,9 +158,36 @@ public class TestConference
 		con.assignReviewerToPaper(REVID2, PID);
 		con.assignReviewerToPaper(REVID3, PID);
 		
-		assertEquals("If the paper exists in the list of papers for that reviewer", paper, con.getReviewerList(REVID1).get(PID));
-		}
+		//Erik Tedder - revised from assertEqual to assertTrue, added 2 other reviewer checks
+		assertTrue("If the paper exists in the list of papers for that reviewer", 
+				paper.equals(con.getReviewerList(REVID1).get(0)));
+		assertTrue("If the paper exists in the list of papers for that reviewer", 
+				paper.equals(con.getReviewerList(REVID2).get(0)));
+		assertTrue("If the paper exists in the list of papers for that reviewer", 
+				paper.equals(con.getReviewerList(REVID3).get(0)));
+	}
 
+	/**
+	 * Test to ensure exception is thrown is assigning a review to their own paper.
+	 * 
+	 * @author Erik Tedder
+	 * Test method for {@link model.Conference#assignReviewerToPaper(int, int)}.
+	 * @throws BusinessRuleException 
+	 */
+	@Test(expected = BusinessRuleException.class)
+	public void testAssignReviewerToPaperTheirOwn() throws BusinessRuleException 
+	{
+		con.login(REVID1);
+		con.addPaper("reviewer 1 paper", "reviewer 1 abstract", "somefile.txt");
+		int id = con.getPapersByAuthor(REVID1).get(0).getId();
+		
+		con.logout();
+		
+		con.login(SPCID);
+		
+		con.assignReviewerToPaper(REVID1, id);
+	}
+	
 	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Conference#submitReview(int, model.Review)}.
@@ -175,7 +223,8 @@ public class TestConference
 		
 		con.submitReview(PID, rev2);
 		
-		assertEquals("I hope that things work correctly sort of cheated", rev.getComment(), con.getReviewsForPaper(PID).get(PID).getComment());
+		assertEquals("I hope that things work correctly sort of cheated", 3, 
+				con.getReviewsForPaper(PID).size());
 	}
 
 	/**
@@ -203,7 +252,7 @@ public class TestConference
 	@Test
 	public void testGetAllPapers() 
 	{
-		assertEquals("", paper, con.getAllPapers().get(PID));
+		assertTrue("", con.getAllPapers().size() > 0);
 	}
 	
 	/**
@@ -233,13 +282,40 @@ public class TestConference
 	 * Test method for {@link model.Conference#submitDecision(int, int)}.
 	 */
 	@Test
-	public void testSubmitDecision() 
-	{
+	public void testSubmitDecisionAccepted() {
 		con.login(PCID);
 		
 		con.submitDecision(PID, 1);
 		
-		assertEquals("This is correct", 1, con.getPaperDecision(PID));
+		assertEquals("This is correct", "Accepted", con.getPaperDecision(PID));
+	}
+	
+	/**
+	 * Erik Tedder
+	 * Test method for {@link model.Conference#submitDecision(int, int)}.
+	 */
+	@Test
+	public void testSubmitDecisionRejected() 
+	{
+		con.login(PCID);
+		
+		con.submitDecision(PID, 2);
+		
+		assertEquals("This is correct", "Rejected", con.getPaperDecision(PID));
+	}
+	
+	/**
+	 * Erik Tedder
+	 * Test method for {@link model.Conference#submitDecision(int, int)}.
+	 */
+	@Test
+	public void testSubmitDecisionInvalid() 
+	{
+		con.login(PCID);
+		
+		con.submitDecision(PID, 9);
+		
+		assertEquals("This is correct", "Being Reviewed", con.getPaperDecision(PID));
 	}
 
 	/**
@@ -249,17 +325,20 @@ public class TestConference
 	@Test
 	public void testGetUserByRole() 
 	{
-		assertEquals("If 4 PC's exist", 4,con.getUserByRole(1).size() );
+		assertEquals("If 1 PC exist", 1,con.getUserByRole(1).size() );
 	}
 
 	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Conference#getPapersBySpc(int)}.
+	 * @throws BusinessRuleException 
 	 */
 	@Test
-	public void testGetPapersBySpc()
-	{
-		assertEquals("If 1 paper exists for this SPC",1,con.getPapersBySpc(SPCID));
+	public void testGetPapersBySpc() throws BusinessRuleException
+	{		
+		con.assignSpc(SPCID, PID);
+		
+		assertEquals("If 1 paper exists for this SPC", 1, con.getPapersBySpc(SPCID).size());
 	}
 	
 	/**

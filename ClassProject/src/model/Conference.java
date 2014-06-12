@@ -451,6 +451,11 @@ public class Conference extends Observable {
 	 * @param decision The decision to be added to the paper (1 = accept, 2 = reject).
 	 */
 	public void submitDecision(final int paperID, final int decision) {		
+		//Tests to ensure decision is of the right value.
+		if (decision != 1 || decision != 2) {
+			return;
+		}
+		
 		try {
 			Statement stmt = c.createStatement();
 			stmt.executeUpdate("UPDATE paper SET decision = " + decision 

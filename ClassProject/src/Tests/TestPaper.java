@@ -78,6 +78,71 @@ public class TestPaper
 	{
 		assertEquals("The get abstract works", ABST, paper.getAbstract());
 	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link mode.Paper#equals(other)}
+	 */
+	@Test
+	public void testEqualsTrue() {
+		Paper p = new Paper(PID, AID, TITLE, ABST, FILE);
+		
+		assertTrue(p.equals(paper));		
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link mode.Paper#equals(other)}
+	 */
+	@Test
+	public void testEqualsItself() {
+		assertTrue(paper.equals(paper));		
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link mode.Paper#equals(other)}
+	 */
+	@Test
+	public void testDoesNotEqualNull() {
+		assertFalse(paper.equals(null));		
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link mode.Paper#equals(other)}
+	 */
+	@Test
+	public void testDoesNotEqual() {
+		Paper p = new Paper(41, AID, TITLE, ABST, FILE);		
+		
+		assertFalse(paper.equals(p));	
+		
+		p = new Paper(PID, 0, TITLE, ABST, FILE);		
+		
+		assertFalse(paper.equals(p));
+		
+		p = new Paper(PID, AID, "asifj", ABST, FILE);		
+
+		assertFalse(paper.equals(p));
+		
+		p = new Paper(PID, AID, TITLE, "asfasdf", FILE);		
+		
+		assertFalse(paper.equals(p));
+		
+		p = new Paper(PID, AID, TITLE, ABST, "asdfasdf");		
+		
+		assertFalse(paper.equals(p));
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link mode.Paper#equals(other)}
+	 */
+	@Test
+	public void testDoesNotEqualOtherObject() {
+		assertFalse(paper.equals("String"));		
+	}
 
 	/**
 	 * Chris Barrett
