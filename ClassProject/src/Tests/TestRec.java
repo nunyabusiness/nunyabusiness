@@ -49,6 +49,34 @@ public class TestRec
 	}
 
 	/**
+	 * Tests to ensure recommendation state does not get set when passed a value outside the
+	 * appropriate state range.
+	 * 
+	 * Erik Tedder
+	 * Test method for {@link model.Recommendation#setState(int)}.
+	 */
+	@Test
+	public void testSetStateBelowThreshold() {
+		rec.setState(-1);
+		
+		assertNotEquals("State should not set since out of the threshold", -1, rec.getState());
+	}
+	
+	/**
+	 * Tests to ensure recommendation state does not get set when passed a value outside the
+	 * appropriate state range.
+	 * 
+	 * Erik Tedder
+	 * Test method for {@link model.Recommendation#setState(int)}.
+	 */
+	@Test
+	public void testSetStateAboveThreshold() {
+		rec.setState(6);
+		
+		assertNotEquals("State should not set since out of the threshold", 6, rec.getState());
+	}
+	
+	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Recommendation#setRationale(java.lang.String)}.
 	 */
@@ -59,6 +87,7 @@ public class TestRec
 		
 		assertEquals("The set/get rational works", COM, rec.getRationale());
 	}
+	
 
 	/**
 	 * Chris Barrett
@@ -67,7 +96,7 @@ public class TestRec
 	@Test
 	public void testToString() 
 	{
-		assertEquals("The toString() works", ",sucks", rec.toString());
+		assertEquals("The toString() works", "0,sucks", rec.toString());
 	}
 
 }
