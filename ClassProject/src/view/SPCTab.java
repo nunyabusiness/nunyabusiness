@@ -91,7 +91,7 @@ public class SPCTab extends JScrollPane {
 		unassignedScrollPane.setViewportView(myUnassignedTable);
 
 		unassignedLabel.setToolTipText("From this table you will be able to look over any "
-				+ "papers that have already completed their review process. ");
+				+ "papers that have need to have reviewers assigned to them. ");
 
 		myUnassignedTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
@@ -117,14 +117,27 @@ public class SPCTab extends JScrollPane {
 		assignedScrollPane.setViewportView(myAssignedTable);
 
 		assignedLabel.setToolTipText("From this table you will be able to look over any "
-				+ "papers that have already completed their review process. ");
+				+ "papers that have completed, or are under-going, their review process. ");
 
 		myAssignedTable.addMouseListener(new MouseAdapter() {			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					Integer paperID = (Integer) myAssignedTable.getValueAt(myAssignedTable.getSelectedRow(), 0);
 					
-					new SeeReviewsDialog(myConference, myConference.getPaper(paperID));
+					ArrayList<Review> reviews = (ArrayList<Review>) myConference.getReviewsForPaper(paperID);
+					//flag to dictate being able to make a recommendation
+					boolean canRecommend = true; 
+					for (Review r : reviews) {
+						if (r.getScore() == 0)
+							canRecommend = false;
+					}
+					
+					if (canRecommend) {
+						new SeeReviewsDialog(myConference, myConference.getPaper(paperID));
+					} else {
+						JOptionPane.showMessageDialog(null, "Cannot submit a recommendation "
+								+ "until all reviews have been posted.");
+					}
 				}
 			}
 		});

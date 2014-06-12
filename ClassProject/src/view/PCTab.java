@@ -119,7 +119,12 @@ public class PCTab extends JScrollPane {
 				if (e.getClickCount() == 2) {
 					Integer paperID = (Integer) processTable.getValueAt(processTable.getSelectedRow(), 0);
 					
-					new DecisionDialog(myConference, myConference.getPaper(paperID));
+					if (myConference.getRecommendationForPaper(paperID).getState() != 0) {
+						new DecisionDialog(myConference, myConference.getPaper(paperID));
+					} else {
+						JOptionPane.showMessageDialog(null, "Cannot submit a decision "
+								+ "until a recommendation have been posted.");
+					}
 				}
 			}
 		});

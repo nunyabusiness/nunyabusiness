@@ -117,8 +117,15 @@ public class SeeReviewsDialog extends JDialog {
 		
 		centerPanel.add(Box.createVerticalStrut(8));
 		
-		JLabel recLabel = new JLabel("<html><i>Please consider the reviews below when "
-				+ "making your recommenation:", SwingConstants.CENTER);
+		JLabel recLabel = new JLabel(" ", SwingConstants.CENTER);
+		
+		if (myConference.getCurrentUser().getRole() == 2 
+				&& myConference.getCurrentUser().getID() != myPaper.getAuthorID()) {		
+			recLabel.setText("<html><i>Please consider the reviews below when "
+				+ "making your recommenation:");
+		} else {
+			recLabel.setText("<html><i>Below are the reviews for your submitted paper:");
+		}
 		recLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		centerPanel.add(recLabel);
 		centerPanel.add(Box.createVerticalStrut(10));
