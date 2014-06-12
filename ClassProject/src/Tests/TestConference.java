@@ -245,8 +245,8 @@ public class TestConference
 		
 		con.submitReview(PID, rev2);
 		
-		assertEquals("I hope that things work correctly sort of cheated", 3, 
-				con.getReviewsForPaper(PID).size());
+		assertEquals("I hope that things work correctly sort of cheated", rev.getComment(), 
+				con.getReviewsForPaper(PID).get(0).getComment());
 	}
 
 	/**
