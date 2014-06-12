@@ -79,7 +79,29 @@ public class TestConference
 		con.saveConference();
 		
 	}
+	
+	/**
+	 * @author Erik Tedder 
+	 * Test method for {@link model.Conference#login(int)}.
+	 */
+	@Test
+	public void testLoginFail() {
+		con.login(9999999);
+		
+		assertTrue("Current user should be null", con.getCurrentUser() == null);
+	}
 
+	/**
+	 * @author Erik Tedder 
+	 * Test method for {@link model.Conference#login(int)}.
+	 */
+	@Test
+	public void testLoginSuccessful() {
+		con.login(67);
+		
+		assertTrue("Current user should be null", con.getCurrentUser().getID() == 67);
+	}
+	
 	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Conference#getUser(int)}.
