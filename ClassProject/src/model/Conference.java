@@ -74,6 +74,26 @@ public class Conference extends Observable {
 	public void startTest() {
 		try {
 			c.setAutoCommit(false);
+			c.createStatement().executeUpdate("DELETE FROM paper");
+			c.createStatement().executeUpdate("DELETE FROM recommendation");
+			c.createStatement().executeUpdate("DELETE FROM review");
+			c.createStatement().executeUpdate("DELETE FROM sqlite_sequence");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Method that should be called when testing has been completed for this class. Rolls the
+	 * database back to its original contents.
+	 * 
+	 * @author Erik Tedder
+	 */
+	public void endTesting() {
+		try {
+			Statement stmt = c.createStatement();
+			stmt.executeUpdate("rollback");
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +108,10 @@ public class Conference extends Observable {
 	public void endTest() {
 		try {
 			Statement stmt = c.createStatement();
-			stmt.executeUpdate("rollback");
+			stmt.executeUpdate("DELETE FROM paper");
+			stmt.executeUpdate("DELETE FROM recommendation");
+			stmt.executeUpdate("DELETE FROM review");
+			stmt.executeUpdate("DELETE FROM sqlite_sequence");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -452,7 +475,7 @@ public class Conference extends Observable {
 	 */
 	public void submitDecision(final int paperID, final int decision) {		
 		//Tests to ensure decision is of the right value.
-		if (decision != 1 || decision != 2) {
+		if (decision != 1 && decision != 2) {
 			return;
 		}
 		

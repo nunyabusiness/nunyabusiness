@@ -16,6 +16,7 @@ import model.User;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -59,6 +60,21 @@ public class TestConference
 	}
 	
 	/**
+	 * Adds the specified paper to the conference before each test.
+	 * 
+	 * @author Erik Tedder
+	 * @throws BusinessRuleException
+	 */
+	@Before
+	public void beforeEach() throws BusinessRuleException {
+		con.login(AID);
+		
+		con.addPaper(TITLE, ABST, FILE);
+		
+		con.logout();
+	}
+	
+	/**
 	 * Chris Barrett
 	 * after each class do the following
 	 */
@@ -66,6 +82,9 @@ public class TestConference
 	public void breakDown()
 	{
 		con.logout();
+		//Erik Tedder - added method to remove all papers/reviews/recommendation and reset
+		//paper id counter
+		con.endTest(); 
 	}
 	
 	/**
@@ -75,7 +94,7 @@ public class TestConference
 	@AfterClass
 	public static void breakOut()
 	{
-		con.endTest();
+		con.endTesting();
 		con.saveConference();
 		
 	}
@@ -164,6 +183,52 @@ public class TestConference
 		
 		assertEquals("if the assignment is correct than equals true", SPCID, con.getSPCforPaper(PID).getID());
 	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link model.Conference#assignSpc(int, int)}.
+	 * @throws BusinessRuleException 
+	 */
+	@Test(expected = BusinessRuleException.class)
+	public void testAssignSpcToOwn() throws BusinessRuleException 
+	{
+		con.login(SPCID);
+		
+		con.addPaper("title", "abstract", "txt.txt"); //should be paper id 2
+		
+		con.logout();
+		
+		con.login(PCID);
+		
+		con.assignSpc(SPCID, 2);
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link model.Conference#assignSpc(int, int)}.
+	 * @throws BusinessRuleException 
+	 */
+	@Test(expected = BusinessRuleException.class)
+	public void testAssignSpcPastLimit() throws BusinessRuleException 
+	{
+		//login as random author
+		con.login(31);
+
+		con.addPaper("some paper 1", "some abstract", "txt1.txt"); //should be id 2
+		con.addPaper("some paper 2", "some abstract", "txt2.txt"); //id 3
+		con.addPaper("some paper 3", "some abstract", "txt3.txt"); //id 4
+		con.addPaper("some paper 4", "some abstract", "txt4.txt"); //id 5
+
+		con.logout();
+		
+		con.login(PCID);
+		
+		con.assignSpc(SPCID, PID);
+		con.assignSpc(SPCID, 2);
+		con.assignSpc(SPCID, 3);
+		con.assignSpc(SPCID, 4);
+		con.assignSpc(SPCID, 5);
+	}
 
 	/**
 	 * @author Chris Barrett
@@ -187,6 +252,33 @@ public class TestConference
 				paper.equals(con.getReviewerList(REVID2).get(0)));
 		assertTrue("If the paper exists in the list of papers for that reviewer", 
 				paper.equals(con.getReviewerList(REVID3).get(0)));
+	}
+	
+	/**
+	 * @author Erik Tedder
+	 * Test method for {@link model.Conference#assignReviewerToPaper(int, int)}.
+	 * @throws BusinessRuleException 
+	 */
+	@Test(expected = BusinessRuleException.class)
+	public void testAssignReviewerToPaperPastLimit() throws BusinessRuleException 
+	{
+		//login as random author
+		con.login(31);
+		
+		con.addPaper("some paper 1", "some abstract", "txt1.txt"); //should be id 2
+		con.addPaper("some paper 2", "some abstract", "txt2.txt"); //id 3
+		con.addPaper("some paper 3", "some abstract", "txt3.txt"); //id 4
+		con.addPaper("some paper 4", "some abstract", "txt4.txt"); //id 5
+		
+		con.logout();
+		
+		con.login(SPCID);		
+		
+		con.assignReviewerToPaper(REVID1, PID);
+		con.assignReviewerToPaper(REVID1, 2);
+		con.assignReviewerToPaper(REVID1, 3);
+		con.assignReviewerToPaper(REVID1, 4);
+		con.assignReviewerToPaper(REVID1, 5);
 	}
 
 	/**
@@ -213,10 +305,19 @@ public class TestConference
 	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Conference#submitReview(int, model.Review)}.
+	 * @throws BusinessRuleException 
 	 */
 	@Test
-	public void testSubmitReview() 
+	public void testSubmitReview() throws BusinessRuleException 
 	{
+		con.login(SPCID);
+		
+		con.assignReviewerToPaper(REVID1, PID);
+		con.assignReviewerToPaper(REVID2, PID);
+		con.assignReviewerToPaper(REVID3, PID);
+		
+		con.logout();
+		
 		con.login(REVID1);
 		
 		Review rev = new Review();
@@ -245,17 +346,25 @@ public class TestConference
 		
 		con.submitReview(PID, rev2);
 		
-		assertEquals("I hope that things work correctly sort of cheated", rev.getComment(), 
-				con.getReviewsForPaper(PID).get(0).getComment());
+		assertEquals("I hope that things work correctly sort of cheated", rev.getComment(), con.getReviewsForPaper(PID).get(0).getComment());
+		assertEquals("I hope that things work correctly sort of cheated", rev1.getComment(), con.getReviewsForPaper(PID).get(1).getComment());
+		assertEquals("I hope that things work correctly sort of cheated", rev2.getComment(), con.getReviewsForPaper(PID).get(2).getComment());
 	}
 
 	/**
 	 * Chris Barrett
 	 * Test method for {@link model.Conference#spcSubmitRecommendation(int, model.Recommendation)}.
+	 * @throws BusinessRuleException 
 	 */
 	@Test
-	public void testSpcSubmitRecommendation() 
-	{
+	public void testSpcSubmitRecommendation() throws BusinessRuleException 
+	{		
+		con.login(PCID);
+		
+		con.assignSpc(SPCID, PID);
+		
+		con.logout();
+		
 		con.login(SPCID);
 		
 		Recommendation rec = new Recommendation();
@@ -263,6 +372,7 @@ public class TestConference
 		rec.setRationale("success");
 		
 		con.spcSubmitRecommendation(PID, rec);
+		
 		
 		assertEquals("should work right?", rec.toString(), con.getRecommendationForPaper(PID).toString());
 	}
