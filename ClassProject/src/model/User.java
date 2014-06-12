@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Steven Bradley
  *
@@ -36,11 +33,6 @@ public class User {
 	 * The papers that the user has authored and submitted to the conference.
 	 */
 	
-	/**
-	 * The papers that this user has submitted.
-	 */
-	private List<Integer> mySubmittedPapers;
-	
 	public int spc_pc;
 	
 	/** Creates a new user with the following fields.
@@ -57,7 +49,6 @@ public class User {
 		myEmail = email;
 		myRole = role;
 		
-		mySubmittedPapers = new ArrayList<Integer>();
 		
 	}
 	
@@ -84,17 +75,6 @@ public class User {
 	public void setRole(int theRole) {
 		myRole = theRole;
 	}
-	
-	
-//	public void submitPaper(int the_paperId) throws BusinessRuleException {
-//		if (mySubmittedPapers.size() < 4) {
-//			mySubmittedPapers.add(the_paperId);
-//		} else {
-//			throw new BusinessRuleException("You cannot have more than 4 papers submitted"
-//					+ "to a given conference.");
-//		}
-//		
-//	}
 	
 	@Override
 	public String toString() {

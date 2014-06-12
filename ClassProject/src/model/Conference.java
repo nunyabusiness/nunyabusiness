@@ -24,7 +24,7 @@ import java.util.Observable;
  * with hash_map, later on it was modified for database. All deprecated code
  * marked as //DEPRECATED.
  * 
- * @author Anton Bardakhanov, Steven Bradley, Erik Tedder *
+ * @author Anton Bardakhanov, Steven Bradley, Erik Tedder (altered for database)
  */
 public class Conference extends Observable {
 
