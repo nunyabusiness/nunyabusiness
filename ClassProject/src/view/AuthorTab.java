@@ -3,12 +3,9 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -22,10 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import view.ReviewTab.ReviewDialog;
 import model.Conference;
 import model.Paper;
-import model.Review;
 import model.User;
 
 /**
@@ -86,22 +81,7 @@ public class AuthorTab extends JPanel {
 				
 				panel.add(label);
 				
-				JButton viewButton = new JButton("View Paper");
-				viewButton.setAlignmentX(CENTER_ALIGNMENT);
-				viewButton.addActionListener(new ActionListener() {					
-					public void actionPerformed(final ActionEvent e) {
-						String fileName = "Papers/" + p.getAuthorID() + "/" + p.getFile();
-						//Attempts to load the file using the user's default program
-						try {
-							Desktop.getDesktop().open(new File(fileName));
-						} catch (final IOException e1) {
-							JOptionPane.showMessageDialog(null, "Error loading selected paper.");
-						}
-					}
-				});
-				panel.add(viewButton);
-				
-				JButton button = new JButton("Edit Paper");
+				JButton button = new JButton("View Paper Details");
 				button.setAlignmentX(CENTER_ALIGNMENT);
 				button.addActionListener(new ActionListener() {					
 					public void actionPerformed(final ActionEvent e) {
@@ -109,6 +89,21 @@ public class AuthorTab extends JPanel {
 					}
 				});
 				panel.add(button);
+				
+				JButton viewButton = new JButton("View Reviews");
+				viewButton.setAlignmentX(CENTER_ALIGNMENT);
+				viewButton.addActionListener(new ActionListener() {					
+					public void actionPerformed(final ActionEvent e) {
+						if ("Being Reviewed".equals(myConference.getPaperDecision(p.getId()))) {
+							JOptionPane.showMessageDialog(null, "Cannot view paper reviews "
+									+ "until a decision has been given to the paper");
+						} else {
+							new SeeReviewsDialog(myConference, p);
+						}
+					}
+				});
+				panel.add(viewButton);
+				
 				panel.add(new JLabel(myConference.getPaperDecision(p.getId())));
 				
 				myCenterPanel.add(panel);
@@ -124,7 +119,7 @@ public class AuthorTab extends JPanel {
 	/**
 	 * Inner JDialog class that is responsible for showing the contents of a paper.
 	 * 
-	 * @author Erik Tedder	 *
+	 * @author Erik Tedder	
 	 */
 	public class PaperDialog extends JDialog {
 		
@@ -203,7 +198,8 @@ public class AuthorTab extends JPanel {
 			JButton removeButton = new JButton("Delete Paper");
 			removeButton.addActionListener(new ActionListener() {				
 				public void actionPerformed(ActionEvent e) {
-					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "Confirm Paper Deletion", JOptionPane.YES_NO_OPTION);
+					int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", 
+							"Confirm Paper Deletion", JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.OK_OPTION) {
 						myConference.removePaper(myPaper);
 						dispose();

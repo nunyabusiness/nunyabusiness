@@ -124,7 +124,7 @@ public class SPCTab extends JScrollPane {
 				if (e.getClickCount() == 2) {
 					Integer paperID = (Integer) myAssignedTable.getValueAt(myAssignedTable.getSelectedRow(), 0);
 					
-					new RecommendDialog(myConference, myConference.getPaper(paperID));
+					new SeeReviewsDialog(myConference, myConference.getPaper(paperID));
 				}
 			}
 		});

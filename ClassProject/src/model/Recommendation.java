@@ -26,7 +26,7 @@ public class Recommendation {
 	 * @param state
 	 */
 	public void setState(int state) {
-		if (state < 0 || state > 3)
+		if (state < 0 || state > 5)
 			return;
 		this.state = state;
 
